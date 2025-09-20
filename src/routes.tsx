@@ -31,6 +31,8 @@ import JobManagement from "./admin-dashboard/JobManagement";
 import DisputesManagement from "./admin-dashboard/DisputesManagement";
 import CategoryManagement from "./admin-dashboard/CategoryManagement";
 import AdminSettings from "./admin-dashboard/AdminSettings";
+import ServiceDetails from "./publicpages/ServiceDetails";
+import JobDetails from "./publicpages/JobDetails";
 
 const router = createBrowserRouter([
  { path: "/login", element: <Login /> },
@@ -51,8 +53,16 @@ const router = createBrowserRouter([
         element: <Services />,
       },
       {
+        path: "services/:id",
+        element: <ServiceDetails></ServiceDetails>
+      },
+      {
         path: "jobs",
         element: <Jobs />,
+      },
+      {
+        path: "jobs/:id",
+        element: <JobDetails />,
       },
       {
         path: "about",
