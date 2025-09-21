@@ -31,6 +31,11 @@ import JobManagement from "./admin-dashboard/JobManagement";
 import DisputesManagement from "./admin-dashboard/DisputesManagement";
 import CategoryManagement from "./admin-dashboard/CategoryManagement";
 import AdminSettings from "./admin-dashboard/AdminSettings";
+import PersonalInfo from "./trade-dashboard/PersonalInfo";
+import ProfessionalInfo from "./trade-dashboard/ProfessionalInfo";
+import BusinessInfo from "./trade-dashboard/BusinessInfo";
+import ServiceAreas from "./trade-dashboard/tradeComponents/ServiceAreas";
+import Credentials from "./trade-dashboard/Credentials";
 
 const router = createBrowserRouter([
  { path: "/login", element: <Login /> },
@@ -103,6 +108,26 @@ const router = createBrowserRouter([
           {
             index:true,
             element:<TradeOverview/>
+          },
+          {
+            path:'personal-info',
+            element:<PersonalInfo/>
+          },
+          {
+            path:'professional-info',
+            element:<ProfessionalInfo/>
+          },
+          {
+            path:'business-info',
+            element:<BusinessInfo/>
+          },
+          {
+            path:'service-areas',
+            element:<ServiceAreas/>
+          },
+          {
+            path:'credentials',
+            element:<Credentials/>
           },
           {
             path:'jobs/:id',
