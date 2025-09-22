@@ -1,5 +1,7 @@
 import Banner from "../components/home/Banner"
-import PopularServices from "../components/home/PopularServices"
+import HireAsTradeperson from "../components/home/HireAsTradeperson"
+import OurPopularServices from "../components/home/OurPopularServices"
+import PopularServicesCategory from "../components/home/PopularServicesCategory"
 
 
  
@@ -8,7 +10,9 @@ function Home() {
   return (
     <div>
       <Banner />
-      <PopularServices />
+      <PopularServicesCategory />
+      <HireAsTradeperson />
+      <OurPopularServices />
     </div>
   )
 }

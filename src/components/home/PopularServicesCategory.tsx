@@ -2,7 +2,7 @@ import { FaAngleRight } from "react-icons/fa";
 import { popularServices } from "../../assets/demoData/demodata";
 
 
-const PopularServices = () => {
+const PopularServicesCategory = () => {
     return (
         <div className="text-center bg-[#F2F4F8] py-20">
             <h1 className="font-semibold text-4xl">Popular Service Categories</h1>
@@ -29,4 +29,4 @@ const PopularServices = () => {
     );
 };
 
-export default PopularServices;
+export default PopularServicesCategory;
