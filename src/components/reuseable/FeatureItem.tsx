@@ -1,23 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface FeatureItemProps {
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  icon: any;
   title: string;
   subtitle: string;
-  iconBg: string;
-  iconColor: string;
 }
 
 
-const FeatureItem: React.FC<FeatureItemProps> = ({ icon: Icon, title, subtitle, iconBg, iconColor }) => {
+const FeatureItem: React.FC<FeatureItemProps> = ({ icon, title, subtitle }) => {
   return (
-    <div className="flex items-center space-x-3">
-      <div className={`w-10 h-10 rounded-lg ${iconBg} flex items-center justify-center flex-shrink-0`}>
-        <Icon className={`w-5 h-5 ${iconColor}`} />
+    <div className="flex bg-white rounded-lg p-4 items-center space-x-3">
+      <div className={` h-10  flex items-center justify-center flex-shrink-0`}>
+        <img src={icon} alt={title} className={`h-10`} />
       </div>
       <div>
         <div className="font-semibold text-gray-900 text-sm leading-tight">
           {title}
         </div>
-        <div className="text-gray-600 text-sm leading-tight">
+        <div className="font-semibold text-gray-900 text-sm leading-tight">
           {subtitle}
         </div>
       </div>

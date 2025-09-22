@@ -1,53 +1,49 @@
-import { Shield, Users, Clock, Award } from 'lucide-react';
+import trustedImg from "../../assets/sample_images/Frame.png"
+import clockImg from "../../assets/sample_images/Frame (1).png"
+import shieldImg from "../../assets/sample_images/Group.png"
+import awardImg from "../../assets/sample_images/Group (1).png"
 import FeatureItem from '../reuseable/FeatureItem';
+import stayBarImg from "../../assets/sample_images/whychoosestavbar.png"
 
 const WhyChooseStaybar = () => {
   const features = [
     {
-      icon: Users,
+      icon: trustedImg,
       title: "Trusted by",
       subtitle: "Thousands",
-      iconBg: "bg-yellow-100",
-      iconColor: "text-yellow-600"
     },
     {
-      icon: Clock,
+      icon: clockImg,
       title: "24/7 Support",
       subtitle: "Specially",
-      iconBg: "bg-blue-100", 
-      iconColor: "text-blue-600"
     },
     {
-      icon: Shield,
+      icon: shieldImg,
       title: "Fast, Simple",
       subtitle: "and Secure",
-      iconBg: "bg-green-100",
-      iconColor: "text-green-600"
     },
     {
-      icon: Award,
+      icon: awardImg,
       title: "Experts",
       subtitle: "Tradesperson",
-      iconBg: "bg-orange-100",
-      iconColor: "text-orange-600"
     }
   ];
 
   return (
-    <div className="bg-white py-16 px-4">
+    <div className="bg-[#FCF3F3] py-16 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Image Section */}
           <div className="relative">
             <img 
-              src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop"
+              src={stayBarImg}
               alt="Professional handshake between tradesperson and customer"
               className="w-full rounded-2xl object-cover shadow-lg"
             />
           </div>
 
           {/* Content Section */}
-          <div className="space-y-8">
+          <div className="space-y-8 pr-10">
             <div>
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
                 Why Choose Staybar
@@ -65,8 +61,6 @@ const WhyChooseStaybar = () => {
                   icon={feature.icon}
                   title={feature.title}
                   subtitle={feature.subtitle}
-                  iconBg={feature.iconBg}
-                  iconColor={feature.iconColor}
                 />
               ))}
             </div>

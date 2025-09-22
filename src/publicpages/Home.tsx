@@ -3,6 +3,7 @@ import HireAsTradeperson from "../components/home/HireAsTradeperson"
 import OurPopularServices from "../components/home/OurPopularServices"
 import PopularServicesCategory from "../components/home/PopularServicesCategory"
 import ReadyToHireTradeperson from "../components/home/ReadyToHireTradeperson"
+import WhyChooseStaybar from "../components/home/WhyChooseStaybar"
 
 
  
@@ -14,6 +15,7 @@ function Home() {
       <PopularServicesCategory />
       <HireAsTradeperson />
       <OurPopularServices />
+      <WhyChooseStaybar />
       <ReadyToHireTradeperson />
     </div>
   )
