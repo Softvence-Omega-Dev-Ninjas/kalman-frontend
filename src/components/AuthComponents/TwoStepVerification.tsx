@@ -16,15 +16,20 @@ const options = [
     }
 ]
 
-const TwoStepVerification: React.FC = () => {
+interface LogInComponentProps {
+    step: number;
+    setStep: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const TwoStepVerification: React.FC<LogInComponentProps> = ({step, setStep}) => {
     return (
         <div className="min-h-screen bg-white py-12">
             <div className="max-w-6xl mx-auto px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                     {/* Left column - title */}
                     <div>
-                        <h1 className="text-4xl md:text-5xl font-extrabold text-[#111827]">2-Step Verification</h1>
-                        <p className="text-sm text-gray-500 mt-4 max-w-xl">To help keep your account safe, Theta Analyzer wants to make sure it's really you trying to log in</p>
+                        <h1 className="text-4xl md:text-5xl font-semibold text-black">2-Step Verification</h1>
+                        <p className="text-lg text-gray-500 mt-4 max-w-xl">To help keep your account safe, Theta Analyzer wants to make sure it's really you trying to log in</p>
                     </div>
 
                     {/* Right column - options */}
@@ -33,7 +38,7 @@ const TwoStepVerification: React.FC = () => {
 
                         <div className="space-y-4">
                             {options.map((opt) => (
-                                <label key={opt.id} className="group block border border-gray-200 rounded-lg p-4 hover:shadow-sm cursor-pointer">
+                                <label onClick={() => setStep(step + 1)} key={opt.id} className="group block border border-gray-200 rounded-lg p-4 hover:shadow-sm cursor-pointer">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-start gap-4">
                                             <div className="w-10 h-10 rounded-md bg-white border border-gray-200 flex items-center justify-center mt-1">{opt.icon}</div>
