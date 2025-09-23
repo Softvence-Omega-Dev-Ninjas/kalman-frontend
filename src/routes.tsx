@@ -33,6 +33,8 @@ import CategoryManagement from "./admin-dashboard/CategoryManagement";
 import AdminSettings from "./admin-dashboard/AdminSettings";
 import ServiceDetails from "./publicpages/ServiceDetails";
 import JobDetails from "./publicpages/JobDetails";
+import GeneralLogin from "./publicpages/GeneralLogin";
+import GeneralSignUp from "./publicpages/GeneralSignUp";
 
 const router = createBrowserRouter([
  { path: "/login", element: <Login /> },
@@ -75,6 +77,14 @@ const router = createBrowserRouter([
       {
         path: "contact",
         element: <Contact />,
+      },
+      {
+        path: "/general-login",
+        element: <GeneralLogin />,
+      },
+      {
+        path: "/general-signup",
+        element: <GeneralSignUp />,
       },
       // ✅ User Dashboard Route
       {
