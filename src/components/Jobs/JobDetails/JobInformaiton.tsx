@@ -55,6 +55,24 @@ const JobInformation = ({ job }: { job: any }) => {
             </span>
           </div>
         </div>
+        <div>
+            {/* Activity on this lead - pixel-accurate card */}
+            <div className="bg-[#F5F7FA] rounded-lg p-6">
+              <h2 className="text-lg font-semibold mb-4">Activity on this lead</h2>
+              <div className="grid grid-cols-2 gap-6 items-center">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-[#FF7346]">4</div>
+                  <div className="font-semibold mt-1">Interested</div>
+                  <div className="text-sm text-secondary mt-2">Tradespeople who want this job</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-[#FF7346]">0</div>
+                  <div className="font-semibold mt-1">Shortlisted</div>
+                  <div className="text-sm text-secondary mt-2">Tradespeople who received the customer info</div>
+                </div>
+              </div>
+            </div>
+        </div>
       </div>
       <div className="bg-white  p-5 rounded-md shadow-md">
         <h1 className="text-2xl font-semibold mb-10">Photos</h1>

@@ -1,5 +1,6 @@
 import { CiLocationOn } from "react-icons/ci";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import PriceRangeSlider from './PriceRangeSlider';
 
 const SideFilterBar = () => {
   const categories = [
@@ -60,9 +61,37 @@ const SideFilterBar = () => {
           <CiLocationOn className="absolute right-3 top-1/2 transform -translate-y-1/2  pointer-events-none" />
         </div>
       </div>
+      <div className="p-5 bg-white rounded-md shadow-md border border-gray-200">
+        <div className="flex items-start justify-between mb-4">
+          <h1 className="text-start text-xl font-semibold">Price Range</h1>
+          <div className="text-sm text-gray-600 bg-gray-100 px-4 py-2 rounded-md">Price : $<span className="price-current">55.00</span></div>
+        </div>
+
+        {/* Histogram */}
+        <div className="w-full mb-4">
+          <div className="flex items-end gap-1 h-12">
+            {/* placeholder histogram bars - prettier if values come from props */}
+            {Array.from({ length: 40 }).map((_, i) => {
+              const height = 6 + Math.round(18 * Math.abs(Math.sin(i / 3)));
+              const activeColor = i >= 10 && i <= 30 ? '#FF7346' : '#FFD9CF';
+              return (
+                <div
+                  key={i}
+                  className="rounded-sm"
+                  style={{ width: 6, height, background: activeColor }}
+                />
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Slider */}
+        <PriceRangeSlider min={0} max={1000} step={1} initialLow={50} initialHigh={500} />
+      </div>
       <button className="w-full px-5 py-4 mt-4 text-white bg-primary rounded-md text-lg">Filter Search</button>
     </div>
   );
 };
 
 export default SideFilterBar;
+// ...existing code...

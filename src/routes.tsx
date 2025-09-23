@@ -35,9 +35,10 @@ import ServiceDetails from "./publicpages/ServiceDetails";
 import JobDetails from "./publicpages/JobDetails";
 import GeneralLogin from "./publicpages/GeneralLogin";
 import GeneralSignUp from "./publicpages/GeneralSignUp";
+import PostAJob from "./publicpages/PostAJob";
 
 const router = createBrowserRouter([
- { path: "/login", element: <Login /> },
+  { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
   { path: "/login-2fa", element: <Login2FA /> },
   { path: "/verify-otp", element: <VerifyOTP /> },
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
       },
       {
         path: "services/:id",
-        element: <ServiceDetails></ServiceDetails>
+        element: <ServiceDetails></ServiceDetails>,
       },
       {
         path: "jobs",
@@ -86,106 +87,106 @@ const router = createBrowserRouter([
         path: "/general-signup",
         element: <GeneralSignUp />,
       },
+      {
+        path: "post-a-job",
+        element: <PostAJob />,
+      },
       // ✅ User Dashboard Route
       {
         path: "user-dashboard",
         element: <UserDashboardLayout />,
-        children:[
+        children: [
           {
-            index:true,
-            element:<UserOverview/>
+            index: true,
+            element: <UserOverview />,
           },
           {
-            path:'messages',
-            element:<UserMessage/>
+            path: "messages",
+            element: <UserMessage />,
           },
           {
-            path:'my-jobs',
-            element:<UserJobs/>
+            path: "my-jobs",
+            element: <UserJobs />,
           },
           {
-            path:'my-jobs/:id',
-            element:<UserJobDetails/>
+            path: "my-jobs/:id",
+            element: <UserJobDetails />,
           },
           {
-            path:'settings',
-            element:<UserSetting/>
+            path: "settings",
+            element: <UserSetting />,
           },
-
-          
-        ]
+        ],
       },
       // trade person dashboard
       {
-        path:'trade-person',
-        element:<TradePersonDashboardLayout/>,
-        children:[
+        path: "trade-person",
+        element: <TradePersonDashboardLayout />,
+        children: [
           {
-            index:true,
-            element:<TradeOverview/>
+            index: true,
+            element: <TradeOverview />,
           },
           {
-            path:'jobs/:id',
-            element:<TradeJobDetails></TradeJobDetails>
+            path: "jobs/:id",
+            element: <TradeJobDetails></TradeJobDetails>,
           },
           {
-            path:'messages',
-            element:<TradeMessage></TradeMessage>
+            path: "messages",
+            element: <TradeMessage></TradeMessage>,
           },
           {
-            path:'payments',
-            element:<TradePayment></TradePayment>
+            path: "payments",
+            element: <TradePayment></TradePayment>,
           },
           {
-            path:'reviews',
-            element:<TradeReviews></TradeReviews>
+            path: "reviews",
+            element: <TradeReviews></TradeReviews>,
           },
           {
-            path:'settings',
-            element:<TradeSetting></TradeSetting>
+            path: "settings",
+            element: <TradeSetting></TradeSetting>,
           },
-        ]
+        ],
       },
 
       // super admin dashboard
       {
-        path:'admin-dashboard',
-        element:<AdminDashboardLayout/>,
-        children:[
+        path: "admin-dashboard",
+        element: <AdminDashboardLayout />,
+        children: [
           {
-            index:true,
-            element:<AdminOverview></AdminOverview>
+            index: true,
+            element: <AdminOverview></AdminOverview>,
           },
           {
-            path:'users',
-            element:<UserManagement/>
+            path: "users",
+            element: <UserManagement />,
           },
           {
-            path:'jobs',
-            element:<JobManagement></JobManagement>
+            path: "jobs",
+            element: <JobManagement></JobManagement>,
           },
           {
-            path:'disputes',
-            element:<DisputesManagement></DisputesManagement>
+            path: "disputes",
+            element: <DisputesManagement></DisputesManagement>,
           },
           {
-            path:'categories',
-            element:<CategoryManagement></CategoryManagement>
+            path: "categories",
+            element: <CategoryManagement></CategoryManagement>,
           },
           {
-            path:'settings',
-            element:<AdminSettings/>
-          }
-          
-        ]
-      }
+            path: "settings",
+            element: <AdminSettings />,
+          },
+        ],
+      },
     ],
   },
   {
     path: "*",
     element: <NotFound />,
   },
-  
 ]);
 
 export default router;

@@ -1,8 +1,15 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import avatar from '../../assets/Ellipse 2.png'
 
-const navItems = ['Home','Services','Jobs','About','Blog','Contact']
+const navItems = [
+    { label: 'Home', path: '/' },
+    { label: 'Services', path: '/services' },
+    { label: 'Jobs', path: '/jobs' },
+    { label: 'About', path: '/about' },
+    { label: 'Blog', path: '/blog' },
+    { label: 'Contact', path: '/contact' },
+]
 
 const Navbar = () => {
     const [open, setOpen] = useState(false)
@@ -29,8 +36,8 @@ const Navbar = () => {
                     <div className="hidden md:flex items-center justify-center flex-1">
                         <ul className="flex items-center gap-8">
                             {navItems.map((item) => (
-                                <li key={item}>
-                                    <Link to="#" className={`font-semibold ${item === 'Home' ? 'text-primary ' : 'text-gray-700'}`}>{item}</Link>
+                                <li key={item.label}>
+                                    <NavLink to={item.path} className={({ isActive }) => `font-semibold ${isActive ? 'text-primary' : 'text-gray-700'}`}>{item.label}</NavLink>
                                 </li>
                             ))}
                         </ul>
@@ -53,7 +60,7 @@ const Navbar = () => {
                     <div className="md:hidden bg-white border-t">
                         <ul className="flex flex-col px-4 py-3 gap-2">
                             {navItems.map((item) => (
-                                <li key={item}><Link to="#" className="block py-2 text-gray-700">{item}</Link></li>
+                                <li key={item.label}><NavLink to={item.path} className={({ isActive }) => `block py-2 ${isActive ? 'text-primary' : 'text-gray-700'}`}>{item.label}</NavLink></li>
                             ))}
                         </ul>
                     </div>
