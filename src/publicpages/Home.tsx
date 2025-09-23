@@ -1,5 +1,6 @@
 import AskATradePerson from "../components/home/AskATradePerson"
 import Banner from "../components/home/Banner"
+import CustomerReviews from "../components/home/CustomerReviews"
 import HireAsTradeperson from "../components/home/HireAsTradeperson"
 import OurPopularServices from "../components/home/OurPopularServices"
 import PopularServicesCategory from "../components/home/PopularServicesCategory"
@@ -23,6 +24,7 @@ function Home() {
       <ReadyToHireTradeperson />
       <PopularTradesperson />
       <AskATradePerson />
+      <CustomerReviews />
     </div>
   )
 }
