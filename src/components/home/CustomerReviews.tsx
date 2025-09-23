@@ -28,9 +28,10 @@ const CustomerReviews = () => {
 
   return (
     <div 
-      className="relative min-h-[600px] bg-cover object-cover bg-center bg-no-repeat"
+      className="relative min-h-[600px] bg-cover bg-top bg-no-repeat"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('${reviewBgImg}')`
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('${reviewBgImg}')`,
+        backgroundPosition: 'left top'
       }}
     >
       <div className="relative z-10 py-16 px-4">

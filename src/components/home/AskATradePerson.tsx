@@ -15,7 +15,7 @@ type Props = {
     subtitle?: string
     cards?: Card[]
     ctaText?: string
-    accent?: string
+
 }
 
 const defaultCards: Card[] = [
@@ -50,7 +50,6 @@ const AskATradePerson: React.FC<Props> = ({
     subtitle = 'Find questions you can answer and stand out with your expertise.',
     cards = defaultCards,
     ctaText = 'Ask any question',
-    accent = '#FF7346'
 }) => {
     return (
         <section className="py-16 bg-white">
