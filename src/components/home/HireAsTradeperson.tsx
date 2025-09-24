@@ -2,6 +2,7 @@ import React from 'react'
 import circleImg1 from "../../assets/sample_images/undraw_confirmed_c5lo 1.png";
 import circleImg2 from "../../assets/sample_images/Group 1422567285.png";
 import circleImg3 from "../../assets/sample_images/Frame 2147225506.png";
+import { Link } from 'react-router-dom';
 
 const HireAsTradeperson: React.FC = () => {
     return (
@@ -31,7 +32,7 @@ const HireAsTradeperson: React.FC = () => {
                 </div>
 
                 <div className="flex justify-center mt-8">
-                    <button className="bg-primary text-white px-6 py-2 rounded-md shadow-md">Post a Job</button>
+                    <Link to="/post-a-job" className="bg-primary text-white px-6 py-2 rounded-md shadow-md">Post a Job</Link>
                 </div>
             </div>
         </section>

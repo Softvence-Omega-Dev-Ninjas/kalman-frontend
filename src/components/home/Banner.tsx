@@ -5,6 +5,7 @@ import userimg from "../../assets/Ellipse 2.png"
 import userimg2 from "../../assets/Ellipse 3.png"
 import userimg3 from "../../assets/Ellipse 4.png"
 import bannerImg from "../../assets/Rectangle 7230.png"
+import { Link } from "react-router-dom";
 const Banner = () => {
   return (
     <div className="bg-[#0D1B2A] text-white py-[5%] min-h-[95vh]">
@@ -59,9 +60,9 @@ const Banner = () => {
             </div>
 
             <div className="flex items-center gap-5">
-              <button className="bg-primary text-white py-2 px-5 rounded-md">
+              <Link to="/post-a-job" className="bg-primary text-white py-2 px-5 rounded-md">
                 Post a Job
-              </button>
+              </Link>
               <button className="bg-transparent text-white py-2 px-5 rounded-md border">
                 Join as Tradeperson
               </button>
