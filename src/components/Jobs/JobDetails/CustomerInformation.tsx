@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { IoAlertCircleOutline, IoCheckmarkCircle } from "react-icons/io5";
@@ -11,8 +12,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
   // Mock data to match the image
   const mockCustomer = {
     name: "John Smith",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
     location: "Banská Bystrica",
     memberSince: "2018",
     isVerified: true,

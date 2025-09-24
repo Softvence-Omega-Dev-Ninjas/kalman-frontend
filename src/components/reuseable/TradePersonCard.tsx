@@ -2,6 +2,7 @@
 
 import { Star, MapPin, Clock } from 'lucide-react';
 import { MdArrowOutward } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 interface TradespersonCardProps {
   image: any;
@@ -20,9 +21,9 @@ const TradespersonCard = ({
   rating, 
   availability, 
   location, 
-  hourlyRate, 
-  onContact 
+  hourlyRate,  
 }: TradespersonCardProps) => {
+  const navigate = useNavigate();
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
       <div className="h-[200px] overflow-hidden">
@@ -68,7 +69,7 @@ const TradespersonCard = ({
             ${hourlyRate}/hr
           </div>
           <button 
-            onClick={onContact}
+            onClick={() => navigate(`/services/1`)}
             className="text-orange-500 hover:text-orange-600 underline font-medium text-sm flex items-center transition-colors duration-200"
           >
             <span>Contact now</span>

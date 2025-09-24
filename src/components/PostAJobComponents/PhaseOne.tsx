@@ -19,7 +19,7 @@ const PhaseOne = ({phase, setPhase}: PhaseOneProps) => {
         setPhase(phase + 1)
     }
     return (
-        <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-10 my-10">
+        <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-10">
             <div className="flex flex-col items-center mb-8">
                 <div className="w-16 h-16 rounded-full bg-[#0B1B26] flex items-center justify-center mb-4">
                     <img src={tellUsImg} alt="" />
