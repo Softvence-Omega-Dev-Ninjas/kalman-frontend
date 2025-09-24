@@ -2,14 +2,28 @@ import { IoLocationOutline } from "react-icons/io5";
 import image1 from "../assets/sample_images/image.png";
 import image2 from "../assets/sample_images/image2.png";
 import image3 from "../assets/sample_images/image3.png";
+import { MdOutlineReport } from "react-icons/md";
+import { useState } from "react";
+import BookingModal from "../components/ServiceComponents/BookingModal";
 
 const ServiceDetails = () => {
+  const [openContact, setOpenContact] = useState(false);
+  const handleBookingSubmit = (data: { location: string; date: string; duration: string; notes: string }) => {
+    console.log('booking', data);
+    setOpenContact(false);
+  }
   return (
     <div className="bg-[#f3f5f7] min-h-screen py-10 px-6">
       <div className="max-w-[1580px] mx-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-semibold mb-6">Cleaning Service</h2>
+          <button className="flex items-center gap-1 px-2 py-1 border border-gray-300 rounded-md">
+            <span>Report</span>
+            <MdOutlineReport />
+          </button>
+        </div>
         {/* Gallery - left two-thirds */}
         <div className="lg:col-span-2">
-          <h2 className="text-2xl font-semibold mb-6">Cleaning Service</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2 rounded-lg overflow-hidden">
               <img
@@ -94,11 +108,15 @@ const ServiceDetails = () => {
                   </span>
                 </div>
 
-                <button className="w-full mt-6 bg-[#FF7346] text-white px-4 py-3 rounded-md">
+                <button onClick={() => setOpenContact(true)} className="w-full mt-6 bg-[#FF7346] text-white px-4 py-3 rounded-md">
                   Contact for Shortlist
                 </button>
               </div>
             </div>
+            {
+              // openContact && ( Show modal) 
+            }
+            <BookingModal open={openContact} onClose={() => setOpenContact(false)} onSubmit={handleBookingSubmit} />
           </div>
         </div>
       </div>
