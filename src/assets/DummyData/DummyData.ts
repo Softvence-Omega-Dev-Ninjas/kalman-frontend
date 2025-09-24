@@ -1,0 +1,167 @@
+import img1 from "./user1.png";
+import img2 from "./user2.png";
+import img3 from "./user3.png";
+import img4 from "./user4.png";
+
+export const jobs = [
+  {
+    id: 1,
+    title: "Emergency Boiler Repair",
+    tag: "Urgent",
+    description:
+      "Certified electrician offering residential and commercial electrical services. Quick response time and quality workmanship guaranteed.",
+    name: "John Smith",
+    location: "user location",
+    date: "24/01/2024",
+    start: "ASAP",
+    rate: "$20.00/hr",
+    applicants: 2,
+    image: img1,
+  },
+  {
+    id: 2,
+    title: "Bathroom Tiling Repair",
+    tag: "None",
+    description:
+      "Several tiles in our bathroom have come loose and need replacing. The bathroom was tiled 5 years ago and we have some spare tiles. Quick job for an experienced tiler.",
+    name: "Kathryn Murphy",
+    location: "user location",
+    date: "20/01/2024",
+    start: "ASAP",
+    rate: "$20.00/hr",
+    applicants: 2,
+    image: img2,
+  },
+  {
+    id: 3,
+    title: "Garden Landscaping Project",
+    tag: "None",
+    description:
+      "Complete garden transformation including lawn replacement, flower beds, patio installation, and fence repair. Garden is approximately 15m x 8m. Looking for a professional landscaper.",
+    name: "John Smith",
+    location: "user location",
+    date: "21/01/2024",
+    start: "ASAP",
+    rate: "$20.00/hr",
+    applicants: 2,
+    image: img3,
+  },
+  {
+    id: 4,
+    title: "Emergency Boiler Repair",
+    tag: "None",
+    description:
+      "Certified electrician offering residential and commercial electrical services. Quick response time and quality workmanship guaranteed.",
+    name: "Jane Cooper",
+    location: "user location",
+    date: "22/01/2024",
+    start: "ASAP",
+    rate: "$20.00/hr",
+    applicants: 2,
+    image: img4,
+  },
+];
+
+
+export const service_providers = [
+  {
+    id: 1,
+    name: 'Zahta LLC',
+    rating: 'Top Pro',
+    overall_rating: 4.8,
+    review_count: 92,
+    badge: 'Highly rated',
+    service_type: 'Handyman',
+    location: 'Serves Young America, MN',
+    hourly_rate: 20.00,
+    currency: 'USD',
+    rate_type: 'Starting price',
+    description: 'Benyl G. says, "I hired Bright Touch Cleaning to clean my parents\' home for them. My dad said their house has never been more clean! Definitely professional. See more"',
+    profile_image: img1,
+    verified: true,
+  },
+  {
+    id: 2,
+    name: 'Zahta LLC',
+    rating: 'Top Pro',
+    overall_rating: 4.8,
+    review_count: 10,
+    badge: 'Highly rated',
+    service_type: 'Handyman',
+    location: 'Serves Young America, MN',
+    response_time: 'Responds in about 42 min',
+    hourly_rate: 15.00,
+    currency: 'USD',
+    rate_type: 'Starting price',
+    description: 'Benyl G. says, "I hired Bright Touch Cleaning to clean my parents\' home for them. My dad said their house has never been more clean! Definitely professional. See more"',
+    profile_image: img2,
+    verified: true,
+  },
+  {
+    id: 3,
+    name: 'John Smith',
+    rating: 'Great',
+    overall_rating: 4.9,
+    review_count: 10,
+    badge: null,
+    service_type: 'Plumbing',
+    location: 'Serves Young America, MN',
+    hourly_rate: 15.00,
+    currency: 'USD',
+    rate_type: 'per hour',
+    description: 'Sherre E. says, "Hard to clean out my Mother-in-Law\'s Condo several times. Always efficient and made the place sparkle!" See more',
+    profile_image: img3,
+    verified: false,
+  },
+  {
+    id: 4,
+    name: 'Bright Touch Cleaning',
+    rating: 'Top Pro',
+    overall_rating: 4.8,
+    review_count: 9,
+    badge: null,
+    service_type: 'Handyman',
+    location: 'Serves Young America, MN',
+    response_time: 'Responds in about 42 min',
+    hourly_rate: 15.00,
+    currency: 'USD',
+    rate_type: 'per hour',
+    description: 'Benyl G. says, "I hired Bright Touch Cleaning to clean my parents\' home for them. My dad said their house has never been more clean! Definitely professional. See more"',
+    profile_image: img4,
+    verified: true,
+  },
+];
+
+
+export const reviewFilter = [
+  {
+    star_rating: 5,
+    count: 30,
+    filled_stars: 5,
+    empty_stars: 0,
+  },
+  {
+    star_rating: 4,
+    count: 50,
+    filled_stars: 4,
+    empty_stars: 1,
+  },
+  {
+    star_rating: 3,
+    count: 4,
+    filled_stars: 3,
+    empty_stars: 2,
+  },
+  {
+    star_rating: 2,
+    count: 5,
+    filled_stars: 2,
+    empty_stars: 3,
+  },
+  {
+    star_rating: 1,
+    count: 2,
+    filled_stars: 1,
+    empty_stars: 4,
+  },
+];
