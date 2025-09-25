@@ -9,9 +9,9 @@ type PageHeaderProps = {
 const PageHeader: React.FC<PageHeaderProps> = ({ title, breadcrumbs }) => {
   return (
     <div className="bg-[#0D1B2A] w-full text-center 
-  py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28">
+  py-20">
       {/* Title */}
-      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
+      <h1 className="text-3xl font-semibold text-white mb-4">
         {title}
       </h1>
 
@@ -22,7 +22,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, breadcrumbs }) => {
             {crumb.href ? (
               <a
                 href={crumb.href}
-                className="text-gray-200 hover:text-orange-500 transition-colors"
+                className="text-gray-200 hover:text-orange-500 transition-colors font-semibold"
               >
                 {crumb.label}
               </a>

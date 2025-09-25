@@ -39,7 +39,7 @@ const NavigationBar = () => {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto bg-gray-50 p-3 rounded-lg mt-5 shadow-sm border-1 border-gray-100">
+    <div className="max-w-5xl mx-auto bg-gray-50 p-3 rounded-lg mt-16 shadow-sm border-1 border-gray-100">
       <nav className="flex flex-wrap justify-between gap-0 sm:gap-2">
         {navItems.map((item) => {
           const IconComponent = item.icon;

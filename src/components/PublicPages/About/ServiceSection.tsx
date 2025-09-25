@@ -1,5 +1,7 @@
 import React from "react";
 import { CheckCircle } from "lucide-react";
+import tradeImg from '../../../assets/about-trade.png'
+import { Link } from "react-router-dom";
 
 const ServiceSection: React.FC = () => {
     return (
@@ -8,7 +10,7 @@ const ServiceSection: React.FC = () => {
                 {/* Left - Image */}
                 <div className="flex-1">
                     <img
-                        src="https://images.pexels.com/photos/8961065/pexels-photo-8961065.jpeg?auto=compress&cs=tinysrgb&w=800"
+                        src={tradeImg}
                         alt="Tradesperson"
                         className="rounded-lg w-full h-full object-cover"
                     />
@@ -47,9 +49,11 @@ const ServiceSection: React.FC = () => {
                     </div>
 
                     {/* Button */}
+                    <Link to='/post-a-job'>
                     <button className="mt-6 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-6 py-2 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-md transition-colors">
                         Post a Job
                     </button>
+                    </Link>
 
                 </div>
             </div>
