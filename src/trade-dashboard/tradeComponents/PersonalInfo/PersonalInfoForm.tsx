@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const PersonalInfoForm = () => {
   return (
     <div className="max-w-3xl mx-auto bg-white rounded-xl px-6 py-8">
@@ -90,10 +92,12 @@ const PersonalInfoForm = () => {
 
       {/* Continue Button */}
       <div className="flex justify-end">
+       <Link to='/trade-person/professional-info'>
         <button className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold py-3 px-6 rounded-md flex items-center space-x-2 transition-all duration-200">
           <span>Continue</span>
           <span className="text-xl leading-none">→</span>
         </button>
+       </Link>
       </div>
     </div>
   );

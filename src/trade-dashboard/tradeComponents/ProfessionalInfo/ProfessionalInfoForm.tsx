@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Search } from "lucide-react";
+import { ArrowLeft, ArrowRight, Search } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ProfessionalInfoForm = () => {
 
@@ -34,7 +35,7 @@ const ProfessionalInfoForm = () => {
         <input
           type="text"
           placeholder="Your business name"
-          className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-orange-500 focus:outline-none bg-[#F8F9FA]"
+          className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none bg-[#F8F9FA]"
         />
       </div>
 
@@ -47,14 +48,14 @@ const ProfessionalInfoForm = () => {
           <input
             type="text"
             placeholder="Your business name"
-            className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-orange-500 focus:outline-none bg-[#F8F9FA]"
+            className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none bg-[#F8F9FA]"
           />
         </div>
         <div>
           <label className="block text-lg font-semibold text-gray-700 mb-2">
             Business Type
           </label>
-          <select className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-orange-500 focus:outline-none bg-[#F8F9FA]">
+          <select className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none bg-[#F8F9FA]">
             <option>Select business type</option>
           </select>
         </div>
@@ -68,7 +69,7 @@ const ProfessionalInfoForm = () => {
         <input
           type="text"
           defaultValue="$20.00"
-          className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-orange-500 focus:outline-none bg-[#F8F9FA]"
+          className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none bg-[#F8F9FA]"
         />
       </div>
 
@@ -85,7 +86,7 @@ const ProfessionalInfoForm = () => {
         <input
           type="text"
           placeholder="Search your profession"
-          className="w-full border border-gray-200 rounded-lg pl-10 pr-4 py-3 mb-3 focus:ring-2 focus:ring-orange-500 focus:outline-none bg-[#F8F9FA]"
+          className="w-full border border-gray-200 rounded-lg pl-10 pr-4 py-2 mb-3 focus:ring-2 focus:ring-orange-500 focus:outline-none bg-[#F8F9FA]"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -113,7 +114,7 @@ const ProfessionalInfoForm = () => {
 
       {/* Professional Description */}
       <div className="mb-8">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-lg font-medium text-gray-700 mb-2">
           Professional Description
         </label>
         <textarea
@@ -124,14 +125,21 @@ const ProfessionalInfoForm = () => {
       </div>
 
       {/* Buttons */}
-      <div className="flex justify-between">
-        <button className="px-5 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
-          ← Previous
-        </button>
-        <button className="px-6 py-3 rounded-lg bg-orange-500 text-white hover:bg-orange-600">
-          Continue →
-        </button>
-      </div>
+      <div className="mt-16 flex justify-between">
+          <Link to='/trade-person/personal-info'>
+          <button className="flex items-center gap-2 px-5 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
+            <ArrowLeft size={18} />
+            Previous
+          </button>
+          </Link>
+
+         <Link to='/trade-person/business-info'>
+          <button className="flex items-center gap-2 px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+            Continue
+            <ArrowRight size={18} />
+          </button>
+         </Link>
+        </div>
     </div>
   );
 };

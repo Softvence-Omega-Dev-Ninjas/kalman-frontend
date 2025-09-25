@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { CreditCard, Landmark } from "lucide-react";
+import { ArrowLeft, ArrowRight, CreditCard, Landmark } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function BusinessDetailsForm() {
   const [method, setMethod] = useState("card");
@@ -47,47 +48,47 @@ export default function BusinessDetailsForm() {
           <form className="space-y-5">
             {/* Card Holder Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-md font-medium text-gray-700 mb-1">
                 Card holder Name
               </label>
               <input
                 type="text"
-                className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#EFF2F7]"
+                className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
               />
             </div>
 
             {/* Card Number */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-md font-medium text-gray-700 mb-1">
                 Card Number
               </label>
               <input
                 type="text"
                 placeholder="1234 5678 9012 3456"
-                className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#EFF2F7]"
+                className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
               />
             </div>
 
             {/* Expiry & CVV */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-md font-medium text-gray-700 mb-1">
                   Expiry Date
                 </label>
                 <input
                   type="text"
                   placeholder="MM/YY"
-                  className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#EFF2F7]"
+                  className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-md font-medium text-gray-700 mb-1">
                   CVV
                 </label>
                 <input
                   type="text"
                   placeholder="123"
-                  className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#EFF2F7]"
+                  className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
                 />
               </div>
             </div>
@@ -101,35 +102,35 @@ export default function BusinessDetailsForm() {
             </div>
 
             {/* Billing Address */}
-            <h3 className="text-base font-semibold text-gray-900 mt-6">Billing Address</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mt-6">Billing Address</h3>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-md font-medium text-gray-700 mb-1">
                 Street Address
               </label>
               <input
                 type="text"
-                className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#EFF2F7]"
+                className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 ">
+                <label className="block text-md font-medium text-gray-700 mb-1 ">
                   City
                 </label>
                 <input
                   type="text"
-                  className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#EFF2F7]"
+                  className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-md font-medium text-gray-700 mb-1">
                   Post code
                 </label>
                 <input
                   type="text"
                   placeholder="123"
-                  className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#EFF2F7]"
+                  className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
                 />
               </div>
             </div>
@@ -145,19 +146,20 @@ export default function BusinessDetailsForm() {
             </div>
 
             {/* Buttons */}
-            <div className="flex justify-between items-center pt-4">
-              <button
-                type="button"
-                className="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-sm flex items-center gap-2"
-              >
-                ← Previous
+            <div className="mt-16 flex justify-between">
+              <Link to='/trade-person/payment-terms'>
+              <button className="flex items-center gap-2 px-5 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
+                <ArrowLeft size={18} />
+                Previous
               </button>
-              <button
-                type="submit"
-                className="px-8 py-2.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-sm flex items-center gap-2"
-              >
-                Continue →
+              </Link>
+
+             <Link to='/trade-person/review-info'>
+              <button className="flex items-center gap-2 px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+                Continue
+                <ArrowRight size={18} />
               </button>
+             </Link>
             </div>
           </form>
         </>

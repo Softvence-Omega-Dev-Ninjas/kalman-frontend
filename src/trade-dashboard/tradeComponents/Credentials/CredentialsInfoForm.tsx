@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Upload, File, X, ArrowLeft, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function CredentialsInfoForm() {
   const [file, setFile] = useState<File | null>(null);
@@ -14,10 +15,10 @@ export default function CredentialsInfoForm() {
     <div className=" px-4">
       <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm p-6">
         {/* Title */}
-       <div className="flex justify-between">
-         <h2 className="text-2xl font-semibold text-gray-900">Credentials <span className="font-normal">(optional)</span></h2>
-         <span className="underline">skip</span>
-       </div>
+        <div className="flex justify-between">
+          <h2 className="text-2xl font-semibold text-gray-900">Credentials <span className="font-normal">(optional)</span></h2>
+          <span className="underline">skip</span>
+        </div>
 
 
 
@@ -40,11 +41,11 @@ export default function CredentialsInfoForm() {
         {/* Uploaded File */}
 
         {
-            file && (
-                <div>
-                    <h1 className="mt-5 font-bold">Uploaded Files</h1>
-                </div>
-            )
+          file && (
+            <div>
+              <h1 className="mt-5 font-bold">Uploaded Files</h1>
+            </div>
+          )
         }
         {file && (
           <div className="mt-4 flex items-center justify-between border border-gray-200 rounded-lg px-3 py-2 bg-[#F8F9FA]">
@@ -63,15 +64,19 @@ export default function CredentialsInfoForm() {
 
         {/* Buttons */}
         <div className="mt-16 flex justify-between">
+          <Link to='/trade-person/service-areas'>
           <button className="flex items-center gap-2 px-5 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
             <ArrowLeft size={18} />
             Previous
           </button>
+          </Link>
 
+          <Link to='/trade-person/payment-terms'>
           <button className="flex items-center gap-2 px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
             Continue
             <ArrowRight size={18} />
           </button>
+          </Link>
         </div>
       </div>
     </div>

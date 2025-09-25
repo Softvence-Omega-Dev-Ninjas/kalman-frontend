@@ -1,4 +1,5 @@
-import { SquarePen } from "lucide-react";
+import { ArrowLeft, ArrowRight, SquarePen } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function ReviewInfoForm() {
   return (
@@ -57,20 +58,21 @@ export default function ReviewInfoForm() {
       </div>
 
       {/* Buttons */}
-      <div className="flex justify-between items-center">
-        <button
-          type="button"
-          className="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-sm flex items-center gap-2"
-        >
-          ← Previous
-        </button>
-        <button
-          type="submit"
-          className="px-8 py-2.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-sm"
-        >
-          Submit
-        </button>
-      </div>
+     <div className="mt-16 flex justify-between">
+          <Link to='/trade-person/business-details'>
+          <button className="flex items-center gap-2 px-5 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
+            <ArrowLeft size={18} />
+            Previous
+          </button>
+          </Link>
+
+          <Link to='/'>
+          <button className="flex items-center gap-2 px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+            Continue
+            <ArrowRight size={18} />
+          </button>
+          </Link>
+        </div>
     </div>
   );
 }

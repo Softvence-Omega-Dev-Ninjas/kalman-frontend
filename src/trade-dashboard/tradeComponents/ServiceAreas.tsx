@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, Marker, Circle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L, { type LatLngExpression } from "leaflet";
 import StepProgressBar from "./resuable/StepProgressBar";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const markerIcon = new L.Icon({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
@@ -65,13 +67,20 @@ export default function ServiceAreas(): JSX.Element {
           </MapContainer>
         </div>
 
-        <div className="flex justify-between">
-          <button className="px-6 py-3 rounded-md border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition">
-            ← Previous
+       <div className="mt-16 flex justify-between">
+         <Link to='/trade-person/business-info'>
+          <button className="flex items-center gap-2 px-5 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
+            <ArrowLeft size={18} />
+            Previous
           </button>
-          <button className="px-6 py-3 rounded-md bg-orange-500 text-white font-medium hover:bg-orange-600 transition flex items-center gap-2">
-            Continue →
+         </Link>
+
+         <Link to='/trade-person/credentials'>
+          <button className="flex items-center gap-2 px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+            Continue
+            <ArrowRight size={18} />
           </button>
+         </Link>
         </div>
       </div>
     </div>
