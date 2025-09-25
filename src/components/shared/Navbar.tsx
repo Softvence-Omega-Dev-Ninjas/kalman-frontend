@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import avatar from '../../assets/Ellipse 2.png'
+
 
 const navItems = [
     { label: 'Home', path: '/' },
@@ -46,12 +46,8 @@ const Navbar = () => {
                     {/* right side */}
                     <div className="flex items-center gap-4">
                         {/* desktop avatar */}
-                        <img src={avatar} alt="profile" className="w-10 h-10 rounded-full hidden md:block object-cover" />
-
-                        {/* mobile menu button */}
-                        <button onClick={() => setOpen(!open)} className="md:hidden p-2 rounded-md border">
-                            <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1h20M0 7h20M0 13h20" stroke="#111827" strokeWidth="1.5" strokeLinecap="round"/></svg>
-                        </button>
+                        <button className="font-semibold">Signin</button>
+                        <button className="font-semibold px-3 py-1 bg-black text-white rounded-md">Signup</button>
                     </div>
                 </div>
 
