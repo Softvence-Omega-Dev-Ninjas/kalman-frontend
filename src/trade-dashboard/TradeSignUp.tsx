@@ -4,7 +4,7 @@ import { AiOutlineMail, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
 import signupImg from "../assets/sample_images/SignUPImg.png"
 
-const GeneralSignUp: React.FC = () => {
+const TradeSignUp: React.FC = () => {
     return (
         <div className="min-h-screen bg-white flex items-start">
             <div className="max-w-7xl w-full mx-auto px-6 py-8">
@@ -51,7 +51,9 @@ const GeneralSignUp: React.FC = () => {
                                 <span>I agree to Theta Analyzer <Link to="#" className="text-primary">Licence Agreement</Link> and <Link to="#" className="text-primary">Privacy policy</Link></span>
                             </label>
 
-                           <Link to="/general-login"> <button type="submit" className="w-full bg-primary text-white py-3 rounded-md font-semibold mt-2">Register Now</button></Link>
+                            <Link to='/trade-person/personal-info'>
+                            <button type="submit" className="w-full bg-primary text-white py-3 rounded-md font-semibold mt-2">Register Now</button>
+                            </Link>
 
                             <div className="flex items-center my-4 font-semibold">
                                 <div className="flex-1 h-px bg-gray-200" />
@@ -75,4 +77,4 @@ const GeneralSignUp: React.FC = () => {
     )
 }
 
-export default GeneralSignUp
+export default TradeSignUp

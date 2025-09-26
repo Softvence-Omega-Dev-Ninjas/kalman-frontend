@@ -141,7 +141,7 @@ const TradeEnterVerificationCode: React.FC = () => {
                 </button>
               </div>
 
-             <Link to='/trade-person/personal-info'>
+             <Link to='/trade-person'>
               <button
                 type="submit"
                 className="px-5 py-2 rounded-md text-white bg-primary w-full"

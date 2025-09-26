@@ -46,6 +46,7 @@ import PaymentTerms from "./trade-dashboard/PaymentTerms";
 import BusinessDetails from "./trade-dashboard/BusinessDetails";
 import ReviewInfo from "./trade-dashboard/ReviewInfo";
 import TradeLogin from "./trade-dashboard/TradeLogin";
+import TradeSignUp from "./trade-dashboard/TradeSignUp";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -195,6 +196,10 @@ const router = createBrowserRouter([
        {
         path:'/trade-login',
         element:<TradeLogin/>
+       },
+       {
+        path:'/trade-signup',
+        element:<TradeSignUp/>
        },
 
   // super admin dashboard

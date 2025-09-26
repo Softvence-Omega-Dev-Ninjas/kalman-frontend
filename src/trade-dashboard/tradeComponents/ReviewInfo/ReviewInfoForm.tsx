@@ -66,7 +66,7 @@ export default function ReviewInfoForm() {
           </button>
           </Link>
 
-          <Link to='/'>
+          <Link to='/trade-login'>
           <button className="flex items-center gap-2 px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
             Continue
             <ArrowRight size={18} />

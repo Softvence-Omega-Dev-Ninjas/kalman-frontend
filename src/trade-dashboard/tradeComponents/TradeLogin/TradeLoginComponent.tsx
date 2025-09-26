@@ -112,7 +112,7 @@ const TradeLogInComponent: React.FC<LogInComponentProps> = ({step, setStep}) => 
 
               <div className="text-center text-sm text-gray-600 mt-4 font-semibold">
                 Don't have an account?{" "}
-                <Link to="/general-signup" className="text-primary">
+                <Link to="/trade-signup" className="text-primary">
                   Sign up
                 </Link>
               </div>
