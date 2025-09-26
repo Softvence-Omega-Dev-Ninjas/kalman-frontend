@@ -1,13 +1,13 @@
 import { Star } from "lucide-react";
 
-interface ReviewCardProps {
-  category: string;
-  review: string;
-  author: string;
-  rating?: number;
-}
+// interface ReviewCardProps {
+//   category: string;
+//   review: any;
+//   author: string;
+//   rating?: number;
+// }
 
-const ReviewCard = ({ category, review, author, rating = 5 }: ReviewCardProps) => {
+const ReviewCard = ({ category, review, author, rating = 5 }: any) => {
   return (
     <div className="bg-white rounded-lg p-6 shadow-lg">
       <h3 className="text-lg font-semibold text-gray-900 mb-3">

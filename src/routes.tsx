@@ -37,6 +37,15 @@ import ManageDisputePage from "./admin-dashboard/manage-dispute/ManageDisputePag
 import ManageCategoryPage from "./admin-dashboard/category/ManageCategoryPage";
 import SettingsPage from "./admin-dashboard/settings/SettingsPage";
 import ManageJobsPage from "./admin-dashboard/manage-jobs/ManageJobsPage";
+import PersonalInfo from "./trade-dashboard/PersonalInfo";
+import ProfessionalInfo from "./trade-dashboard/ProfessionalInfo";
+import BusinessInfo from "./trade-dashboard/BusinessInfo";
+import ServiceAreas from "./trade-dashboard/tradeComponents/ServiceAreas";
+import Credentials from "./trade-dashboard/Credentials";
+import PaymentTerms from "./trade-dashboard/PaymentTerms";
+import BusinessDetails from "./trade-dashboard/BusinessDetails";
+import ReviewInfo from "./trade-dashboard/ReviewInfo";
+import TradeLogin from "./trade-dashboard/TradeLogin";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -121,37 +130,72 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // trade person dashboard
-  {
-    path: "trade-person",
-    element: <TradePersonDashboardLayout />,
-    children: [
+       // trade person dashboard
       {
-        index: true,
-        element: <TradeOverview />,
+        path: 'trade-person',
+        element: <TradePersonDashboardLayout />,
+        children: [
+         {
+           index: true,
+          element: <TradeOverview />
+          },
+          {
+           path: 'jobs/:id',
+         element: <TradeJobDetails></TradeJobDetails>
+         },
+         {
+          path: 'messages',
+          element: <TradeMessage></TradeMessage>
+     },          {
+            path: 'payments',
+          element: <TradePayment></TradePayment>
+       },          {
+           path: 'reviews',
+            element: <TradeReviews></TradeReviews>
+         },
+     {         path: 'settings',
+           element: <TradeSetting></TradeSetting>
+         },
+       ]
+      },
+
+            //without dashboard
+    {
+      path: '/trade-person/personal-info',
+       element: <PersonalInfo />
       },
       {
-        path: "jobs/:id",
-        element: <TradeJobDetails></TradeJobDetails>,
+       path: '/trade-person/professional-info',
+       element: <ProfessionalInfo />
+      },
+     {
+       path: '/trade-person/business-info',
+        element: <BusinessInfo />
       },
       {
-        path: "messages",
-        element: <TradeMessage></TradeMessage>,
+        path: '/trade-person/service-areas',
+        element: <ServiceAreas />
+    },
+     {
+       path: '/trade-person/credentials',
+       element: <Credentials />
+     },
+     {
+        path: '/trade-person/payment-terms',
+         element: <PaymentTerms />
+       },
+       {
+         path: '/trade-person/business-details',
+        element: <BusinessDetails />
       },
       {
-        path: "payments",
-        element: <TradePayment></TradePayment>,
-      },
-      {
-        path: "reviews",
-        element: <TradeReviews></TradeReviews>,
-      },
-      {
-        path: "settings",
-        element: <TradeSetting></TradeSetting>,
-      },
-    ],
-  },
+        path: '/trade-person/review-info',
+        element: <ReviewInfo />
+       },
+       {
+        path:'/trade-login',
+        element:<TradeLogin/>
+       },
 
   // super admin dashboard
   {
@@ -195,3 +239,4 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
+
