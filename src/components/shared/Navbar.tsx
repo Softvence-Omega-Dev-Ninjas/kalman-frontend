@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import SignInModal from "../reuseable/SignInModal";
 import SignUpModal from "../reuseable/SignUpModal";
 
@@ -29,8 +29,8 @@ const Navbar = () => {
         <header className="w-full fixed top-0 left-0 z-50">
             {/* top announcement */}
             <div className="w-full bg-gray-50">
-                <div className="max-w-[1580px] mx-auto px-4 py-1 text-sm text-gray-700 flex items-center justify-between">
-                    <div>Are you a tradesperson looking for leads? <a href="#" className="underline">Join for free</a></div>
+                <div className="max-w-[1580px] mx-auto px-4 py-1 text-sm text-gray-700 flex items-center justify-between gap-5">
+                    <div>Are you a tradesperson looking for leads? <Link to="/trade-signup" className="underline">Join for free</Link></div>
                     <div className="text-sm">Language <span className="ml-2">EN</span></div>
                 </div>
             </div>
@@ -82,49 +82,49 @@ const Navbar = () => {
                     signupModal && <SignUpModal  signupModal={signupModal} setsignupModal={setsignupModal}/>
                 }
 
-                {/* mobile dropdown */}
-                {/* Mobile dropdown with smooth transition */}
-                <div
-                    className={`md:hidden bg-white border-t overflow-hidden transition-all duration-300 ease-in-out ${open ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
-                    aria-hidden={!open}
-                >
-                    <ul className="flex flex-col px-4 py-3 gap-2">
-                        {navItems.map((item) => (
-                            <li key={item.label}>
-                                <NavLink
-                                    to={item.path}
-                                    onClick={() => setOpen(false)}
-                                    className={({ isActive }) => `block py-2 ${isActive ? 'text-primary' : 'text-gray-700'}`}
-                                >
-                                    {item.label}
-                                </NavLink>
-                            </li>
-                        ))}
+                {/* mobile slide-over menu */}
+                <div className={`md:hidden ${open ? 'fixed inset-0 z-40' : 'pointer-events-none'}`} aria-hidden={!open}>
+                    {/* backdrop */}
+                    <div
+                        onClick={() => setOpen(false)}
+                        className={`absolute inset-0 bg-black transition-opacity ${open ? 'opacity-30' : 'opacity-0'}`}
+                        aria-hidden="true"
+                    />
 
-                        {/* mobile auth actions - close menu when opening modal */}
-                        <li>
-                            <button
-                                onClick={() => {
-                                    setOpen(false);
-                                    handlesignIn();
-                                }}
-                                className="w-full text-left py-2 font-semibold"
-                            >
-                                Signin
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                onClick={() => {
-                                    setOpen(false);
-                                    handlesignUp();
-                                }}
-                                className="w-full text-left py-2 font-semibold bg-black text-white rounded-md px-3"
-                            >
-                                Signup
-                            </button>
-                        </li>
-                    </ul>
+                    {/* panel */}
+                    <aside className={`absolute right-0 top-0 h-full w-11/12 max-w-xs bg-white shadow-xl transform transition-transform ${open ? 'translate-x-0' : 'translate-x-full'}`} role="dialog" aria-modal="true">
+                        <div className="p-4 h-full flex flex-col">
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-lg font-semibold">Menu</h2>
+                                <button aria-label="Close menu" onClick={() => setOpen(false)} className="p-2 rounded-md focus:outline-none">
+                                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <nav className="mt-6 flex-1 overflow-y-auto">
+                                <ul className="flex flex-col gap-2">
+                                    {navItems.map((item) => (
+                                        <li key={item.label}>
+                                            <NavLink
+                                                to={item.path}
+                                                onClick={() => setOpen(false)}
+                                                className={({ isActive }) => `block py-3 px-2 rounded hover:bg-gray-50 ${isActive ? 'text-primary font-semibold' : 'text-gray-700'}`}
+                                            >
+                                                {item.label}
+                                            </NavLink>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </nav>
+
+                            <div className="mt-4">
+                                <button onClick={() => { setOpen(false); handlesignIn(); }} className="w-full text-left py-3 font-semibold">Sign in</button>
+                                <button onClick={() => { setOpen(false); handlesignUp(); }} className="w-full mt-3 font-semibold py-3 bg-black text-white rounded-md">Sign up</button>
+                            </div>
+                        </div>
+                    </aside>
                 </div>
             </nav>
         </header>
