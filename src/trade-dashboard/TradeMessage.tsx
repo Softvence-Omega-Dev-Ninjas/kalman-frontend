@@ -94,7 +94,7 @@ const TradeMessage = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Desktop and Tablet Layout */}
-      <div className="hidden sm:flex min-h-screen bg-white max-w-7xl mx-auto gap-x-2 sm:gap-x-3 lg:gap-x-5 p-2 sm:p-4 lg:p-5">
+      <div className="hidden sm:flex min-h-screen bg-white max-w-5xl mx-auto gap-x-2 sm:gap-x-3 lg:gap-x-5 p-2 sm:p-4 lg:p-5">
         {/* Left Sidebar - Contacts */}
         <div className="w-full sm:w-72 md:w-80 lg:w-96 xl:w-[400px] bg-white border-r flex flex-col rounded-lg border border-gray-100">
           {/* Header */}
