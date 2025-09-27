@@ -51,7 +51,7 @@ const GeneralSignUp: React.FC = () => {
                                 <span>I agree to Theta Analyzer <Link to="#" className="text-primary">Licence Agreement</Link> and <Link to="#" className="text-primary">Privacy policy</Link></span>
                             </label>
 
-                            <button type="submit" className="w-full bg-primary text-white py-3 rounded-md font-semibold mt-2">Register Now</button>
+                           <Link to="/general-login"> <button type="submit" className="w-full bg-primary text-white py-3 rounded-md font-semibold mt-2">Register Now</button></Link>
 
                             <div className="flex items-center my-4 font-semibold">
                                 <div className="flex-1 h-px bg-gray-200" />

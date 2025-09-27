@@ -24,18 +24,29 @@ import TradePayment from "./trade-dashboard/TradePayment";
 import TradeReviews from "./trade-dashboard/TradeReviews";
 import TradeSetting from "./trade-dashboard/TradeSetting";
 import NotFound from "./NotFound";
-import AdminDashboardLayout from "./admin-dashboard/AdminDashboardLayout";
-import AdminOverview from "./admin-dashboard/AdminOverview";
-import UserManagement from "./admin-dashboard/UserManagement";
-import JobManagement from "./admin-dashboard/JobManagement";
-import DisputesManagement from "./admin-dashboard/DisputesManagement";
-import CategoryManagement from "./admin-dashboard/CategoryManagement";
-import AdminSettings from "./admin-dashboard/AdminSettings";
 import ServiceDetails from "./publicpages/ServiceDetails";
 import JobDetails from "./publicpages/JobDetails";
 import GeneralLogin from "./publicpages/GeneralLogin";
 import GeneralSignUp from "./publicpages/GeneralSignUp";
 import PostAJob from "./publicpages/PostAJob";
+import OverviewPage from "./admin-dashboard/overview/OverviewPage";
+import ManageUsersPage from "./admin-dashboard/manage-users/ManageUsersPage";
+import AdminDashboardLayout from "./layout/AdminDashboardLayout";
+import ManageBlogPage from "./admin-dashboard/manage-blog/ManageBlogPage";
+import ManageDisputePage from "./admin-dashboard/manage-dispute/ManageDisputePage";
+import ManageCategoryPage from "./admin-dashboard/category/ManageCategoryPage";
+import SettingsPage from "./admin-dashboard/settings/SettingsPage";
+import ManageJobsPage from "./admin-dashboard/manage-jobs/ManageJobsPage";
+import PersonalInfo from "./trade-dashboard/PersonalInfo";
+import ProfessionalInfo from "./trade-dashboard/ProfessionalInfo";
+import BusinessInfo from "./trade-dashboard/BusinessInfo";
+import ServiceAreas from "./trade-dashboard/tradeComponents/ServiceAreas";
+import Credentials from "./trade-dashboard/Credentials";
+import PaymentTerms from "./trade-dashboard/PaymentTerms";
+import BusinessDetails from "./trade-dashboard/BusinessDetails";
+import ReviewInfo from "./trade-dashboard/ReviewInfo";
+import TradeLogin from "./trade-dashboard/TradeLogin";
+import TradeSignUp from "./trade-dashboard/TradeSignUp";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -91,95 +102,145 @@ const router = createBrowserRouter([
         path: "post-a-job",
         element: <PostAJob />,
       },
-      // ✅ User Dashboard Route
+    ],
+  },
+  // ✅ User Dashboard Route
+  {
+    path: "user-dashboard",
+    element: <UserDashboardLayout />,
+    children: [
       {
-        path: "user-dashboard",
-        element: <UserDashboardLayout />,
-        children: [
-          {
-            index: true,
-            element: <UserOverview />,
-          },
-          {
-            path: "messages",
-            element: <UserMessage />,
-          },
-          {
-            path: "my-jobs",
-            element: <UserJobs />,
-          },
-          {
-            path: "my-jobs/:id",
-            element: <UserJobDetails />,
-          },
-          {
-            path: "settings",
-            element: <UserSetting />,
-          },
-        ],
+        index: true,
+        element: <UserOverview />,
       },
-      // trade person dashboard
       {
-        path: "trade-person",
-        element: <TradePersonDashboardLayout />,
-        children: [
-          {
-            index: true,
-            element: <TradeOverview />,
-          },
-          {
-            path: "jobs/:id",
-            element: <TradeJobDetails></TradeJobDetails>,
-          },
-          {
-            path: "messages",
-            element: <TradeMessage></TradeMessage>,
-          },
-          {
-            path: "payments",
-            element: <TradePayment></TradePayment>,
-          },
-          {
-            path: "reviews",
-            element: <TradeReviews></TradeReviews>,
-          },
-          {
-            path: "settings",
-            element: <TradeSetting></TradeSetting>,
-          },
-        ],
+        path: "messages",
+        element: <UserMessage />,
       },
+      {
+        path: "my-jobs",
+        element: <UserJobs />,
+      },
+      {
+        path: "my-jobs/:id",
+        element: <UserJobDetails />,
+      },
+      {
+        path: "settings",
+        element: <UserSetting />,
+      },
+    ],
+  },
+  // trade person dashboard
+  {
+    path: 'trade-person',
+    element: <TradePersonDashboardLayout />,
+    children: [
+      {
+        index: true,
+        element: <TradeOverview />
+      },
+      {
+        path: 'jobs/:id',
+        element: <TradeJobDetails></TradeJobDetails>
+      },
+      {
+        path: 'messages',
+        element: <TradeMessage></TradeMessage>
+      }, {
+        path: 'payments',
+        element: <TradePayment></TradePayment>
+      }, {
+        path: 'reviews',
+        element: <TradeReviews></TradeReviews>
+      },
+      {
+        path: 'settings',
+        element: <TradeSetting></TradeSetting>
+      },
+    ]
+  },
 
-      // super admin dashboard
+  //without dashboard
+  {
+    path: '/trade-person/personal-info',
+    element: <PersonalInfo />
+  },
+  {
+    path: '/trade-person/professional-info',
+    element: <ProfessionalInfo />
+  },
+  {
+    path: '/trade-person/business-info',
+    element: <BusinessInfo />
+  },
+  {
+    path: '/trade-person/service-areas',
+    element: <ServiceAreas />
+  },
+  {
+    path: '/trade-person/credentials',
+    element: <Credentials />
+  },
+  {
+    path: '/trade-person/payment-terms',
+    element: <PaymentTerms />
+  },
+  {
+    path: '/trade-person/business-details',
+    element: <BusinessDetails />
+  },
+  {
+    path: '/trade-person/review-info',
+    element: <ReviewInfo />
+  },
+  {
+    path: '/trade-login',
+    element: <TradeLogin />
+  },
+  {
+    path: '/trade-signup',
+    element: <TradeSignUp />
+  },
+
+  // super admin dashboard
+  {
+    path: "dashboard",
+    element: <AdminDashboardLayout />,
+    children: [
       {
-        path: "admin-dashboard",
-        element: <AdminDashboardLayout />,
-        children: [
-          {
-            index: true,
-            element: <AdminOverview></AdminOverview>,
-          },
-          {
-            path: "users",
-            element: <UserManagement />,
-          },
-          {
-            path: "jobs",
-            element: <JobManagement></JobManagement>,
-          },
-          {
-            path: "disputes",
-            element: <DisputesManagement></DisputesManagement>,
-          },
-          {
-            path: "categories",
-            element: <CategoryManagement></CategoryManagement>,
-          },
-          {
-            path: "settings",
-            element: <AdminSettings />,
-          },
-        ],
+        index: true,
+
+        element: <OverviewPage />,
+      },
+      {
+        path: "admin/overview",
+
+        element: <OverviewPage />,
+      },
+      {
+        path: "admin/manage-users",
+        element: <ManageUsersPage />,
+      },
+      {
+        path: "admin/manage-jobs",
+        element: <ManageJobsPage />,
+      },
+      {
+        path: "admin/manage-dispute",
+        element: <ManageDisputePage />,
+      },
+      {
+        path: "admin/category",
+        element: <ManageCategoryPage />,
+      },
+      {
+        path: "admin/settings",
+        element: <SettingsPage />,
+      },
+      {
+        path: "admin/manage-blog",
+        element: <ManageBlogPage />,
       },
     ],
   },
@@ -190,3 +251,4 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
+

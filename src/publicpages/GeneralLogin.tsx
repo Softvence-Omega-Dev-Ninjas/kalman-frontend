@@ -1,8 +1,4 @@
 import { useState } from "react";
-// import { Link } from "react-router-dom";
-// import { AiOutlineMail, AiOutlineEyeInvisible } from "react-icons/ai";
-// import { FcGoogle } from "react-icons/fc";
-// import loginImg from "../assets/sample_images/LoginImg.png";
 import LogInComponent from "../components/AuthComponents/LogInComponent";
 import TwoStepVerification from "../components/AuthComponents/TwoStepVerification";
 import EnterVerificationCode from "../components/AuthComponents/EnterVerificationCode";
