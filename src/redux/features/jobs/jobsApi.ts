@@ -1,9 +1,18 @@
- import { baseApi } from "@/redux/api/baseApi";
+import { baseApi } from "@/redux/api/baseApi";
 
 export const jobsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getJobs: builder.query({
-      query: ({ search, category, subCategory, location, minPrice, maxPrice, page = 1, limit = 10 }) => {
+      query: ({
+        search,
+        category,
+        subCategory,
+        location,
+        minPrice,
+        maxPrice,
+        page = 1,
+        limit = 10,
+      }) => {
         const params = new URLSearchParams();
 
         if (search) params.append("search", search);
@@ -20,11 +29,8 @@ export const jobsApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
-     providesTags: (result) =>
-  result
-    ? [...result.data.map(({ id }: any) => ({ type: "Jobs" as const, id })), { type: "Jobs", id: "LIST" }]
-    : [{ type: "Jobs", id: "LIST" }],
 
+      providesTags: ["Jobs"],
     }),
   }),
 });

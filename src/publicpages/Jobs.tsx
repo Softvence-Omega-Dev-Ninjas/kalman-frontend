@@ -5,7 +5,7 @@ import { IoMdOptions } from "react-icons/io";
 import { useJobs } from "@/redux/features/jobs/hooks/useJobs";
 
 function Jobs() {
-  const { jobs, isLoading, page, setPage, totalPages } = useJobs();
+  const { jobs, isLoading, page, setPage, totalPages , total} = useJobs();
   console.log(jobs);
 
   return (
@@ -36,7 +36,7 @@ function Jobs() {
           <div className="w-full lg:w-3/4">
             <div className="flex items-center justify-between mb-5">
               <h1 className="text-lg text-primary-txt font-semibold">
-                Available Jobs ({jobs.length})
+                Available Jobs ({total})
               </h1>
 
               {/* ✅ Single valid select */}
