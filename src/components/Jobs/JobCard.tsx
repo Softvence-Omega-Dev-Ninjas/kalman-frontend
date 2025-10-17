@@ -6,7 +6,6 @@ import { WiTime4 } from "react-icons/wi";
 import { Link } from "react-router-dom";
 
 const JobCard = ({ data }: { data: any }) => {
-  console.log(data);
   return (
     <div className="space-y-5 shadow-md bg-white p-5 border border-gray-100 rounded-lg">
       <div className="flex items-center justify-between gap-6">

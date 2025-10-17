@@ -24,13 +24,15 @@ function Jobs() {
       <div className="max-w-[1550px] mx-auto px-4 md:px-10 py-5">
         <div className="flex items-start gap-5 mt-6">
           {/* Sidebar */}
-          <div className="w-1/4 hidden lg:block">
-            <div className="flex items-center gap-3 mb-5 text-2xl">
-              <IoMdOptions />
-              <span className="font-semibold">Filter By</span>
+           <div className="w-1/4 hidden lg:block">
+              <div className="sticky top-24">
+                <div className="flex items-center gap-3 mb-5 text-2xl">
+                  <IoMdOptions />
+                  <span className="font-semibold">Filter By</span>
+                </div>
+                <SideFilterBar />
+               </div>
             </div>
-            <SideFilterBar />
-          </div>
 
           {/* Job List */}
           <div className="w-full lg:w-3/4">

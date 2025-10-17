@@ -1,6 +1,8 @@
+
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -13,45 +15,83 @@ interface PaginationControlsProps {
   onPageChange: (page: number) => void
 }
 
-export const PaginationControls = ({
+export function PaginationControls({
   page,
   totalPages,
   onPageChange,
-}: PaginationControlsProps) => {
-  // Create a small range of visible pages (e.g., 3 before & after)
-  const visiblePages = Array.from({ length: totalPages }, (_, i) => i + 1).filter(
-    (num) => num >= page - 2 && num <= page + 2
-  )
+}: PaginationControlsProps) {
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = []
+
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i)
+    } else {
+      if (page <= 3) {
+        pages.push(1, 2, 3, 4, "...", totalPages)
+      } else if (page >= totalPages - 2) {
+        pages.push(1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages)
+      } else {
+        pages.push(1, "...", page - 1, page, page + 1, "...", totalPages)
+      }
+    }
+
+    return pages
+  }
+
+  const pages = getPageNumbers()
 
   return (
     <div className="flex justify-center mt-10">
       <Pagination>
-        <PaginationContent>
+        <PaginationContent className="gap-1">
+          {/* Previous Button */}
           <PaginationItem>
             <PaginationPrevious
+              href="#"
               onClick={() => onPageChange(Math.max(1, page - 1))}
-              className={page === 1 ? "pointer-events-none opacity-50" : ""}
+              className={`rounded-full px-3 py-2 text-sm transition ${
+                page === 1 ? "pointer-events-none opacity-50" : "hover:bg-muted"
+              }`}
             />
           </PaginationItem>
 
-          {visiblePages.map((p) => (
-            <PaginationItem key={p}>
-              <PaginationLink
-                onClick={() => onPageChange(p)}
-                isActive={p === page}
-                className={`cursor-pointer ${
-                  p === page ? "bg-primary text-white" : ""
-                }`}
-              >
-                {p}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
+          {/* Page Numbers */}
+          {pages.map((p, idx) =>
+            p === "..." ? (
+              <PaginationItem key={`ellipsis-${idx}`}>
+                <PaginationEllipsis />
+              </PaginationItem>
+            ) : (
+              <PaginationItem key={p}>
+                <PaginationLink
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    onPageChange(p as number)
+                  }}
+                  isActive={p === page}
+                  className={`w-9 h-9 flex items-center  justify-center rounded-md text-sm font-medium transition ${
+                    p === page
+                      ? "bg-primary text-white shadow-sm"
+                      : "hover:bg-muted hover:text-primary"
+                  }`}
+                >
+                  {p}
+                </PaginationLink>
+              </PaginationItem>
+            )
+          )}
 
+          {/* Next Button */}
           <PaginationItem>
             <PaginationNext
+              href="#"
               onClick={() => onPageChange(Math.min(totalPages, page + 1))}
-              className={page === totalPages ? "pointer-events-none opacity-50" : ""}
+              className={`rounded-full px-3 py-2 text-sm transition ${
+                page === totalPages
+                  ? "pointer-events-none opacity-50"
+                  : "hover:bg-muted"
+              }`}
             />
           </PaginationItem>
         </PaginationContent>
