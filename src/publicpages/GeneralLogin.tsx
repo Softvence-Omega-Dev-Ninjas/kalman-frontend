@@ -8,6 +8,7 @@ import loginImg from "../assets/sample_images/LoginImg.png";
 import { setUser } from "@/redux/features/auth/authSlice";
 import toast from "react-hot-toast";
 import { useLoginMutation } from "@/redux/features/auth/login";
+// import { useAppSelector } from "@/redux/typeHook";
 
 
 
@@ -15,13 +16,15 @@ const GeneralLogin: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [login, { isLoading }] = useLoginMutation();
+    // const user = useAppSelector((state)=> state.auth.user)
+    // console.log(user);
     
     const [formData, setFormData] = useState({
         email: "",
         password: "",
         rememberMe: false
     });
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
@@ -69,7 +72,7 @@ const GeneralLogin: React.FC = () => {
             // Handle successful login
             if (result.success && result.data) {
                 const token = result.data;
-                
+                // console.log(token);
                 // Decode the JWT token to get user information
                 const decodedToken = decodeJWT(token);
                 
