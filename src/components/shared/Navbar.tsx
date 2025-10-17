@@ -40,7 +40,7 @@ const Navbar = () => {
                 <div className="max-w-[1580px] mx-auto px-4 py-4 flex items-center justify-between">
                     {/* logo */}
                     <div className="flex items-center gap-6">
-                        <h1 className="text-2xl md:text-3xl font-bold text-[#0D1B2A]">Stavbar</h1>
+                       <Link to="/"> <h1 className="text-2xl md:text-3xl font-bold text-[#0D1B2A]">Stavbar</h1></Link>
                     </div>
 
                     {/* center nav - hidden on small */}

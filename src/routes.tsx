@@ -27,7 +27,6 @@ import NotFound from "./NotFound";
 import ServiceDetails from "./publicpages/ServiceDetails";
 import JobDetails from "./publicpages/JobDetails";
 import GeneralLogin from "./publicpages/GeneralLogin";
-import GeneralSignUp from "./publicpages/GeneralSignUp";
 import PostAJob from "./publicpages/PostAJob";
 import OverviewPage from "./admin-dashboard/overview/OverviewPage";
 import ManageUsersPage from "./admin-dashboard/manage-users/ManageUsersPage";
@@ -47,6 +46,7 @@ import BusinessDetails from "./trade-dashboard/BusinessDetails";
 import ReviewInfo from "./trade-dashboard/ReviewInfo";
 import TradeLogin from "./trade-dashboard/TradeLogin";
 import TradeSignUp from "./trade-dashboard/TradeSignUp";
+import GeneralAuthFlow from "./components/AuthComponents/GeneralAuthFlow";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -96,7 +96,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/general-signup",
-        element: <GeneralSignUp />,
+        element: <GeneralAuthFlow />,
       },
       {
         path: "post-a-job",
