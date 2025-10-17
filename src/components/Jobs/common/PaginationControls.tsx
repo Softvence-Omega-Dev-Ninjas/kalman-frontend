@@ -23,6 +23,7 @@ export function PaginationControls({
   const getPageNumbers = () => {
     const pages: (number | string)[] = []
 
+    // pagination 
     if (totalPages <= 5) {
       for (let i = 1; i <= totalPages; i++) pages.push(i)
     } else {
