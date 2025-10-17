@@ -42,7 +42,7 @@ const GeneralSignUp: React.FC<GeneralSignUpProps> = ({ setStep, setUserEmail }) 
         role: "CUSTOMER",
       }).unwrap();
 
-      console.log(result.data.email);
+      console.log(result?.data?.email);
 
       toast.success(result?.message);
 

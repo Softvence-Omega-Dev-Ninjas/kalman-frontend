@@ -1,43 +1,54 @@
-import { jobs } from "../../assets/DummyData/DummyData";
+// src/components/Jobs/AllJobs.tsx
+import TradespersonCard from "../reuseable/TradePersonCard";
+import { Loader2 } from "lucide-react";
+import { PaginationControls } from "./common/PaginationControls";
 
-import {
-  MdOutlineKeyboardArrowLeft,
-  MdOutlineKeyboardArrowRight,
-} from "react-icons/md";
-import { BsThreeDots } from "react-icons/bs";
-import JobCard from "./JobCard";
 
-const AllJobs = () => {
-  return (
-    <div className="space-y-5">
-      {jobs.map((job, index) => (
-        <JobCard key={index} data={job} />
-      ))}
+interface AllJobsProps {
+  jobs: any[];
+  isLoading: boolean;
+  page: number;
+  setPage: (page: number) => void;
+  totalPages: number;
+}
 
-      <div className="flex items-center justify-center gap-5 mt-10">
-        <button className="p-2 rounded-md bg-primary text-white">
-          <MdOutlineKeyboardArrowLeft className="text-2xl" />
-        </button>
-        <button className="p-2 rounded-md bg-white border border-gray-100 px-4">
-          1
-        </button>
-        <button className="p-2 rounded-md bg-white border border-gray-100 px-4">
-          2
-        </button>
-        <button className="p-2 rounded-md bg-white border border-gray-100 px-4">
-          3
-        </button>
-        <BsThreeDots className="text-2xl" />
-        <button className="p-2 rounded-md bg-white border border-gray-100 px-4">
-          11
-        </button>
-        <button className="p-2 rounded-md bg-white border border-gray-100 px-4">
-          12
-        </button>
-        <button className="p-2 rounded-md bg-primary text-white">
-          <MdOutlineKeyboardArrowRight className="text-2xl" />
-        </button>
+const AllJobs: React.FC<AllJobsProps> = ({
+  jobs,
+  isLoading,
+  page,
+  setPage,
+  totalPages,
+}) => {
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center py-20">
+        <Loader2 className="animate-spin w-8 h-8 text-primary" />
       </div>
+    );
+
+  return (
+    <div className="px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {jobs?.map((job, index) => (
+          <TradespersonCard
+            key={index}
+            image={job?.imageUrl}
+            name={job?.name}
+            profession={job?.category}
+            rating={job?.rating}
+            availability={job?.availability}
+            location={job?.location}
+            hourlyRate={job?.price}
+            onContact={() => console.log(`Contacting ${job?.name}`)}
+          />
+        ))}
+      </div>
+
+      <PaginationControls
+        page={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
     </div>
   );
 };

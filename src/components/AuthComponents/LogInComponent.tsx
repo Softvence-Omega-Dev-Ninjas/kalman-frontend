@@ -8,6 +8,7 @@ import loginImg from "../../assets/sample_images/LoginImg.png";
 import { setUser } from "@/redux/features/auth/authSlice";
 import toast from "react-hot-toast";
 import { useLoginMutation } from "@/redux/features/auth/login";
+import { useAppSelector } from "@/redux/typeHook";
 
 interface LogInComponentProps {
     step: number;
@@ -18,6 +19,9 @@ const LogInComponent: React.FC<LogInComponentProps> = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [login, { isLoading }] = useLoginMutation();
+    const user = useAppSelector((state)=> state.auth.user)
+    // console.log(user            , "--------" );
+    
     
     const [formData, setFormData] = useState({
         email: "",
@@ -75,7 +79,7 @@ const LogInComponent: React.FC<LogInComponentProps> = () => {
                 
                 // Decode the JWT token to get user information
                 const decodedToken = decodeJWT(token);
-                
+                console.log(decodedToken, "--------------        ");
                 if (decodedToken) {
                     const userData = {
                         id: decodedToken.id,
@@ -83,6 +87,7 @@ const LogInComponent: React.FC<LogInComponentProps> = () => {
                         phone: decodedToken.phone,
                         role: decodedToken.role
                     };
+                    console.log(userData);
 
                     // Dispatch user data and token to Redux store
                     dispatch(setUser({
@@ -91,6 +96,7 @@ const LogInComponent: React.FC<LogInComponentProps> = () => {
                     }));
 
                     toast.success(result.message || "Login successful!");
+                    console.log("log ");
 
                     // Save remember me preference
                     if (formData.rememberMe) {

@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Mail, ChevronRight } from "lucide-react";
 import toast from "react-hot-toast";
 import { useSendOtpByEmailMutation } from "@/redux/features/auth/register";
-
 
 const options = [
   {
@@ -20,14 +19,18 @@ interface TwoStepVerificationProps {
 }
 
 const TwoStepVerification: React.FC<TwoStepVerificationProps> = ({ step, setStep, email }) => {
+  const [selectedOption, setSelectedOption] = useState<string>("");
   const [sendOtp, { isLoading }] = useSendOtpByEmailMutation();
 
-  const handleOptionClick = async () => {
+  const handleOptionClick = async (optionId: string) => {
+    if (isLoading) return; 
+    setSelectedOption(optionId);
+
     try {
       await sendOtp({ email }).unwrap();
-      console.log('email', email);
+      console.log("OTP sent to:", email);
       toast.success("OTP sent to your email!");
-      setStep(step + 1); // move to next step (e.g., OTP input)
+      setStep(step + 1);
     } catch (err) {
       console.error(err);
       toast.error("Failed to send OTP!");
@@ -40,7 +43,9 @@ const TwoStepVerification: React.FC<TwoStepVerificationProps> = ({ step, setStep
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Left column */}
           <div>
-            <h1 className="text-4xl md:text-5xl font-semibold text-black">2-Step Verification</h1>
+            <h1 className="text-4xl md:text-5xl font-semibold text-black">
+              2-Step Verification
+            </h1>
             <p className="text-lg text-gray-500 mt-4 max-w-xl">
               To keep your account safe, we need to verify it's really you.
             </p>
@@ -54,9 +59,10 @@ const TwoStepVerification: React.FC<TwoStepVerificationProps> = ({ step, setStep
             <div className="space-y-4">
               {options.map((opt) => (
                 <label
-                  onClick={handleOptionClick}
                   key={opt.id}
-                  className="group block border border-gray-200 rounded-lg p-4 hover:shadow-sm cursor-pointer"
+                  className={`group block border ${
+                    selectedOption === opt.id ? "border-[#FF7346]" : "border-gray-200"
+                  } rounded-lg p-4 hover:shadow-sm cursor-pointer`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-start gap-4">
@@ -70,7 +76,13 @@ const TwoStepVerification: React.FC<TwoStepVerificationProps> = ({ step, setStep
                     </div>
 
                     <div className="flex items-center gap-4">
-                      <input type="radio" name="two-step" className="w-4 h-4 text-[#FF7346]" />
+                      <input
+                        type="radio"
+                        name="two-step"
+                        checked={selectedOption === opt.id}
+                        onChange={() => handleOptionClick(opt.id)}
+                        className="w-4 h-4 text-[#FF7346] cursor-pointer"
+                      />
                       <ChevronRight className="w-5 h-5 text-gray-300" />
                     </div>
                   </div>
