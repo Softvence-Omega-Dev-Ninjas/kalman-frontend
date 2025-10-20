@@ -9,7 +9,7 @@ const PopularServicesCategory = () => {
             <p className="text-2xl text-[#595959] my-5">Find trusted professionals for every job, big or small</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-10 max-w-[1580px] mx-auto px-5">
                 {
-                    popularServices.map((service)=> <div className="flex bg-white items-center justify-between shadow-md p-5 rounded-md">
+                    popularServices.map((service)=> <div key={service.id} className="flex bg-white items-center justify-between shadow-md p-5 rounded-md">
                     <div className="flex items-center gap-3 px-3">
                         <img src={service.icon} alt={service.title} className="w-8 h-8" />
                         <div className="text-left space-y-2">
