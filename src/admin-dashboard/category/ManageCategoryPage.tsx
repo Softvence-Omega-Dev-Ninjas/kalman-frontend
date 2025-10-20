@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { categoryData, type TCategory } from "./data/categoryData";
 
-import { Plus, Search, SquarePen, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Search, SquarePen, Trash2 } from "lucide-react";
 import type { Column } from "../shared/CustomTable/CustomTable";
 import CustomTable from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
+import CreateCategory from "./CreateCategory";
+import toast from "react-hot-toast";
 
 const ManageCategoryPage = () => {
-  //Pagination states
+  // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 4;
 
-  //Table config
+  // Table config
   const categoryColumn: Column<TCategory>[] = [
     {
       header: "Icon",
@@ -28,13 +29,10 @@ const ManageCategoryPage = () => {
         </div>
       ),
     },
-    // Customer Column
     {
       header: "Category Name",
       accessor: "name",
     },
-
-    // Action Column
     {
       header: "Action",
       cell: () => (
@@ -50,13 +48,22 @@ const ManageCategoryPage = () => {
     },
   ];
 
+  // Handle category creation
+  const handleCreateCategory = (formData: FormData) => {
+    // 🔹 Replace this with your API call to create category
+    console.log("FormData ready to send:", formData);
+    toast.success("Category submitted!");
+  };
+
   return (
     <div>
       <header className="flex items-center justify-between mb-8 flex-wrap gap-5">
         <h1 className="text-2xl font-bold text-gray-900">
           Category Management
         </h1>
+
         <div className="flex items-center space-x-4 flex-wrap gap-5">
+          {/* Search */}
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <Search size={18} className="text-gray-400" />
@@ -64,16 +71,19 @@ const ManageCategoryPage = () => {
             <input
               type="text"
               className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-purple-500 focus:border-purple-500"
-              placeholder="Search Project..."
+              placeholder="Search Category..."
             />
           </div>
-          <Button className="flex items-center px-4 py-2 ">
-            <Plus size={18} className="mr-2" />
-            Add Category
-          </Button>
+
+          {/* Add Category Dialog */}
+          <CreateCategory onCreate={handleCreateCategory} />
         </div>
       </header>
+
+      {/* Table */}
       <CustomTable columns={categoryColumn} data={categoryData} />
+
+      {/* Pagination */}
       <CustomPagination
         totalItems={categoryData.length}
         pageSize={pageSize}
