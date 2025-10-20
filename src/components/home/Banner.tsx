@@ -21,7 +21,7 @@ const Banner = () => {
             <p>
               Dozaar connects you with verified professionals near you. Post
               your project, compare quotes, and pay securely through escrow your
-              money is protected until the job is complete.
+              money is protected un til the job is complete.
             </p>
             <div className="space-y-3">
               <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-0">
