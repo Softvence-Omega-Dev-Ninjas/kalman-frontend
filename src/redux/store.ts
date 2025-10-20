@@ -9,9 +9,10 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-
+  ``
 //  Import your reducers
 import authReducer from "@/redux/features/auth/authSlice";
+import adminReducer from "./features/admin/adminSlice"
 import { baseApi } from "@/redux/api/baseApi"; // optional if you use RTK Query
 
 const persistConfig = {
@@ -24,6 +25,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer, // optional for RTK Query
   auth: authReducer,
+  admin: adminReducer ,
 });
 
 //  Persisted reducer
