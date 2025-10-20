@@ -47,6 +47,7 @@ import ReviewInfo from "./trade-dashboard/ReviewInfo";
 import TradeLogin from "./trade-dashboard/TradeLogin";
 import TradeSignUp from "./trade-dashboard/TradeSignUp";
 import GeneralAuthFlow from "./components/AuthComponents/GeneralAuthFlow";
+import AdminLogin from "./admin-dashboard/adminLogin/AdminLogin";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -215,9 +216,10 @@ const router = createBrowserRouter([
       },
       {
         path: "admin/overview",
-
         element: <OverviewPage />,
-      },
+      }  
+      
+      ,
       {
         path: "admin/manage-users",
         element: <ManageUsersPage />,
@@ -244,6 +246,11 @@ const router = createBrowserRouter([
       },
     ],
   },
+  
+      {
+        path: "admin/login",
+        element: <AdminLogin />,
+      },
   {
     path: "*",
     element: <NotFound />,

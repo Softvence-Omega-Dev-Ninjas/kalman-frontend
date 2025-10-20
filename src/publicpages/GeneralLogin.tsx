@@ -287,6 +287,9 @@ const GeneralLogin: React.FC = () => {
 
 export default GeneralLogin;
 
+
+
+
 // import { useState } from "react";
 // import LogInComponent from "../components/AuthComponents/LogInComponent";
 // import TwoStepVerification from "../components/AuthComponents/TwoStepVerification";
