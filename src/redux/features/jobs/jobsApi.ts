@@ -41,7 +41,7 @@ export const jobsApi = baseApi.injectEndpoints({
         const formData = new FormData();
         formData.append("data", JSON.stringify(data));
         if (images && images.length > 0) {
-          images.forEach((file) => {
+          images.forEach((file: string | Blob) => {
             formData.append("images", file);
           });
         }
