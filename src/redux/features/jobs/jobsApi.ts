@@ -2,6 +2,8 @@ import { baseApi } from "@/redux/api/baseApi";
 
 export const jobsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+
+    // getJobs query
     getJobs: builder.query({
       query: ({
         search,
@@ -29,10 +31,31 @@ export const jobsApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
-
       providesTags: ["Jobs"],
     }),
+
+     
+      // post a job mutation
+       postAJob: builder.mutation({
+      query: ({ data, images }) => {
+        const formData = new FormData();
+        formData.append("data", JSON.stringify(data));
+        if (images && images.length > 0) {
+          images.forEach((file) => {
+            formData.append("images", file);
+          });
+        }
+
+        return {
+          url: "/jobs",
+          method: "POST",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["Jobs"],
+    }),
+
   }),
 });
 
-export const { useGetJobsQuery } = jobsApi;
+export const { useGetJobsQuery , usePostAJobMutation} = jobsApi;

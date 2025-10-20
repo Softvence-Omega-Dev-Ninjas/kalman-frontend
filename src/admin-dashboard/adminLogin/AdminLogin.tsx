@@ -1,9 +1,12 @@
+
+
+
 import React, { useState } from "react";
 import { AiOutlineEyeInvisible, AiOutlineEye, AiOutlineMail } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import loginImg from "../assets/sample_images/LoginImg.png";
+import loginImg from "../../assets/sample_images/LoginImg.png";
 // import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { setUser } from "@/redux/features/auth/authSlice";
 import toast from "react-hot-toast";
@@ -12,7 +15,7 @@ import { useLoginMutation } from "@/redux/features/auth/login";
 
 
 
-const GeneralLogin: React.FC = () => {
+const AdminLogin: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [login, { isLoading }] = useLoginMutation();
@@ -285,33 +288,5 @@ const GeneralLogin: React.FC = () => {
     );
 };
 
-export default GeneralLogin;
+export default AdminLogin;
 
-
-
-
-// import { useState } from "react";
-// import LogInComponent from "../components/AuthComponents/LogInComponent";
-// import TwoStepVerification from "../components/AuthComponents/TwoStepVerification";
-// import EnterVerificationCode from "../components/AuthComponents/EnterVerificationCode";
-
-// const GeneralLogin: React.FC = () => {
-// const [step, setStep] = useState(1);
-//   return (
-//     <div className=" bg-white flex items-start">
-//       <div className="max-w-7xl w-full mx-auto px-6 py-8">
-//         {
-//             step === 1 && <LogInComponent step={step} setStep={setStep} />
-//         }
-//         {
-//             step === 2 && <TwoStepVerification step={step} setStep={setStep} />
-//         }
-//         {
-//             step === 3 && <EnterVerificationCode />
-//         }
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default GeneralLogin;
