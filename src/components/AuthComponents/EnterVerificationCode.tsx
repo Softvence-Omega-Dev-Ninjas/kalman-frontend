@@ -19,9 +19,9 @@ const EnterVerificationCode: React.FC<EnterVerificationCodeProps> = ({ email }) 
 
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-
+    // toast.error("Please enter the 6-digit code");
     if (otp.length !== 6) {
-      toast.error("Please enter the 6-digit code");
+      // toast.error("Please enter the 6-digit code");
       return;
     }
 
@@ -29,7 +29,7 @@ const EnterVerificationCode: React.FC<EnterVerificationCodeProps> = ({ email }) 
       const result = await verifyOtp({ otp: parseInt(otp), email }).unwrap();
       toast.success("OTP verified successfully!");
       console.log("OTP verification successful:", result);
-      navigate("/");
+      navigate("/general-login");
     } catch (err: any) {
       console.error("OTP verification failed:", err);
       toast.error(err?.data?.message || "Verification failed. Please try again.");

@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { AiOutlineMail, AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-// import { FcGoogle } from "react-icons/fc";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  AiOutlineMail,
+  AiOutlineEyeInvisible,
+  AiOutlineEye,
+} from "react-icons/ai";
 import signupImg from "../assets/sample_images/SignUPImg.png";
-// import { useSignupMutation } from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { useSignupMutation } from "@/redux/features/auth/register";
 
 interface GeneralSignUpProps {
@@ -12,48 +16,69 @@ interface GeneralSignUpProps {
   setUserEmail: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const GeneralSignUp: React.FC<GeneralSignUpProps> = ({ setStep, setUserEmail }) => {
-  const [signup, { isLoading }] = useSignupMutation();
+interface FormValues {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  agreement: boolean;
+}
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+const GeneralSignUp: React.FC<GeneralSignUpProps> = ({
+  setStep,
+  setUserEmail,
+}) => {
+  const [signup, { isLoading }] = useSignupMutation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setError,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      agreement: false,
+    },
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const passwordValue = watch("password");
 
-    if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords do not match!");
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    if (!data.agreement) {
+      toast.error("You must agree to the terms before continuing!");
+      return;
+    }
+
+    if (data.password !== data.confirmPassword) {
+      setError("confirmPassword", { message: "Passwords do not match!" });
       return;
     }
 
     try {
       const result = await signup({
-        email: formData.email,
-        password: formData.password,
+        email: data.email,
+        password: data.password,
         role: "CUSTOMER",
       }).unwrap();
 
-      console.log(result?.data?.email);
-
       toast.success(result?.message);
 
-      // ✅ Pass email to parent and go to verification
+      if (result?.message?.toLowerCase().includes("already exist")) return;
+
       setUserEmail(result?.data?.email);
       setStep(2);
-
-      setFormData({ email: "", password: "", confirmPassword: "" });
     } catch (err: any) {
-      console.error(err);
-      toast.error((err?.data?.message as string) || "Signup failed!");
+      const messages = err?.data?.message;
+      if (Array.isArray(messages)) {
+        messages.forEach((msg: string) => toast.error(msg));
+      } else {
+        toast.error(messages || "Signup failed!");
+      }
     }
   };
 
@@ -64,7 +89,11 @@ const GeneralSignUp: React.FC<GeneralSignUpProps> = ({ setStep, setUserEmail }) 
           {/* Left image */}
           <div className="flex items-center justify-center">
             <div className="w-full max-w-[560px] rounded-xl overflow-hidden shadow-lg">
-              <img src={signupImg} alt="Sign up" className="w-full h-full object-cover" />
+              <img
+                src={signupImg}
+                alt="Sign up"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
 
@@ -77,46 +106,74 @@ const GeneralSignUp: React.FC<GeneralSignUpProps> = ({ setStep, setUserEmail }) 
               Enter your email and password to create your account
             </p>
 
-            <form className="space-y-4" onSubmit={handleSubmit}>
+            <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
               {/* Email */}
               <div>
-                <label className="text-sm font-medium text-gray-700">Email *</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Email *
+                </label>
                 <div className="relative mt-2">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                     <AiOutlineMail />
                   </span>
                   <input
                     type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
                     placeholder="Enter your email"
-                    className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none"
+                    className={`w-full pl-11 pr-4 py-3 bg-gray-50 border rounded-lg focus:outline-none ${
+                      errors.email ? "border-red-500" : "border-gray-200"
+                    }`}
+                    {...register("email", {
+                      required: "Please enter your email address.",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Please enter a valid email address.",
+                      },
+                    })}
                   />
                 </div>
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
 
               {/* Password */}
               <div>
-                <label className="text-sm font-medium text-gray-700">Password *</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Password *
+                </label>
                 <div className="relative mt-2">
                   <input
                     type={showPassword ? "text" : "password"}
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
                     placeholder="Enter your password"
-                    className="w-full pl-4 pr-11 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none"
+                    className={`w-full pl-4 pr-11 py-3 bg-gray-50 border rounded-lg focus:outline-none ${
+                      errors.password ? "border-red-500" : "border-gray-200"
+                    }`}
+                    {...register("password", {
+                      required: "Please enter your password.",
+                      minLength: {
+                        value: 6,
+                        message: "Password must be at least 6 characters long.",
+                      },
+                    })}
                   />
                   <span
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"
                   >
-                    {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                    {showPassword ? (
+                      <AiOutlineEye />
+                    ) : (
+                      <AiOutlineEyeInvisible />
+                    )}
                   </span>
                 </div>
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
 
               {/* Confirm Password */}
@@ -127,12 +184,17 @@ const GeneralSignUp: React.FC<GeneralSignUpProps> = ({ setStep, setUserEmail }) 
                 <div className="relative mt-2">
                   <input
                     type={showConfirm ? "text" : "password"}
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    required
                     placeholder="Confirm your password"
-                    className="w-full pl-4 pr-11 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none"
+                    className={`w-full pl-4 pr-11 py-3 bg-gray-50 border rounded-lg focus:outline-none ${
+                      errors.confirmPassword
+                        ? "border-red-500"
+                        : "border-gray-200"
+                    }`}
+                    {...register("confirmPassword", {
+                      required: "Please confirm your password.",
+                      validate: (value) =>
+                        value === passwordValue || "Passwords do not match.",
+                    })}
                   />
                   <span
                     onClick={() => setShowConfirm(!showConfirm)}
@@ -141,27 +203,74 @@ const GeneralSignUp: React.FC<GeneralSignUpProps> = ({ setStep, setUserEmail }) 
                     {showConfirm ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
                   </span>
                 </div>
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
               </div>
 
               {/* Agreement */}
-              <label className="flex items-start gap-3 text-sm text-gray-600 font-semibold">
-                <input type="checkbox" className="w-4 h-4 mt-1" required />
-                <span>
+              <div className="flex items-start gap-3 text-sm text-gray-600 font-semibold">
+                <Checkbox
+                  id="agreement"
+                  checked={watch("agreement")}
+                  onCheckedChange={(checked: boolean) =>
+                    (
+                      document.querySelector(
+                        'input[name="agreement"]'
+                      ) as HTMLInputElement
+                    ).click()
+                  }
+                  className="mt-1 border-gray-400 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                />
+                <label
+                  htmlFor="agreement"
+                  className="leading-snug cursor-pointer"
+                >
                   I agree to Theta Analyzer{" "}
-                  <Link to="#" className="text-primary">Licence Agreement</Link> and{" "}
-                  <Link to="#" className="text-primary">Privacy policy</Link>
-                </span>
-              </label>
+                  <Link to="/licence" className="text-primary hover:underline">
+                    Licence Agreement
+                  </Link>{" "}
+                  and{" "}
+                  <Link
+                    to="/privacy-policy"
+                    className="text-primary hover:underline"
+                  >
+                    Privacy policy
+                  </Link>
+                </label>
+              </div>
+
+              <input
+                type="checkbox"
+                {...register("agreement", { required: true })}
+                className="hidden"
+              />
+              {errors.agreement && (
+                <p className="text-red-500 text-sm mt-1">
+                  You must agree to the terms before continuing.
+                </p>
+              )}
 
               {/* Submit */}
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-primary text-white py-3 rounded-md font-semibold mt-2 hover:bg-primary/90 transition-colors"
+                className="w-full bg-primary cursor-pointer text-white py-3 rounded-md font-semibold mt-2 hover:bg-primary/90 transition-colors"
               >
                 {isLoading ? "Registering..." : "Register Now"}
               </button>
             </form>
+            <div className="text-center text-sm text-gray-600 mt-4 font-semibold">
+              Already have an account?{" "}
+              <Link
+                to="/general-login"
+                className="text-primary hover:underline"
+              >
+                Sign In
+              </Link>
+            </div>
           </div>
         </div>
       </div>

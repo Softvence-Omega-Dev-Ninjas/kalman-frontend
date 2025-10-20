@@ -17,23 +17,12 @@ const GeneralAuthFlow: React.FC = () => {
   const [userEmail, setUserEmail] = useState("");
 
   return (
-    <>
-      {step === 1 && (
-        <GeneralSignUpCmp setStep={setStep} setUserEmail={setUserEmail} />
-      )}
+    <div className="transition-all duration-500 ease-in-out">
+    {step === 1 && <GeneralSignUpCmp setStep={setStep} setUserEmail={setUserEmail} />}
+    {step === 2 && userEmail && <TwoStepVerification step={step} setStep={setStep} email={userEmail} />}
+    {step === 3 && <EnterVerificationCode email={userEmail} step={step} setStep={setStep} />}
+</div>
 
-      {step === 2 && userEmail && (
-        <TwoStepVerification step={step} setStep={setStep} email={userEmail} />
-      )}
-
-      {step === 3 && (
-        <EnterVerificationCode
-          email={userEmail}
-          step={step}
-          setStep={setStep}
-        />
-      )}
-    </>
   );
 };
 
