@@ -1,7 +1,6 @@
-"use client";
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,23 +8,50 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 
-interface CreateCategoryProps {
-  onCreate: (formData: FormData) => void;
+interface TCategory {
+  id: string;
+  name: string;
+  image: string;
+  subCategories?: string[];
 }
 
-const CreateCategory: React.FC<CreateCategoryProps> = ({ onCreate }) => {
-  const [open, setOpen] = useState(false);
+interface CreateCategoryProps {
+  onCreate: (formData: FormData) => void;
+  editingCategory?: TCategory | null;
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const CreateCategory: React.FC<CreateCategoryProps> = ({
+  onCreate,
+  editingCategory,
+  isOpen,
+  onOpenChange,
+}) => {
   const [name, setName] = useState("");
   const [subCategories, setSubCategories] = useState<string[]>([]);
   const [subInput, setSubInput] = useState("");
   const [image, setImage] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (editingCategory) {
+      setName(editingCategory.name || "");
+      setSubCategories(editingCategory.subCategories || []);
+      setSubInput("");
+      setImage(null);
+    } else {
+      setName("");
+      setSubCategories([]);
+      setSubInput("");
+      setImage(null);
+    }
+  }, [editingCategory, isOpen]);
 
   const handleAddSubCategory = () => {
     const trimmed = subInput.trim();
@@ -38,50 +64,25 @@ const CreateCategory: React.FC<CreateCategoryProps> = ({ onCreate }) => {
     setSubCategories(subCategories.filter((_, i) => i !== index));
   };
 
-  const handleSubInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleAddSubCategory();
-    }
-  };
-
   const handleSubmit = () => {
-    if (!name) {
-      toast.error("Category name is required");
-      return;
-    }
-    if (!image) {
-      toast.error("Please upload an image");
-      return;
-    }
+    if (!name) return toast.error("Category name is required");
 
     const formData = new FormData();
     formData.append("name", name);
     subCategories.forEach((sub) => formData.append("subCategories[]", sub));
-    formData.append("image", image);
+    if (image) formData.append("image", image);
 
     onCreate(formData);
-
-    // Reset form
-    setOpen(false);
-    setName("");
-    setSubCategories([]);
-    setImage(null);
-    setSubInput("");
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>Add Category</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent  className="sm:max-w-lg ">
         <DialogHeader>
-          <DialogTitle>Create New Category</DialogTitle>
+          <DialogTitle>{editingCategory ? "Edit Category" : "Create Category"}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 mt-4">
-          {/* Name */}
           <div className="flex flex-col gap-1">
             <Label>Name *</Label>
             <Input
@@ -92,32 +93,24 @@ const CreateCategory: React.FC<CreateCategoryProps> = ({ onCreate }) => {
             />
           </div>
 
-          {/* Subcategories */}
           <div className="flex flex-col gap-1">
             <Label>Subcategories</Label>
             <div className="flex gap-2">
               <Input
                 value={subInput}
                 onChange={(e) => setSubInput(e.target.value)}
-                onKeyDown={handleSubInputKeyDown}
+                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddSubCategory())}
                 placeholder="Type and press Enter"
                 className="focus:!ring-0 ring-0"
               />
-              <Button onClick={handleAddSubCategory}>Add</Button>
+              <Button className="cursor-pointer" onClick={handleAddSubCategory}>Add</Button>
             </div>
 
-            {/* Display subcategories */}
             <div className="flex flex-wrap gap-2 mt-2">
               {subCategories.map((sub, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded"
-                >
+                <div key={i} className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded">
                   <span>{sub}</span>
-                  <button
-                    onClick={() => handleRemoveSubCategory(i)}
-                    className="text-red-600 font-bold"
-                  >
+                  <button onClick={() => handleRemoveSubCategory(i)} className="text-red-600 font-bold">
                     <RxCross2 />
                   </button>
                 </div>
@@ -125,22 +118,19 @@ const CreateCategory: React.FC<CreateCategoryProps> = ({ onCreate }) => {
             </div>
           </div>
 
-          {/* Image */}
           <div className="flex flex-col gap-1">
-            <Label>Image *</Label>
+            <Label>Image {editingCategory ? "(optional to change)" : "*"}</Label>
             <Input
               type="file"
               accept="image/*"
-              onChange={(e) => {
-                if (e.target.files) setImage(e.target.files[0]);
-              }}
+              onChange={(e) => e.target.files && setImage(e.target.files[0])}
               className="focus:!ring-0 ring-0"
             />
           </div>
         </div>
 
         <DialogFooter>
-          <Button onClick={handleSubmit}>Create Category</Button>
+          <Button className="cursor-pointer" onClick={handleSubmit}>{editingCategory ? "Update" : "Create"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

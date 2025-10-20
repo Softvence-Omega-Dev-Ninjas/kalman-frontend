@@ -1,4 +1,3 @@
-"use client";
 
 import React from "react";
 import { SquarePen, Trash2 } from "lucide-react";
@@ -14,7 +13,7 @@ interface CategoryTableProps {
   data: TCategory[];
   isLoading?: boolean;
   onDelete?: (id: string) => void;
-  onEdit?: (id: string) => void;
+  onEdit?: (category: TCategory) => void;
   emptyMessage?: string;
 }
 
@@ -56,8 +55,18 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
                 <td className="px-6 py-4 whitespace-nowrap">{category.subCategories?.join(", ") || "-"}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center gap-3">
-                    <button className="text-gray-400 hover:text-primary" onClick={() => onEdit?.(category.id)}><SquarePen size={18} /></button>
-                    <button className="text-gray-400 hover:text-red-600" onClick={() => onDelete?.(category.id)}><Trash2 size={18} /></button>
+                    <button
+                      className="text-gray-400 hover:text-primary cursor-pointer"
+                      onClick={() => onEdit?.(category)}
+                    >
+                      <SquarePen size={18} />
+                    </button>
+                    <button
+                      className="text-gray-400 hover:text-red-600 cursor-pointer"
+                      onClick={() => onDelete?.(category.id)}
+                    >
+                      <Trash2 size={18} />
+                    </button>
                   </div>
                 </td>
               </tr>

@@ -1,12 +1,17 @@
-"use client";
 
 import { useState } from "react";
 import { Search } from "lucide-react";
 import toast from "react-hot-toast";
-import { useCreateCategoryMutation, useGetCategoriesQuery } from "@/redux/features/admin/categoryApi";
+import {
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+  useGetCategoriesQuery,
+} from "@/redux/features/admin/categoryApi";
 import CreateCategory from "./CreateCategory";
 import CategoryTable from "./CategoryTable";
 import { PaginationControls } from "@/components/Jobs/common/PaginationControls";
+import { Button } from "@/components/ui/button";
 
 interface TCategory {
   id: string;
@@ -18,9 +23,10 @@ interface TCategory {
 const ManageCategoryPage = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [editingCategory, setEditingCategory] = useState<TCategory | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const pageSize = 10;
 
-  // Fetch categories dynamically
   const { data, isLoading, refetch } = useGetCategoriesQuery({
     search,
     page: currentPage,
@@ -32,19 +38,49 @@ const ManageCategoryPage = () => {
   const totalPages = Math.ceil(totalItems / pageSize);
 
   const [createCategory] = useCreateCategoryMutation();
+  const [updateCategory] = useUpdateCategoryMutation();
+  const [deleteCategory] = useDeleteCategoryMutation();
 
-  const handleCreateCategory = async (formData: FormData) => {
+  // Handle create or update
+  const handleCreateOrUpdate = async (formData: FormData) => {
     try {
-      await createCategory(formData).unwrap();
-      toast.success("Category created successfully!");
+      if (editingCategory?.id) {
+        await updateCategory({ id: editingCategory.id, formData }).unwrap();
+        toast.success("Category updated successfully!");
+      } else {
+        await createCategory(formData).unwrap();
+        toast.success("Category created successfully!");
+      }
       refetch();
+      setEditingCategory(null);
+      setModalOpen(false);
     } catch (err: any) {
-      toast.error(err?.data?.message || "Failed to create category");
+      toast.error(err?.data?.message || "Operation failed");
     }
   };
 
-  const handleDeleteCategory = (id: string) => {
-    toast.success(`Pretend deleting category ${id}`);
+  // Edit category
+  const handleEdit = (category: TCategory) => {
+    setEditingCategory(category);
+    setModalOpen(true);
+  };
+
+  // Delete category
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this category?")) return;
+    try {
+      await deleteCategory(id).unwrap();
+      toast.success("Category deleted successfully!");
+      refetch();
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Delete failed");
+    }
+  };
+
+  // Add new category
+  const handleAdd = () => {
+    setEditingCategory(null); // Clear edit data
+    setModalOpen(true);       // Open modal blank
   };
 
   return (
@@ -72,19 +108,27 @@ const ManageCategoryPage = () => {
           </div>
 
           {/* Add Category */}
-          <CreateCategory onCreate={handleCreateCategory} />
+          <Button onClick={handleAdd} className="cursor-pointer">Add Category</Button>
+
+          {/* Create/Edit Modal */}
+          <CreateCategory
+            onCreate={handleCreateOrUpdate}
+            editingCategory={editingCategory}
+            isOpen={modalOpen}
+            onOpenChange={setModalOpen}
+          />
         </div>
       </header>
 
       {/* Loading */}
       {isLoading && <p className="text-gray-500 mb-3">Loading categories...</p>}
 
-      {/* Table */}
+      {/* Category Table */}
       <CategoryTable
         data={categories}
         isLoading={isLoading}
-        onDelete={handleDeleteCategory}
-        onEdit={(id) => console.log("Edit", id)}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
       />
 
       {/* Pagination */}
