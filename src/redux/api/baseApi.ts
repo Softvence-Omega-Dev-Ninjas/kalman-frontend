@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://10.10.10.54:5000", // 🔹 Change this to your API base URL
+    baseUrl: "http://10.10.10.50:5000" , // 🔹 Change this to your API base URL
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as any)?.auth?.token;
       if (token) {
@@ -13,6 +13,8 @@ export const baseApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Auth", "Jobs", "Customer"],
+
+  tagTypes: ["Auth", "Jobs", "Customer","Categories"],
+
   endpoints: () => ({}),
 });
