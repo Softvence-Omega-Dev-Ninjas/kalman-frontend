@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import phase3Img from "../../assets/sample_images/phase3logo.png";
+import phase3Img from "../../../assets/sample_images/phase3logo.png";
 import { useState } from "react";
 import { MdOutlineFileUpload, MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
-import callOnlyIcon from "../../assets/sample_images/phoneOnly.png";
-import emailOnlyIcon from "../../assets/sample_images/viaEmail.png"
+// import callOnlyIcon from "../../assets/sample_images/phoneOnly.png";
+import callOnlyIcon from "../../../assets/sample_images/phoneOnly.png"
+import emailOnlyIcon from "../../../assets/sample_images/viaEmail.png"
 import { IoDocumentTextOutline, IoLocationOutline } from "react-icons/io5";
 import { FaArrowLeft, FaArrowRight, FaRegEdit } from "react-icons/fa";
 

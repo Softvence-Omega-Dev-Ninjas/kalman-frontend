@@ -27,7 +27,7 @@ import NotFound from "./NotFound";
 import ServiceDetails from "./publicpages/ServiceDetails";
 import JobDetails from "./publicpages/JobDetails";
 import GeneralLogin from "./publicpages/GeneralLogin";
-import PostAJob from "./publicpages/PostAJob";
+import PostAJob from "./publicpages/postAJob/PostAJob";
 import OverviewPage from "./admin-dashboard/overview/OverviewPage";
 import ManageUsersPage from "./admin-dashboard/manage-users/ManageUsersPage";
 import AdminDashboardLayout from "./layout/AdminDashboardLayout";

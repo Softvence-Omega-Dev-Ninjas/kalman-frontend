@@ -1,7 +1,7 @@
 import { useState } from "react";
-import PhaseOne from "../components/PostAJobComponents/PhaseOne";
-import PhaseTwo from "../components/PostAJobComponents/PhaseTwo";
-import PhaseThree from "../components/PostAJobComponents/PhaseThree";
+import PhaseOne from "./PostAJobComponents/PhaseOne";
+import PhaseTwo from "./PostAJobComponents/PhaseTwo";
+import PhaseThree from "./PostAJobComponents/PhaseThree";
 
 const PostAJob = () => {
     const [phase, setPhase] = useState(1);

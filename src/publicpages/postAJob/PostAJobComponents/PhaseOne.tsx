@@ -1,19 +1,32 @@
 import { IoLocationOutline } from "react-icons/io5";
-import { popularServices } from "../../assets/demoData/demodata";
+import { popularServices } from "../../../assets/demoData/demodata";
 import { useState } from "react";
-import tellUsImg from "../../assets/sample_images/tellusabouturproject.png"
+import tellUsImg from "../../../assets/sample_images/tellusabouturproject.png"
 import { FaArrowRight } from "react-icons/fa";
+import { useGetCategoriesQuery } from "@/redux/features/admin/categoryApi";
 
 interface PhaseOneProps {
     phase: number;
     setPhase: (phase: number) => void;
 }
+interface TCategory {
+  id: string;
+  name: string;
+  image: string;
+  subCategories?: string[];
+}
+
 
 const PhaseOne = ({phase, setPhase}: PhaseOneProps) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
     const maxChars = 500;
+
+      const { data, isLoading, error } = useGetCategoriesQuery({
+      });
+    
+       const categories: TCategory[] = data?.data?.result || [];
 
     const runningPhase = () =>{
         setPhase(phase + 1)
@@ -46,17 +59,17 @@ const PhaseOne = ({phase, setPhase}: PhaseOneProps) => {
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        {popularServices.slice(0,6).map((s) => (
+                        {categories.map((c) => (
                             <button
-                                key={s.id}
-                                onClick={() => setSelectedCategory(s.id)}
-                                className={`flex flex-col items-start gap-3 p-4 rounded-lg border ${selectedCategory === s.id ? 'border-[#FF7346]' : 'border-gray-200'} bg-white text-left`}
+                                key={c.id}
+                                onClick={() => setSelectedCategory(c.id)}
+                                className={`flex flex-col items-start gap-3 p-4 rounded-lg border ${selectedCategory === c.id ? 'border-[#FF7346]' : 'border-gray-200'} bg-white text-left`}
                             >
                                 <div className="w-10 h-10 rounded-md bg-gray-50 flex items-center justify-center mb-1">
-                                    <img src={s.icon} alt={s.title} className="w-6 h-6" />
+                                    <img src={c.image} alt={c.name} className="w-6 h-6" />
                                 </div>
-                                <div className="font-semibold text-sm">{s.title}</div>
-                                <div className="text-xs text-secondary">{s.description}</div>
+                                <div className="font-semibold text-sm">{c.name}</div>
+                                <div className="text-xs text-secondary">{c.subCategories}</div>
                             </button>
                         ))}
                     </div>

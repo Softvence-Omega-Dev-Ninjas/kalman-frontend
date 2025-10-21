@@ -1,9 +1,9 @@
-import phaseTwoImg from "../../assets/sample_images/phase2logo.png";
+import phaseTwoImg from "../../../assets/sample_images/phase2logo.png";
 import { useState } from "react";
-import flexibleIcon from "../../assets/sample_images/flexible.png"
-import emergencyIcon from "../../assets/sample_images/emergency.png"
-import urgentIcon from "../../assets/sample_images/urgent.png"
-import soonIcon from "../../assets/sample_images/soon.png"
+import flexibleIcon from "../../../assets/sample_images/flexible.png"
+import emergencyIcon from "../../../assets/sample_images/emergency.png"
+import urgentIcon from "../../../assets/sample_images/urgent.png"
+import soonIcon from "../../../assets/sample_images/soon.png"
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const timelineOptions = [
