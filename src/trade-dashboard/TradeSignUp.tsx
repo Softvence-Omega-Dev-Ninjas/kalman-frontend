@@ -1,10 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { AiOutlineMail, AiOutlineEyeInvisible } from 'react-icons/ai'
+import { AiOutlineMail, AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
+import { useState } from 'react'
 import { FcGoogle } from 'react-icons/fc'
 import signupImg from "../assets/sample_images/SignUPImg.png"
 import { useSignupMutation } from '@/redux/features/auth/register'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
 type SignupForm = {
     email: string;
@@ -14,8 +16,16 @@ type SignupForm = {
     agree?: boolean;
 }
 
-const TradeSignUp: React.FC = () => {
+interface TradeSignUpProps {
+    step?: number;
+    setStep?: React.Dispatch<React.SetStateAction<number>>;
+    setEmail?: React.Dispatch<React.SetStateAction<string | null>>;
+}
+const TradeSignUp: React.FC<TradeSignUpProps> = ({step, setStep, setEmail}) => {
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirm, setShowConfirm] = useState(false)
     const [signup, { isLoading }] = useSignupMutation();
+    // navigate was removed as it's unused here; keep for future if needed
     const { register, handleSubmit, watch, formState: { errors } } = useForm<SignupForm>({
         defaultValues: { role: 'TRADESMAN' }
     });
@@ -29,7 +39,14 @@ const TradeSignUp: React.FC = () => {
 
         try {
             // RTK Query mutation - unwrap to access result or throw on error
-            const res = await signup(payload).unwrap();
+            const res = await signup(payload).unwrap()
+            if(res.success){
+                toast.success('Registration successful! Please log in.');
+                // Guard optional callbacks in case parent didn't pass them
+                setEmail?.(payload.email);
+                setStep?.((prev) => (typeof prev === 'number' ? prev + 1 : (typeof step === 'number' ? step + 1 : 1)));
+                // navigate('/trade-login');
+            }
             console.log('signup success', res);
         } catch (err) {
             console.error('signup failed', err);
@@ -72,11 +89,18 @@ const TradeSignUp: React.FC = () => {
                                 <div className="relative mt-2">
                                     <input
                                         {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters' } })}
-                                        type="password"
+                                        type={showPassword ? 'text' : 'password'}
                                         placeholder="Enter your password"
                                         className="w-full pl-4 pr-11 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none"
                                     />
-                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><AiOutlineEyeInvisible /></span>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(s => !s)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                    >
+                                        {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                                    </button>
                                 </div>
                                 {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>}
                             </div>
@@ -86,11 +110,18 @@ const TradeSignUp: React.FC = () => {
                                 <div className="relative mt-2">
                                     <input
                                         {...register('confirmPassword', { validate: (v) => v === watch('password') || 'Passwords do not match' })}
-                                        type="password"
+                                        type={showConfirm ? 'text' : 'password'}
                                         placeholder="Confirm your password"
                                         className="w-full pl-4 pr-11 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none"
                                     />
-                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><AiOutlineEyeInvisible /></span>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowConfirm(s => !s)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                                        aria-label={showConfirm ? 'Hide confirm password' : 'Show confirm password'}
+                                    >
+                                        {showConfirm ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                                    </button>
                                 </div>
                                 {errors.confirmPassword && <p className="text-sm text-red-500 mt-1">{errors.confirmPassword.message}</p>}
                             </div>

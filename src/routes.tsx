@@ -45,11 +45,13 @@ import PaymentTerms from "./trade-dashboard/PaymentTerms";
 import BusinessDetails from "./trade-dashboard/BusinessDetails";
 import ReviewInfo from "./trade-dashboard/ReviewInfo";
 import TradeLogin from "./trade-dashboard/TradeLogin";
-import TradeSignUp from "./trade-dashboard/TradeSignUp";
 import GeneralAuthFlow from "./components/AuthComponents/GeneralAuthFlow";
 import ResetPassword from "./publicpages/ResetPassword";
 import AdminLogin from "./admin-dashboard/adminLogin/AdminLogin";
 import BlogDetails from "./publicpages/BlogDetails";
+import TradeSignUp from "./trade-dashboard/TradeSignUp";
+// import TradeSignUpPage from "./trade-dashboard/tradeComponents/TradeSignUp/TradeSignUpPage";
+
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },

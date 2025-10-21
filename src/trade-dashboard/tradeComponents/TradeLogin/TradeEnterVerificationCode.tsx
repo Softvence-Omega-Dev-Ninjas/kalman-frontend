@@ -1,17 +1,33 @@
 import React, { useRef, useState } from "react";
 import verifyCodeImg from "../../../assets/sample_images/enterCodeImg.png"
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useVerifyOtpMutation } from "@/redux/features/auth/register";
 
-const TradeEnterVerificationCode: React.FC = () => {
+const TradeEnterVerificationCode: React.FC<{ email: string | null }> = ({ email }) => {
   const navigate = useNavigate();
 
-  const [values, setValues] = useState<string[]>(["", "", "", ""]);
+  const [values, setValues] = useState<string[]>(["", "", "", "", "", ""]);
   const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
+  const [verifyOtp] = useVerifyOtpMutation();
 
   const focusInput = (idx: number) => {
     const el = inputsRef.current[idx];
     if (el) el.focus();
   };
+
+  const maskEmail = (raw?: string | null) => {
+        if (!raw) return "";
+        const parts = raw.split("@");
+        if (parts.length !== 2) return raw;
+        const [local, domain] = parts;
+        const maskLen = Math.min(5, local.length);
+        const masked = "***" + local.slice(maskLen);
+        return `${masked}@${domain}`;
+    };
+
+    const maskedEmail = maskEmail(email);
+  
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -29,10 +45,10 @@ const TradeEnterVerificationCode: React.FC = () => {
     if (val.length > 1) {
       const chars = val.split("");
       const next = [...values];
-      for (let i = 0; i < chars.length && idx + i < 4; i++)
+      for (let i = 0; i < chars.length && idx + i < 6; i++)
         next[idx + i] = chars[i];
       setValues(next);
-      const nextFocus = Math.min(3, idx + val.length);
+      const nextFocus = Math.min(5, idx + val.length);
       focusInput(nextFocus);
       return;
     }
@@ -40,7 +56,7 @@ const TradeEnterVerificationCode: React.FC = () => {
     const next = [...values];
     next[idx] = val;
     setValues(next);
-    if (idx < 3 && val) focusInput(idx + 1);
+    if (idx < 5 && val) focusInput(idx + 1);
   };
 
   const handleKeyDown = (
@@ -55,29 +71,44 @@ const TradeEnterVerificationCode: React.FC = () => {
       focusInput(prevIdx);
     }
     if (e.key === "ArrowLeft" && idx > 0) focusInput(idx - 1);
-    if (e.key === "ArrowRight" && idx < 3) focusInput(idx + 1);
+    if (e.key === "ArrowRight" && idx < 5) focusInput(idx + 1);
   };
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     const paste = e.clipboardData.getData("text").replace(/\D/g, "");
     if (!paste) return;
-    const chars = paste.split("").slice(0, 4);
-    const next = ["", "", "", ""];
+    const chars = paste.split("").slice(0, 6);
+    const next = ["", "", "", "", "", ""];
     for (let i = 0; i < chars.length; i++) next[i] = chars[i];
     setValues(next);
-    const focusIdx = Math.min(3, chars.length - 1);
+    const focusIdx = Math.min(5, chars.length - 1);
     focusInput(focusIdx);
     e.preventDefault();
   };
 
-  const handleSubmit = (e?: React.FormEvent) => {
+  const handleSubmit = async(e?: React.FormEvent) => {
     if (e) e.preventDefault();
     const code = values.join("");
-    if (code.length < 4) {
-      alert("Please enter the 4-digit code");
+    if (code.length < 6) {
+      toast.error("Please enter the 6-digit code");
       return;
     }
-    navigate("/");
+    // convert to integer (OTP as numeric) before sending
+    const otpInt = parseInt(code, 10);
+    if (Number.isNaN(otpInt)) {
+      toast.error("Invalid code format");
+      return;
+    }
+    try{
+      const res =  await verifyOtp({ otp: otpInt }).unwrap();
+      if(res.success){
+        toast.success("Verification successful!");
+        navigate("/trade-login");
+      }
+    }catch (error) {
+      toast.error("Verification failed. Please try again.");
+      console.error("OTP verification error:", error);
+    }
   };
 
   const handleResend = () => {
@@ -106,12 +137,12 @@ const TradeEnterVerificationCode: React.FC = () => {
               Enter the verification code
             </h2>
             <p className="text-sm text-gray-500 mt-2 mb-6">
-              Please enter the code we've sent to ****lq@gmail.com
+              Please enter the code we've sent to {maskedEmail}
             </p>
 
             <form onSubmit={handleSubmit}>
               <div className="flex items-center justify-center gap-3 mb-4">
-                {[0, 1, 2, 3].map((i) => (
+                {[0, 1, 2, 3, 4, 5].map((i) => (
                   <input
                     key={i}
                     ref={(el) => {
@@ -141,14 +172,15 @@ const TradeEnterVerificationCode: React.FC = () => {
                 </button>
               </div>
 
-             <Link to='/trade-person'>
+         
               <button
                 type="submit"
                 className="px-5 py-2 rounded-md text-white bg-primary w-full"
               >
                 Confirm
               </button>
-             </Link>
+        
+        
             </form>
           </div>
         </div>
