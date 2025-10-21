@@ -215,7 +215,7 @@ const GeneralSignUp: React.FC<GeneralSignUpProps> = ({
                 <Checkbox
                   id="agreement"
                   checked={watch("agreement")}
-                  onCheckedChange={(checked: boolean) =>
+                  onCheckedChange={() =>
                     (
                       document.querySelector(
                         'input[name="agreement"]'

@@ -7,7 +7,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { MdDashboard } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 import { clearUser, selectCurrentUser } from "@/redux/features/auth/authSlice";
-import { FiMenu, FiX, FiChevronDown, FiUser, FiLogIn } from "react-icons/fi";
+import { FiMenu, FiX, FiChevronDown, FiLogIn } from "react-icons/fi";
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -210,7 +210,7 @@ const Navbar = () => {
                       </Link>
                       
                       <Link
-                        to="/profile"
+                        to="/user-dashboard/settings"
                         className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-orange-50 transition-colors duration-200 group"
                         onClick={() => setDropdownOpen(false)}
                       >

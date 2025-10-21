@@ -47,6 +47,7 @@ import ReviewInfo from "./trade-dashboard/ReviewInfo";
 import TradeLogin from "./trade-dashboard/TradeLogin";
 import TradeSignUp from "./trade-dashboard/TradeSignUp";
 import GeneralAuthFlow from "./components/AuthComponents/GeneralAuthFlow";
+import ResetPassword from "./publicpages/ResetPassword";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -99,12 +100,16 @@ const router = createBrowserRouter([
         element: <GeneralAuthFlow />,
       },
       {
+        path: "forgot-password",
+        element: <ResetPassword />,
+      },
+      {
         path: "post-a-job",
         element: <PostAJob />,
       },
     ],
   },
-  // ✅ User Dashboard Route
+  //  User Dashboard Route
   {
     path: "user-dashboard",
     element: <UserDashboardLayout />,
