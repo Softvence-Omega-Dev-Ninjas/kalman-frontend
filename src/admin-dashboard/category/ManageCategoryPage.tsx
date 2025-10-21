@@ -32,7 +32,7 @@ const ManageCategoryPage = () => {
     page: currentPage,
     limit: pageSize,
   });
-
+console.log(data)
   const categories: TCategory[] = data?.data?.result ?? [];
   const totalItems = data?.data?.metadata?.totalItem ?? 0;
   const totalPages = Math.ceil(totalItems / pageSize);
