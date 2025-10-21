@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mail, ChevronRight } from "lucide-react";
+import { Mail, ChevronRight, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useSendOtpByEmailMutation } from "@/redux/features/auth/register";
 
@@ -18,12 +18,16 @@ interface TwoStepVerificationProps {
   email: string;
 }
 
-const TwoStepVerification: React.FC<TwoStepVerificationProps> = ({ step, setStep, email }) => {
+const TwoStepVerification: React.FC<TwoStepVerificationProps> = ({
+  step,
+  setStep,
+  email,
+}) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [sendOtp, { isLoading }] = useSendOtpByEmailMutation();
 
   const handleOptionClick = async (optionId: string) => {
-    if (isLoading) return; 
+    if (isLoading) return;
     setSelectedOption(optionId);
 
     try {
@@ -38,7 +42,7 @@ const TwoStepVerification: React.FC<TwoStepVerificationProps> = ({ step, setStep
   };
 
   return (
-    <div className="min-h-screen bg-white py-12">
+    <div className="h-[60vh] bg-white pt-12 flex justify-center items-center">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Left column */}
@@ -53,16 +57,24 @@ const TwoStepVerification: React.FC<TwoStepVerificationProps> = ({ step, setStep
 
           {/* Right column */}
           <div>
-            <h4 className="text-sm font-medium text-gray-700 mb-6">
+            {/* <h4 className="text-sm font-medium text-gray-700 mb-6">
               Choose your log in process:
-            </h4>
-            <div className="space-y-4">
+            </h4> */}
+            <div className=" shadow rounded relative">
+              {isLoading && (
+                <div className="absolute inset-0 bg-white/20 backdrop-blur-sm flex justify-center items-center rounded-lg z-10">
+                  <Loader2 className="w-8 h-8 text-[#FF7346] animate-spin" />
+                </div>
+              )}
+
               {options.map((opt) => (
                 <label
                   key={opt.id}
                   className={`group block border ${
-                    selectedOption === opt.id ? "border-[#FF7346]" : "border-gray-200"
-                  } rounded-lg p-4 hover:shadow-sm cursor-pointer`}
+                    selectedOption === opt.id
+                      ? "border-gray-200"
+                      : "border-gray-200"
+                  } rounded-lg p-4 hover:shadow-sm cursor-pointer transition-all`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-start gap-4">
@@ -70,8 +82,12 @@ const TwoStepVerification: React.FC<TwoStepVerificationProps> = ({ step, setStep
                         {opt.icon}
                       </div>
                       <div>
-                        <div className="text-sm font-semibold text-gray-900">{opt.title}</div>
-                        <div className="text-sm text-gray-400 mt-1">{opt.description}</div>
+                        <div className="text-sm font-semibold text-gray-900">
+                          {opt.title}
+                        </div>
+                        <div className="text-sm text-gray-400 mt-1">
+                          {opt.description}
+                        </div>
                       </div>
                     </div>
 
@@ -81,7 +97,8 @@ const TwoStepVerification: React.FC<TwoStepVerificationProps> = ({ step, setStep
                         name="two-step"
                         checked={selectedOption === opt.id}
                         onChange={() => handleOptionClick(opt.id)}
-                        className="w-4 h-4 text-[#FF7346] cursor-pointer"
+                        className="w-4 h-4 text-[#FF7346] bg-[#FF7346] cursor-pointer"
+                        disabled={isLoading}
                       />
                       <ChevronRight className="w-5 h-5 text-gray-300" />
                     </div>
