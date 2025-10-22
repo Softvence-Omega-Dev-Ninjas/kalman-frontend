@@ -32,7 +32,7 @@ interface ProfileFormData {
 
 const UserSetting: React.FC = () => {
   // RTK Query hooks
-  const { data: profileData, isLoading, error } = useGetMyProfileQuery();
+  const { data: profileData, isLoading, error } = useGetMyProfileQuery(undefined);
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
 
   // Local state
