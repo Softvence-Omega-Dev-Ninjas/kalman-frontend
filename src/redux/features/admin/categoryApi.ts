@@ -49,9 +49,17 @@ updateCategory: builder.mutation<any, { id: string; data: any }>({
       invalidatesTags: ["Categories"],
     }),
 
+     getCategoriesH: builder.query<any, void>({
+      query: () => ({
+        url: "/category",
+        method: "GET",
+      }),
+      providesTags: ["Categories"],
+    }),
+
   }),
 });
 
 export const { useGetCategoriesQuery, useCreateCategoryMutation   , useUpdateCategoryMutation,
-  useDeleteCategoryMutation,} = categoryApi;
+  useDeleteCategoryMutation, useGetCategoriesHQuery} = categoryApi;
 //
