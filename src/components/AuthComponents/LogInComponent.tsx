@@ -19,9 +19,6 @@ const LogInComponent: React.FC<LogInComponentProps> = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [login, { isLoading }] = useLoginMutation();
-    // console.log(user            , "--------" );
-    
-    
     const [formData, setFormData] = useState({
         email: "",
         password: "",
