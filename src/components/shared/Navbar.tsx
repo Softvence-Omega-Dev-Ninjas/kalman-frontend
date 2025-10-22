@@ -8,6 +8,8 @@ import { MdDashboard } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 import { clearUser, selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { FiMenu, FiX, FiChevronDown, FiLogIn } from "react-icons/fi";
+import icon from '@/assets/user-icon/user-icon1.png';
+
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -30,6 +32,7 @@ const Navbar = () => {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const userState = useSelector(selectCurrentUser);
+  console.log(userState)
 
   // Check if mobile device
   useEffect(() => {
@@ -145,7 +148,7 @@ const Navbar = () => {
                 >
                   <div className="relative">
                     <img
-                      src="https://randomuser.me/api/portraits/men/61.jpg"
+                       src={icon || "https://randomuser.me/api/portraits/men/61.jpg"}
                       alt="User"
                       className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-white shadow-lg transition-all duration-300 group-hover:border-orange-400 group-hover:scale-105"
                     />
@@ -156,10 +159,11 @@ const Navbar = () => {
                   {!isMobile && (
                     <div className="hidden lg:flex flex-col items-start">
                       <span className="text-sm font-semibold text-gray-800">
-                        {userState.name || "Haniful Islam"}
+                        {userState.name || userState.role}
                       </span>
                       <span className="text-xs text-gray-500 capitalize">
                         {userState.role}
+
                       </span>
                     </div>
                   )}
@@ -178,13 +182,13 @@ const Navbar = () => {
                     <div className="px-4 py-3 border-b border-gray-100">
                       <div className="flex items-center gap-3">
                         <img
-                          src="https://randomuser.me/api/portraits/men/61.jpg"
+                          src={icon || "https://randomuser.me/api/portraits/men/61.jpg"}
                           alt="User"
                           className="w-12 h-12 rounded-full object-cover border-2 border-orange-100"
                         />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold text-gray-900 truncate">
-                            {userState.name || "Haniful Islam"}
+                              {userState.name || userState.role}
                           </p>
                           <p className="text-xs text-gray-500 truncate mt-1">
                             {userState.email}
@@ -355,13 +359,13 @@ const Navbar = () => {
                       <div className="mt-8 pt-6 border-t border-gray-200">
                         <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-xl">
                           <img
-                            src="https://randomuser.me/api/portraits/men/61.jpg"
+                             src={icon || "https://randomuser.me/api/portraits/men/61.jpg"}
                             alt="User"
                             className="w-10 h-10 rounded-full object-cover"
                           />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-gray-900 truncate">
-                              {userState.name || "Haniful Islam"}
+                              {userState.name ||  userState.role}
                             </p>
                             <p className="text-xs text-gray-500 capitalize">
                               {userState.role}
