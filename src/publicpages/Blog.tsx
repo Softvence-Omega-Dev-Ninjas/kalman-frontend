@@ -1,20 +1,21 @@
-import BlogGrid from "../components/PublicPages/Blog/BlogGrid"
-import PageHeader from "../components/reuseable/PageHeader"
-
+import { useGetAllBlogsQuery } from "@/redux/features/blog/blogApi";
+import PageHeader from "../components/reuseable/PageHeader";
+import AllBlog from "@/components/PublicPages/Blog/AllBlog";
 
 function Blog() {
+  const { data, isLoading } = useGetAllBlogsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
+
   return (
     <div>
       <PageHeader
         title="Blog"
-        breadcrumbs={[
-          { label: "Home", href: "/blog" },
-          { label: "Blog" },
-        ]}
+        breadcrumbs={[{ label: "Home", href: "/blog" }, { label: "Blog" }]}
       />
-      <BlogGrid/>
+      <AllBlog isLoading={isLoading} blog={data?.data} />
     </div>
-  )
+  );
 }
 
-export default Blog
+export default Blog;
