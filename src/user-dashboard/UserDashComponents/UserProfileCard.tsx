@@ -2,10 +2,11 @@ import { CheckCircle, ArrowLeft, BriefcaseBusiness } from "lucide-react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { useGetMyProfileQuery } from "@/redux/features/customer/customerApi";
+import { MdOutlineVerified } from "react-icons/md";
 
 export default function UserProfileCard() {
   const { data: profileData, isLoading, error } = useGetMyProfileQuery(undefined);
-
+console.log(profileData)
   if (isLoading) {
     return (
       <div className="max-w-5xl mx-auto mt-34">
@@ -55,23 +56,7 @@ export default function UserProfileCard() {
   // Format member since date
   const memberSince = profile.createdAt 
     ? format(new Date(profile.createdAt), 'yyyy')
-    : '2023';
-
-  // Determine verification status and color
-  const getVerificationStatus = () => {
-    switch (profile.verification) {
-      case 'COMPLETE':
-        return { text: 'Verified', color: 'text-green-500' };
-      case 'PENDING':
-        return { text: 'Pending Verification', color: 'text-orange-500' };
-      case 'INCOMPLETE':
-        return { text: 'Verification Required', color: 'text-red-500' };
-      default:
-        return { text: 'Unknown', color: 'text-gray-500' };
-    }
-  };
-
-  const verificationStatus = getVerificationStatus();
+    : '2025';
 
   // Get location from profile data
   const getLocation = () => {
@@ -112,9 +97,9 @@ export default function UserProfileCard() {
 
             {/* Badges */}
             <div className="flex items-center gap-2 mt-1">
-              <span className={`flex items-center gap-1 text-sm font-medium ${verificationStatus.color}`}>
-                <CheckCircle size={16} className={verificationStatus.color} />
-                {verificationStatus.text}
+              <span className="flex items-center gap-1 text-sm text-orange-500 font-medium">
+                <MdOutlineVerified size={18} className=""  />
+               {profile.verification ==='COMPLETE' && 'Verified'}
               </span>
             </div>
 
