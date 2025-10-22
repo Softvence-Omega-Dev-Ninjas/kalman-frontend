@@ -18,12 +18,14 @@ interface CategoryTableProps {
 }
 
 const CategoryTable: React.FC<CategoryTableProps> = ({
+
   data = [],
   isLoading = false,
   onDelete,
   onEdit,
   emptyMessage = "No categories found",
 }) => {
+  console.log(data)
   return (
     <div className="w-full overflow-x-auto bg-white rounded-lg shadow-sm">
       <table className="min-w-full divide-y divide-gray-200">

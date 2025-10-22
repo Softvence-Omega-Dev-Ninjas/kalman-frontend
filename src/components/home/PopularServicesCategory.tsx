@@ -1,5 +1,5 @@
 import { FaAngleRight } from "react-icons/fa";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useGetCategoriesQuery } from "@/redux/features/admin/categoryApi";
 
 interface TCategory {

@@ -42,22 +42,47 @@ console.log(data)
   const [deleteCategory] = useDeleteCategoryMutation();
 
   // Handle create or update
-  const handleCreateOrUpdate = async (formData: FormData) => {
-    try {
-      if (editingCategory?.id) {
-        await updateCategory({ id: editingCategory.id, formData }).unwrap();
-        toast.success("Category updated successfully!");
-      } else {
-        await createCategory(formData).unwrap();
-        toast.success("Category created successfully!");
-      }
-      refetch();
-      setEditingCategory(null);
-      setModalOpen(false);
-    } catch (err: any) {
-      toast.error(err?.data?.message || "Operation failed");
+// Handle create or update
+// Handle create or update
+const handleCreateOrUpdate = async (formData: FormData) => {
+  try {
+    if (editingCategory?.id) {
+      // Prepare JSON payload for PATCH
+      const data: any = {};
+
+      formData.forEach((value, key) => {
+        if (key === "subCategories") {
+          if (typeof value === "string" && value.trim() !== "") {
+            // Convert CSV string to array only if not empty
+            data[key] = value.split(",").map((v) => v.trim());
+          }
+          // if empty, do not include subCategories
+        } else if (key !== "image") {
+          data[key] = value;
+        }
+      });
+
+      console.log("PATCH payload:", data);
+      await updateCategory({ id: editingCategory.id, data }).unwrap();
+      toast.success("Category updated successfully!");
+    } else {
+      // CreateCategory keeps FormData (multipart/form-data)
+      await createCategory(formData).unwrap();
+      toast.success("Category created successfully!");
     }
-  };
+
+    refetch();
+    setEditingCategory(null);
+    setModalOpen(false);
+  } catch (err: any) {
+    console.error("Operation error:", err);
+    toast.error(err?.data?.message || "Operation failed");
+  }
+};
+
+
+
+
 
   // Edit category
   const handleEdit = (category: TCategory) => {
