@@ -1,6 +1,8 @@
+
+import { useGetCategoriesHQuery } from "@/redux/features/admin/categoryApi";
 import { FaAngleRight } from "react-icons/fa";
 // import { useEffect } from "react";
-import { useGetCategoriesQuery } from "@/redux/features/admin/categoryApi";
+// import { useGetCategoriesQuery } from "@/redux/features/admin/categoryApi";
 
 interface TCategory {
   id: string;
@@ -10,36 +12,16 @@ interface TCategory {
 }
 
 const PopularServicesCategory = () => {
-  const { data, isLoading, error } = useGetCategoriesQuery({
-    // search: "",
-    // page: 1,
-    limit: 8,
-  });
+  const { data, isLoading, error } = useGetCategoriesHQuery(
+
+  );
 
 //   useEffect(() => {
     console.log("Fetched category data:", data);
 //   }, [data]);
 
   const categories: TCategory[] = data?.data?.result || [];
-
-    return (
-        <div className="text-center bg-[#F2F4F8] py-20">
-            <h1 className="font-semibold text-4xl">Popular Service Categories</h1>
-            <p className="text-2xl text-[#595959] my-5">Find trusted professionals for every job, big or small</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-10 max-w-[1580px] mx-auto px-5">
-                {
-                    popularServices.map((service)=> <div key={service.id} className="flex bg-white items-center justify-between shadow-md p-5 rounded-md">
-                    <div className="flex items-center gap-3 px-3">
-                        <img src={service.icon} alt={service.title} className="w-8 h-8" />
-                        <div className="text-left space-y-2">
-                            <h1 className="font-semibold text-xl">{service.title}</h1>
-                            <p className="text-sm">{service.description}</p>
-                        </div>
-                    </div>
-                    <button><FaAngleRight className="text-2xl" /></button>
-                </div>)
-                }
-            </div>
+  console.log(categories);
 
   if (error) return <p className="text-center text-red-500">Failed to load categories.</p>;
 
