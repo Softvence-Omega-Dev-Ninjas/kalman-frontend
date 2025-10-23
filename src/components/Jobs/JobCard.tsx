@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { CiLocationOn } from "react-icons/ci";
 import { LuCalendarDays } from "react-icons/lu";
 import { WiTime4 } from "react-icons/wi";
@@ -7,52 +6,64 @@ import { Link } from "react-router-dom";
 
 const JobCard = ({ data }: { data: any }) => {
   return (
-    <div className="space-y-5 shadow-md bg-white p-5 border border-gray-100 rounded-lg">
-      <div className="flex items-center justify-between gap-6">
-        <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl -txt font-semibold">
-              {data.title}
-            </h1>
-            {data.tag === "Urgent" && (
-              <span className="px-2 text-sm py-1 rounded-md bg-red-100 text-red-500">
-                {data.tag}
-              </span>
-            )}
-          </div>
-          <p className="text-sm text-secondary">{data.description}</p>
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 w-full  gap-3 hover:shadow-md transition-all">
+      {/* Top Section */}
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-900">
+            {data.title || "Untitled Job"}
+          </h2>
+          <p className="text-sm text-gray-600 mt-1">
+            {data.description ||
+              "No description provided for this job."}
+          </p>
         </div>
-        <div className=" space-y-3 text-secondary">
-          <h1 className="text-2xl font-semibold">{data.rate}</h1>
-          <p className="text-lg">Applicants: {data.applicants}</p>
+
+        <div className="text-right">
+          <div className="text-xs text-gray-500">Budget (fixed)</div>
+          <div className="text-[#FF7346] font-semibold text-base">
+            ${data.price || 0}
+          </div>
         </div>
       </div>
-      <div className="flex items-end justify-between gap-5">
+
+      {/* Bottom Section */}
+      <div className="flex items-center justify-between mt-4">
+        {/* Left part: Profile + meta */}
         <div className="flex items-center gap-3">
-          <img src={data.image} alt="" width={80} height={80} />
-          <div className="space-y-3">
-            <h1 className="text-2xl font-semibold -txt">
-              {data.name}
-            </h1>
-            <div className="flex items-center gap-3 text-secondary">
-              <div className="flex items-center gap-2">
-                <CiLocationOn />
-                <p>{data.location}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <LuCalendarDays />
-                <p>{data.date}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <WiTime4 />
-                <p>{data.start}</p>
-              </div>
+          <img
+            src="https://i.pravatar.cc/100"
+            alt="User"
+            className="w-10 h-10 rounded-full object-cover"
+          />
+          <div>
+            <div className="font-medium text-sm text-gray-900">
+              John Smith
+            </div>
+            <div className="flex items-center text-xs text-gray-500 gap-3 mt-1">
+              <span className="flex items-center gap-1">
+                <CiLocationOn /> {data.location || "Unknown"}
+              </span>
+              <span className="flex items-center gap-1">
+                <LuCalendarDays /> 24/01/2024
+              </span>
+              <span className="flex items-center gap-1">
+                <WiTime4 /> ASAP
+              </span>
             </div>
           </div>
         </div>
-        <Link to={`/jobs/${data.id}`} className="px-5 py-3 rounded-md bg-primary text-white">
-          Send Proposal
-        </Link>
+
+        {/* Right part: Button + applicants */}
+        <div className="flex items-center gap-4">
+          <span className="text-xs text-gray-500">Applicants: 2</span>
+          <Link
+            to={`/jobs/${data.id || "1"}`}
+            className="bg-[#FF7346] hover:bg-[#ff5722] text-white text-sm px-4 py-2 rounded-md font-medium"
+          >
+            Send Proposal
+          </Link>
+        </div>
       </div>
     </div>
   );

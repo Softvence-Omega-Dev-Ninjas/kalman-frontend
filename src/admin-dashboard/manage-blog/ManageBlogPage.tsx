@@ -8,6 +8,7 @@ import CustomTable from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
 
 const ManageBlogPage = () => {
+  // {"title":"Fix Leaky Roof","description":"Roof repair on a two-story house."}
   //Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 4;
