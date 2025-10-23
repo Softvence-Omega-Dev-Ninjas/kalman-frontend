@@ -44,7 +44,7 @@ const PostAJob = () => {
   return (
     <div>
       {/* Header */}
-      <div className="py-6 px-4 fixed top-[10%] left-0 right-0 bg-white shadow-md z-10">
+      <div className="py-6 px-4 fixed top-[12%] left-0 right-0 bg-white shadow-md z-10">
         <div className="max-w-[1180px] mx-auto flex items-center justify-between">
           <div>
             <div className="text-sm font-medium">Budget & Timeline</div>
@@ -69,7 +69,7 @@ const PostAJob = () => {
       </div>
 
       {/* Phases */}
-      <div className="bg-[#eff2f7] min-h-screen pt-[8%] py-10">
+      <div className="bg-[#eff2f7] min-h-screen pt-[8%] mt-10 py-10">
         {phase === 1 && (
           <PhaseOne
             phase={phase}
