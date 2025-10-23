@@ -1,40 +1,4 @@
 
-//   return (
-//     <div className="overflow-x-auto bg-white rounded-lg">
-//       <table className="min-w-full divide-y divide-gray-200">
-//         <thead className="bg-white">
-//           <tr>
-//             {columns.map((column, index) => (
-//               <th
-//                 key={index}
-//                 scope="col"
-//                 className="px-6 py-4 text-left text-base text-[#1E1E1E] font-semibold  tracking-wider"
-//               >
-//                 {column.header}
-//               </th>
-//             ))}
-//           </tr>
-//         </thead>
-//         <tbody className="bg-white divide-y divide-gray-200">
-//           {data.map((row, rowIndex) => (
-//             <tr key={rowIndex}>
-//               {columns.map((column, colIndex) => (
-//                 <td
-//                   key={colIndex}
-//                   className="px-6 py-4 whitespace-nowrap text-sm text-[#1E1E1E]"
-//                 >
-//                   {"accessor" in column && column.accessor
-//                     ? String(row[column.accessor] ?? "")
-//                     : column.cell?.(row)}
-//                 </td>
-//               ))}
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
 import React from "react";
 
 export interface Column<T> {
