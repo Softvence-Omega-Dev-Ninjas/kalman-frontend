@@ -1,7 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useVerifyOtpMutation } from "@/redux/features/auth/register";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import {
+  useVerifyOtpMutation,
+  useSendOtpByEmailMutation,
+} from "@/redux/features/auth/register";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
 import verifyCodeImg from "../../assets/sample_images/enterCodeImg.png";
 import toast, { Toaster } from "react-hot-toast";
@@ -10,25 +17,58 @@ interface EnterVerificationCodeProps {
   email: string;
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
+   handleResetFlow: () => void;
 }
 
-const EnterVerificationCode: React.FC<EnterVerificationCodeProps> = ({ email }) => {
+const EnterVerificationCode: React.FC<EnterVerificationCodeProps> = ({
+  email: initialEmail,
+  handleResetFlow
+}) => {
   const navigate = useNavigate();
   const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
-  const [otp, setOtp] = useState("");
+  const [sendOtpByEmail, { isLoading: isResending }] =
+    useSendOtpByEmailMutation();
 
-  const handleSubmit = async (e?: React.FormEvent) => {
+  const [otp, setOtp] = useState("");
+  const [email, setEmail] = useState(initialEmail || "");
+
+  //  Persist email in localStorage so browser reload keeps it
+  useEffect(() => {
+    if (initialEmail) {
+      localStorage.setItem("verification_email", initialEmail);
+      setEmail(initialEmail);
+    } else {
+      const savedEmail = localStorage.getItem("verification_email");
+      if (savedEmail) {
+        setEmail(savedEmail);
+      } else {
+        navigate("/register"); // fallback if email missing
+      }
+    }
+  }, [initialEmail, navigate]);
+
+  //  Handles both manual and auto submit
+  const handleSubmit = async (e?: React.FormEvent, autoSubmit = false) => {
     if (e) e.preventDefault();
-    // toast.error("Please enter the 6-digit code");
-    if (otp.length !== 6) {
-      // toast.error("Please enter the 6-digit code");
+
+    // Only show toast if user clicks "Confirm" manually
+    if (!autoSubmit && otp.length !== 6) {
+      toast.error("Please enter the 6-digit code");
       return;
     }
+
+    // Skip verification until OTP is fully entered
+    if (otp.length !== 6) return;
 
     try {
       const result = await verifyOtp({ otp: parseInt(otp), email }).unwrap();
       toast.success("OTP verified successfully!");
       console.log("OTP verification successful:", result);
+
+      // Clear email after successful verification
+      handleResetFlow();
+      localStorage.removeItem("verification_email");
+
       navigate("/general-login");
     } catch (err: any) {
       console.error("OTP verification failed:", err);
@@ -37,12 +77,19 @@ const EnterVerificationCode: React.FC<EnterVerificationCodeProps> = ({ email }) 
     }
   };
 
-  const handleResend = () => {
-    // Add resend API call here if needed
-    toast.success(`New verification code sent to ${maskEmail(email)}`);
-    setOtp("");
+  //  Resend OTP
+  const handleResend = async () => {
+    try {
+      await sendOtpByEmail({ email }).unwrap();
+      toast.success(`A new verification code has been sent to ${maskEmail(email)}`);
+      setOtp("");
+    } catch (err: any) {
+      console.error("Failed to resend OTP:", err);
+      toast.error(err?.data?.message || "Failed to resend code. Please try again.");
+    }
   };
 
+  //  Mask email
   const maskEmail = (email: string) => {
     if (!email) return "****@gmail.com";
     const [localPart, domain] = email.split("@");
@@ -57,7 +104,7 @@ const EnterVerificationCode: React.FC<EnterVerificationCodeProps> = ({ email }) 
     <div className="min-h-screen bg-white flex items-start">
       <Toaster position="top-center" />
       <div className="max-w-7xl w-full mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-cnter">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left image */}
           <div className="flex items-center justify-center">
             <div className="w-full max-w-[560px] rounded-xl overflow-hidden shadow-lg">
@@ -78,24 +125,21 @@ const EnterVerificationCode: React.FC<EnterVerificationCodeProps> = ({ email }) 
               Please enter the 6-digit code we've sent to {maskEmail(email)}
             </p>
 
-            <form onSubmit={handleSubmit} className="w-full">
+            <form onSubmit={(e) => handleSubmit(e, false)} className="w-full">
               <div className="flex justify-center mb-6">
                 <InputOTP
                   maxLength={6}
                   value={otp}
                   onChange={(value) => {
                     setOtp(value);
-                    if (value.length === 6) handleSubmit();
+                    if (value.length === 6) handleSubmit(undefined, true); // Auto-submit silently
                   }}
-                  disabled={isLoading}
+                  disabled={isLoading || isResending}
                 >
                   <InputOTPGroup className="flex gap-3">
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
+                    {[0, 1, 2, 3, 4, 5].map((i) => (
+                      <InputOTPSlot key={i} index={i} />
+                    ))}
                   </InputOTPGroup>
                 </InputOTP>
               </div>
@@ -106,15 +150,15 @@ const EnterVerificationCode: React.FC<EnterVerificationCodeProps> = ({ email }) 
                   type="button"
                   onClick={handleResend}
                   className="text-primary hover:underline disabled:text-gray-400"
-                  disabled={isLoading}
+                  disabled={isResending}
                 >
-                  Resend
+                  {isResending ? "Resending..." : "Resend"}
                 </button>
               </div>
 
               <Button
                 type="submit"
-                className="w-full "
+                className="w-full cursor-pointer"
                 disabled={isLoading || otp.length !== 6}
               >
                 {isLoading ? "Verifying..." : "Confirm"}
