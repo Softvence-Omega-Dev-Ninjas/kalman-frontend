@@ -114,7 +114,7 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
             <input
               type="number"
               value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={(e) => setPrice(Number(e.target.value))}
               placeholder="Budget in USD"
               className="w-full bg-gray-50 text-sm focus:outline-none"
             />
@@ -128,7 +128,7 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
             <input
               type="text"
               value={location}
-              onChange={(e) => setLocation(e.target.value.toString())}
+              onChange={(e) => setLocation(e.target.value)}
               placeholder="Enter your location"
               className="w-full bg-gray-50 text-sm focus:outline-none"
             />

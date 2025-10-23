@@ -29,7 +29,7 @@ const AllJobs: React.FC<AllJobsProps> = ({
 
   return (
     <div className="px-4">
-      <div className=" gap-6">
+      <div className=" gap-3 flex flex-col ">
         {jobs?.map((job, index) => (
           <JobCard
             key={index}
