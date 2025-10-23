@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-// import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight, FaRegEdit } from "react-icons/fa";
 import { usePostAJobMutation } from "@/redux/features/jobs/jobsApi";
 import toast from "react-hot-toast";
@@ -13,22 +12,24 @@ import {
 import { IoDocumentTextOutline, IoLocationOutline } from "react-icons/io5";
 import { useGetCategoriesHQuery } from "@/redux/features/admin/categoryApi";
 import type { TCategory } from "@/admin-dashboard/category/data/categoryData";
+import { useNavigate } from "react-router-dom";
 
 const PhaseThree = ({ phase, setPhase, jobData }: any) => {
-  const [contactMethod, setContactMethod] = useState(jobData.contactMethod || "");
+  const [contactMethod, setContactMethod] = useState(jobData.contact_method || "");
   const [images, setImages] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [postAJob] = usePostAJobMutation();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Handle file upload + preview
+  // Handle file upload + preview (fixed first-click issue)
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const selected = Array.from(e.target.files).slice(0, 5); // up to 5 images
+    if (e.target.files && e.target.files.length > 0) {
+      const selected = Array.from(e.target.files).slice(0, 5);
       setImages((prev) => [...prev, ...selected]);
       const urls = selected.map((file) => URL.createObjectURL(file));
       setPreviewUrls((prev) => [...prev, ...urls]);
+      e.target.value = ""; // ✅ reset input so same file can be re-selected
     }
   };
 
@@ -37,32 +38,53 @@ const PhaseThree = ({ phase, setPhase, jobData }: any) => {
   const categories: TCategory[] = data?.data?.result || [];
   const category = categories.find((cat) => cat?.id === jobData.categoryId);
 
-  // Open file picker on button click
+  // Open file picker
   const handleChooseClick = () => {
     fileInputRef.current?.click();
   };
 
-  // Handle drag and drop
-const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-  e.preventDefault(); // prevent file from opening in browser
-  e.stopPropagation();
-};
+  // Drag and drop handlers
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
-const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-  e.preventDefault();
-  e.stopPropagation();
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-  const droppedFiles = Array.from(e.dataTransfer.files).slice(0, 5); // limit 5
-  if (droppedFiles.length > 0) {
-    setImages((prev) => [...prev, ...droppedFiles]);
-    const urls = droppedFiles.map((file) => URL.createObjectURL(file));
-    setPreviewUrls((prev) => [...prev, ...urls]);
-  }
-};
+    const droppedFiles = Array.from(e.dataTransfer.files).slice(0, 5);
+    if (droppedFiles.length > 0) {
+      setImages((prev) => [...prev, ...droppedFiles]);
+      const urls = droppedFiles.map((file) => URL.createObjectURL(file));
+      setPreviewUrls((prev) => [...prev, ...urls]);
+    }
+  };
 
-  //  Fixed submitJob function to match API definition
+  // Submit Job (fixed console + contact method + image data)
   const submitJob = async () => {
     try {
+      if (
+        !jobData.title ||
+        !jobData.description ||
+        !jobData.categoryId ||
+        !jobData.timeline ||
+        !contactMethod ||
+        !jobData.location ||
+        !jobData.price ||
+        images.length === 0
+      ) {
+        toast("Something is missing!");
+        console.log("Missing fields:", {
+          ...jobData,
+          contactMethod,
+          imagesCount: images.length,
+        });
+        return;
+      }
+
+      console.log("📸 Images ready to upload:", images);
+
       const data = {
         title: jobData.title,
         description: jobData.description,
@@ -71,15 +93,14 @@ const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         date: jobData.date || "",
         time: jobData.time || "",
         contact_method: contactMethod,
-        location: jobData.location || "",
+        location: jobData.location ,
         skills_needed: jobData.skills_needed || [],
         price: jobData.price || null,
       };
 
       await postAJob({ data, images }).unwrap();
-
       toast.success("Job posted successfully!");
-      // navigate("/jobs");
+      navigate("/jobs");
     } catch (error: any) {
       toast.error(error?.data?.message || "Failed to post job!");
       console.error(error);
@@ -100,37 +121,35 @@ const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
 
       <div className="space-y-6">
         {/* Drop area */}
-       {/* Drop area */}
-            <div
-              className="border-2 border-dashed border-gray-200 rounded-md p-8 text-center bg-gray-50 cursor-pointer"
-              onClick={handleChooseClick} // <-- makes whole box clickable
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-            >
-              <div className="p-2 bg-gray-200 rounded-full inline-block mb-4">
-                <MdOutlineFileUpload className="text-4xl text-gray-500" />
-              </div>
-              <div className="mb-2">Drop photos here or click to browse</div>
-              <div className="text-xs text-secondary mb-4">
-                Up to 5 photos, max 10MB each • JPG, PNG, WEBP
-              </div>
-              <button
-                type="button"
-                onClick={handleChooseClick}
-                className="px-4 py-2 border border-gray-200 rounded-md bg-white cursor-pointer"
-              >
-                Choose Image
-              </button>
-              <input
-                type="file"
-                ref={fileInputRef}
-                multiple
-                accept="image/png, image/jpeg, image/webp"
-                onChange={handleFileChange}
-                className="hidden"
-              />
-            </div>
-
+        <div
+          className="border-2 border-dashed border-gray-200 rounded-md p-8 text-center bg-gray-50 cursor-pointer"
+          onClick={handleChooseClick}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
+          <div className="p-2 bg-gray-200 rounded-full inline-block mb-4">
+            <MdOutlineFileUpload className="text-4xl text-gray-500" />
+          </div>
+          <div className="mb-2">Drop photos here or click to browse</div>
+          <div className="text-xs text-secondary mb-4">
+            Up to 5 photos, max 10MB each • JPG, PNG, WEBP
+          </div>
+          <button
+            type="button"
+            onClick={handleChooseClick}
+            className="px-4 py-2 border border-gray-200 rounded-md bg-white cursor-pointer"
+          >
+            Choose Image
+          </button>
+          <input
+            type="file"
+            ref={fileInputRef}
+            multiple
+            accept="image/png, image/jpeg, image/webp"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+        </div>
 
         {/* Image previews */}
         {previewUrls.length > 0 && (
@@ -196,7 +215,7 @@ const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
           </div>
         </div>
 
-        {/* Job Summary box */}
+        {/* Job Summary box (unchanged) */}
         <div className="border border-gray-200 rounded-md p-4">
           <div className="flex items-center justify-between mb-3">
             <div className="font-semibold flex items-center gap-2">
@@ -227,13 +246,14 @@ const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
               )}
             </div>
 
-            <div className="">
+            <div>
               <strong>Budget</strong>
             </div>
             <div className="text-sm px-2 py-1 bg-gray-100 rounded-md max-w-max my-2">
               Fixed Price
             </div>
             <div className="text-xs">Maximum : ${jobData.price || 200}</div>
+
             <div className="mt-3 mb-2">
               <strong>Timeline</strong>
             </div>
@@ -242,6 +262,7 @@ const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
                 {jobData?.timeline}
               </span>
             </div>
+
             <div className="mt-3">
               <strong>Location</strong>
             </div>
@@ -252,16 +273,17 @@ const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
           </div>
         </div>
 
+        {/* Buttons */}
         <div className="flex items-center justify-between">
           <button
             onClick={() => setPhase(phase - 1)}
-            className="px-4 py-2 rounded-md border border-gray-200 flex items-center gap-2"
+            className="px-4 py-2 rounded-md border border-gray-200 flex items-center gap-2 cursor-pointer"
           >
             <FaArrowLeft /> <span>Previous</span>
           </button>
           <button
             onClick={submitJob}
-            className="px-6 py-2 rounded-md bg-[#FF7346] text-white flex items-center gap-2"
+            className="px-6 py-2 rounded-md bg-[#FF7346] text-white flex items-center gap-2 cursor-pointer"
           >
             <span>Post Job</span> <FaArrowRight />
           </button>

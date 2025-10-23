@@ -87,8 +87,8 @@ const PhaseTwo = ({
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <button onClick={() => setPhase(phase - 1)} className="px-4 py-2 rounded-md border border-gray-200 flex items-center gap-2 font-semibold"><FaArrowLeft /> <span>Previous</span></button>
-                    <button onClick={() => handleNext()} className="px-6 py-2 rounded-md bg-[#FF7346] text-white flex items-center gap-2 font-semibold"><span>Continue</span> <FaArrowRight /></button>
+                    <button onClick={() => setPhase(phase - 1)} className="px-4 py-2 rounded-md border border-gray-200 flex items-center gap-2 font-semibold cursor-pointer"><FaArrowLeft /> <span>Previous</span></button>
+                    <button onClick={() => handleNext()} className="px-6 py-2 rounded-md bg-[#FF7346] text-white flex items-center gap-2 font-semibold cursor-pointer"><span>Continue</span> <FaArrowRight /></button>
                 </div>
             </div>
         </div>

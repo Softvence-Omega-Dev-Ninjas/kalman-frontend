@@ -114,7 +114,7 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
             <input
               type="number"
               value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={(e) => setPrice(Number(e.target.value))}
               placeholder="Budget in USD"
               className="w-full bg-gray-50 text-sm focus:outline-none"
             />
@@ -128,7 +128,7 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
             <input
               type="text"
               value={location}
-              onChange={(e) => setLocation(e.target.value.toString())}
+              onChange={(e) => setLocation(e.target.value)}
               placeholder="Enter your location"
               className="w-full bg-gray-50 text-sm focus:outline-none"
             />
@@ -139,7 +139,7 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
           <button
             type="submit"
             onClick={handleNext}
-            className="bg-[#FF7346] text-white px-6 py-2 rounded-md flex items-center gap-2 font-semibold"
+            className="bg-[#FF7346] text-white px-6 py-2 rounded-md flex items-center gap-2 font-semibold cursor-pointer"
           >
             <span>Continue </span>
             <FaArrowRight />

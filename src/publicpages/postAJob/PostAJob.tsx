@@ -17,7 +17,7 @@ export interface JobData {
   location: string;
   contact_method: "phone" | "email" | null;
   images: File[];
-  price: string;
+  price:string | number;
 }
 
 const PostAJob = () => {
@@ -32,7 +32,7 @@ const PostAJob = () => {
     location: "",
     contact_method: null,
     images: [],
-    price: "" ,
+    price: 0 ,
   });
 
   const progressPercent = () => {
@@ -44,7 +44,7 @@ const PostAJob = () => {
   return (
     <div>
       {/* Header */}
-      <div className="py-6 px-4 fixed top-[12%] left-0 right-0 bg-white shadow-md z-10">
+      <div className="py-5 px-4 fixed top-[14%] left-0 right-0 bg-white shadow-md z-10">
         <div className="max-w-[1180px] mx-auto flex items-center justify-between">
           <div>
             <div className="text-sm font-medium">Budget & Timeline</div>
@@ -69,7 +69,8 @@ const PostAJob = () => {
       </div>
 
       {/* Phases */}
-      <div className="bg-[#eff2f7] min-h-screen pt-[8%] mt-10 py-10">
+      <div className="bg-[#eff2f7] min-h-screen pt-[9%] py-10">
+
         {phase === 1 && (
           <PhaseOne
             phase={phase}
