@@ -1,7 +1,8 @@
 // src/components/Jobs/AllJobs.tsx
-import TradespersonCard from "../reuseable/TradePersonCard";
+// import TradespersonCard from "../reuseable/TradePersonCard";`
 import { Loader2 } from "lucide-react";
 import { PaginationControls } from "./common/PaginationControls";
+import JobCard from "./JobCard";
 
 
 interface AllJobsProps {
@@ -28,18 +29,12 @@ const AllJobs: React.FC<AllJobsProps> = ({
 
   return (
     <div className="px-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className=" gap-3 flex flex-col ">
         {jobs?.map((job, index) => (
-          <TradespersonCard
+          <JobCard
             key={index}
-            image={job?.imageUrl}
-            name={job?.name}
-            profession={job?.category}
-            rating={job?.rating}
-            availability={job?.availability}
-            location={job?.location}
-            hourlyRate={job?.price}
-            onContact={() => console.log(`Contacting ${job?.name}`)}
+             data={job}
+            // onContact={() => console.log(`Contacting ${job?.name}`)}
           />
         ))}
       </div>
