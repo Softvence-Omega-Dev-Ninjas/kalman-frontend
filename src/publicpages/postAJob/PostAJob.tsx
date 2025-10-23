@@ -70,6 +70,7 @@ const PostAJob = () => {
 
       {/* Phases */}
       <div className="bg-[#eff2f7] min-h-screen pt-[9%] py-10">
+
         {phase === 1 && (
           <PhaseOne
             phase={phase}
