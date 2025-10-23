@@ -18,7 +18,7 @@ export type ProfessionalInfo = {
   subCategoryIds?: string[];
   services?: string[];
   description?: string;
-  yearsExperience?: string;
+  yearsExperience?: number;
   businessType?: string;
   hourlyRate?: string;
   businessName?: string;
@@ -26,7 +26,7 @@ export type ProfessionalInfo = {
   idType?: string;
   idFiles?: Array<{ name?: string; size?: number; type?: string; dataUrl?: string }>;
   // Service area fields
-  serviceAreaCenter?: { lat: number; lng: number };
+  serviceAreaCenter?: { lat: number; lng: number; address?: string };
   travelDistanceKm?: number;
   // Payment info (card only)
   paymentMethod?: 'card';
@@ -36,6 +36,7 @@ export type ProfessionalInfo = {
     expiry?: string;
     saveCard?: boolean;
     billingAddress?: { street?: string; city?: string; postcode?: string };
+    cvv?: string;
   };
   // Credential uploads
   credentialsFiles?: Array<{ name?: string; size?: number; type?: string; dataUrl?: string }>;

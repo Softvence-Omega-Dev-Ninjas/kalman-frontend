@@ -21,7 +21,7 @@ const ProfessionalInfoForm = () => {
 
   type ProfessionalFormValues = {
     businessName?: string;
-    yearsExperience?: string;
+    yearsExperience?: number;
     businessType?: string;
     hourlyRate?: string;
     categoryId?: string | null;
@@ -33,7 +33,7 @@ const ProfessionalInfoForm = () => {
   const { register, handleSubmit, setValue } = useForm<ProfessionalFormValues>({
     defaultValues: {
       businessName: "",
-      yearsExperience: "",
+      yearsExperience: 0,
       businessType: undefined,
       hourlyRate: "",
       categoryId: null,
@@ -85,7 +85,10 @@ const ProfessionalInfoForm = () => {
       services: tags,
       subCategoryIds: selectedSubCats,
       categoryId,
+      // Convert yearsExperience to integer
+      yearsExperience: data.yearsExperience ? parseInt(String(data.yearsExperience), 10) : undefined,
     };
+    console.log('[ProfessionalInfoForm] Submitting payload:', payload);
     dispatch(saveProfessional(payload));
     navigate('/trade-person/business-info');
   };
@@ -137,9 +140,9 @@ const ProfessionalInfoForm = () => {
             Years of Experience
           </label>
           <input
-            type="text"
+            type="number"
             placeholder="Your business experience in years"
-            {...register("yearsExperience")}
+            {...register("yearsExperience", { valueAsNumber: true })}
             className="w-full placeholder-gray-400 border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none bg-[#F8F9FA]"
           />
         </div>

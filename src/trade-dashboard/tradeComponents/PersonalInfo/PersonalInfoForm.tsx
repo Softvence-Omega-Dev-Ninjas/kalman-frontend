@@ -14,7 +14,23 @@ const PersonalInfoForm = () => {
   useEffect(() => {
     if (saved) {
       console.log('[PersonalInfoForm] Loaded saved defaults:', saved);
-      reset(saved);
+      
+      // Convert ISO date back to YYYY-MM-DD format for the date input
+      const formData = { ...saved };
+      if (formData.dob) {
+        try {
+          const date = new Date(formData.dob);
+          if (!isNaN(date.getTime())) {
+            // Convert to YYYY-MM-DD format for date input
+            formData.dob = date.toISOString().split('T')[0];
+            console.log('[PersonalInfoForm] Converted ISO dob to date input format:', formData.dob);
+          }
+        } catch (err) {
+          console.error('[PersonalInfoForm] Error converting dob:', err);
+        }
+      }
+      
+      reset(formData);
     }
   }, [saved, reset]);
 
@@ -25,8 +41,21 @@ const PersonalInfoForm = () => {
   }, [watched]);
 
   const onSubmit = (data: PersonalInfo) => {
-    console.log('[PersonalInfoForm] Submitting data:', data);
-    dispatch(savePersonal(data));
+    console.log('[PersonalInfoForm] Submitting data (before conversion):', data);
+    
+    // Convert dob to ISO format if present
+    const dataToSave = { ...data };
+    if (dataToSave.dob) {
+      // If it's already a date string from the input, convert to ISO
+      const dobDate = new Date(dataToSave.dob);
+      if (!isNaN(dobDate.getTime())) {
+        dataToSave.dob = dobDate.toISOString();
+        console.log('[PersonalInfoForm] Converted dob to ISO:', dataToSave.dob);
+      }
+    }
+    
+    console.log('[PersonalInfoForm] Submitting data (after conversion):', dataToSave);
+    dispatch(savePersonal(dataToSave));
     navigate('/trade-person/professional-info');
   };
 
@@ -73,7 +102,7 @@ const PersonalInfoForm = () => {
           <div>
             <label className="block text-lg font-semibold text-gray-800 mb-2">Date of Birth</label>
             <input
-              type="text"
+              type="date"
               placeholder="Enter your date of birth"
               {...register('dob')}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"

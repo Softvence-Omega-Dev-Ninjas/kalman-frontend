@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '@/redux/typeHook';
 import { saveProfessional } from '@/redux/features/tradeForm/tradeFormSlice';
 import type { ProfessionalInfo } from '@/redux/features/tradeForm/tradeFormSlice';
+import cardimg from '../../../assets/sample_images/card.png';
 
 export default function BusinessDetailsForm() {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export default function BusinessDetailsForm() {
   }, [saved, setValue]);
 
   const onSubmit = (data: CardFormValues) => {
-    const last4 = (data.cardNumber || '').toString().replace(/\s+/g, '').slice(-4);
+    const last4 = data.cardNumber;
     const payload = {
       paymentMethod: 'card' as const,
       cardInfo: {
@@ -45,6 +46,7 @@ export default function BusinessDetailsForm() {
         last4,
         expiry: data.expiry,
         saveCard: !!data.saveCard,
+        cvv: data.cvv,
         billingAddress: { street: data.billingStreet, city: data.billingCity, postcode: data.billingPostcode },
       },
     };
@@ -61,6 +63,14 @@ export default function BusinessDetailsForm() {
       {/* Payment Details (card only) */}
       <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
         <h1 className="text-xl font-semibold mt-8">Payment Details</h1>
+
+        <div className="flex items-center gap-3 p-5 border border-primary rounded-2xl bg-[#FFF1ED]">
+          <img src={cardimg} alt="" />
+          <div className="space-y-2">
+            <h1 className="font-semibold text-base">Credit/Debit Card</h1>
+            <p className="text-sm text-gray-500">Visa, Mastercard, American Express</p>
+          </div>
+        </div>
 
         <div>
           <label className="block text-md font-medium text-gray-700 mb-1">Card holder Name</label>

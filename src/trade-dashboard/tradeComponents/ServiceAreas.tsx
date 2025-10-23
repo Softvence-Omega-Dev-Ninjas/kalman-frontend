@@ -24,6 +24,7 @@ export default function ServiceAreas(): JSX.Element {
 
   const defaultCenter: LatLngExpression = saved?.serviceAreaCenter ? [saved.serviceAreaCenter.lat, saved.serviceAreaCenter.lng] : [48.1486, 17.1077];
   const [center, setCenter] = useState<LatLngExpression>(defaultCenter);
+  const [address, setAddress] = useState<string | null>(saved?.serviceAreaCenter?.address ?? null);
 
   // small helper component to capture map clicks with proper typing
   function MapClickSetter({ onMapClick }: { onMapClick: (lat: number, lng: number) => void }) {
@@ -31,6 +32,18 @@ export default function ServiceAreas(): JSX.Element {
       click(e) {
         const { lat, lng } = e.latlng;
         onMapClick(lat, lng);
+        // perform reverse geocoding (OpenStreetMap Nominatim)
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
+          .then((res) => res.json())
+          .then((data) => {
+            const name = data?.display_name ?? null;
+            setAddress(name);
+            console.log('[ServiceAreas] Reverse-geocoded address:', name);
+          })
+          .catch((err) => {
+            console.warn('Reverse geocode failed', err);
+            setAddress(null);
+          });
       },
     });
     return null;
@@ -89,6 +102,10 @@ export default function ServiceAreas(): JSX.Element {
           </MapContainer>
         </div>
 
+        {address && (
+          <div className="mb-4 text-sm text-gray-700">Selected address: {address}</div>
+        )}
+
        <div className="mt-16 flex justify-between">
          <Link to='/trade-person/business-info'>
           <button className="flex items-center gap-2 px-5 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
@@ -102,7 +119,7 @@ export default function ServiceAreas(): JSX.Element {
              // save selected center and distance into trade form
              const [lat, lng] = center as [number, number];
              const payload = {
-               serviceAreaCenter: { lat, lng },
+               serviceAreaCenter: { lat, lng, address: address ?? undefined },
                travelDistanceKm: distance ?? undefined,
              };
              console.log('[ServiceAreas] Saving service area payload:', payload);
