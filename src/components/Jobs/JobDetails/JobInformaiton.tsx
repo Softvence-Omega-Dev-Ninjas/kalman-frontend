@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { FaSearchLocation } from "react-icons/fa";
+
 import { LuCalendarDays } from "react-icons/lu";
 import { WiTime4 } from "react-icons/wi";
 import { CiLocationOn } from "react-icons/ci";
