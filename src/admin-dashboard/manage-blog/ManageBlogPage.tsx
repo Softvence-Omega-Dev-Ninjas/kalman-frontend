@@ -1,5 +1,5 @@
 import { Eye, Loader2, Plus, Search, SquarePen, Trash2 } from "lucide-react";
-import { blogData, type TBlog } from "./data/blogData";
+import { type TBlog } from "./data/blogData";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ const ManageBlogPage = () => {
   const { data } = useGetAllBlogsQuery(undefined);
 
   const [deleteBlog] = useDeleteBlogMutation();
-  const [editingBlogId, setEditingBlogId] = useState(null);
+  const [editingBlogId, setEditingBlogId] = useState<number | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 

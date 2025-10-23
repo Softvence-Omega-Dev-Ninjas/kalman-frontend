@@ -3,11 +3,24 @@ import {
   usePostBlogMutation,
   useUpdateBlogMutation,
 } from "@/redux/features/blog/blogApi";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 
 type AddBlogProps = {
   onCancel: () => void;
-  initialData: any | null;
+  initialData: BlogData | null;
+};
+
+type BlogData = {
+  id: string;
+  title: string;
+  description: string;
+  imeges: (string | File)[];
+};
+
+type FormDataState = {
+  title: string;
+  description: string;
+  images: File[];
 };
 
 const AddBlog = ({ onCancel, initialData }: AddBlogProps) => {
@@ -15,17 +28,27 @@ const AddBlog = ({ onCancel, initialData }: AddBlogProps) => {
   const [postBlog, { isLoading }] = usePostBlogMutation();
   const [updateBlog] = useUpdateBlogMutation();
 
+  const [formData, setFormData] = useState<FormDataState>({
+    title: "",
+    description: "",
+    images: [],
+  });
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
+
   useEffect(() => {
     if (initialData) {
       setFormData({
         title: initialData.title || "",
         description: initialData.description || "",
-        images: initialData.imeges || [],
+        images: (initialData.imeges || []).filter(
+          (img): img is File => img instanceof File
+        ),
       });
+
       setPreviewImages(
-        initialData.imeges?.map((img: any) =>
+        (initialData.imeges || []).map((img) =>
           typeof img === "string" ? img : URL.createObjectURL(img)
-        ) || []
+        )
       );
     } else {
       setFormData({ title: "", description: "", images: [] });
@@ -33,19 +56,34 @@ const AddBlog = ({ onCancel, initialData }: AddBlogProps) => {
     }
   }, [initialData]);
 
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    images: [],
-  });
-  const [previewImages, setPreviewImages] = useState([]);
-
-  const handleChange = (e) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files ? Array.from(e.target.files) : [];
+    if (files.length === 0) return;
+
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files],
+    }));
+
+    const newPreviews = files.map((file) => URL.createObjectURL(file));
+    setPreviewImages((prev) => [...prev, ...newPreviews]);
+  };
+
+  const handleRemoveImage = (index: number) => {
+    const updatedPreviews = previewImages.filter((_, i) => i !== index);
+    const updatedFiles = formData.images.filter((_, i) => i !== index);
+    setPreviewImages(updatedPreviews);
+    setFormData((prev) => ({ ...prev, images: updatedFiles }));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     if (!formData.title || !formData.description) {
@@ -61,9 +99,10 @@ const AddBlog = ({ onCancel, initialData }: AddBlogProps) => {
           description: formData.description,
         })
       );
+
       formData.images.forEach((file) => payload.append("images", file));
 
-      if (isEditMode) {
+      if (isEditMode && initialData) {
         await updateBlog({ id: initialData.id, data: payload }).unwrap();
       } else {
         await postBlog(payload).unwrap();
@@ -95,7 +134,7 @@ const AddBlog = ({ onCancel, initialData }: AddBlogProps) => {
           value={formData.title}
           onChange={handleChange}
           required
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 "
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
         />
       </div>
 
@@ -110,7 +149,7 @@ const AddBlog = ({ onCancel, initialData }: AddBlogProps) => {
         <textarea
           name="description"
           id="description"
-          rows="4"
+          rows={4}
           value={formData.description}
           onChange={handleChange}
           required
@@ -138,15 +177,7 @@ const AddBlog = ({ onCancel, initialData }: AddBlogProps) => {
           name="images"
           multiple
           accept="image/*"
-          onChange={(e) => {
-            const files = Array.from(e.target.files);
-            setFormData((prev) => ({
-              ...prev,
-              images: [...prev.images, ...files],
-            }));
-            const newPreviews = files.map((file) => URL.createObjectURL(file));
-            setPreviewImages((prev) => [...prev, ...newPreviews]);
-          }}
+          onChange={handleFileChange}
           className="hidden"
         />
 
@@ -165,16 +196,7 @@ const AddBlog = ({ onCancel, initialData }: AddBlogProps) => {
                 />
                 <button
                   type="button"
-                  onClick={() => {
-                    const updatedPreviews = previewImages.filter(
-                      (_, i) => i !== index
-                    );
-                    const updatedFiles = formData.images.filter(
-                      (_, i) => i !== index
-                    );
-                    setPreviewImages(updatedPreviews);
-                    setFormData((prev) => ({ ...prev, images: updatedFiles }));
-                  }}
+                  onClick={() => handleRemoveImage(index)}
                   className="absolute top-1 right-1 bg-orange-600 bg-opacity-60 text-white rounded-sm p-1 opacity-100 transition"
                 >
                   ✕
@@ -187,18 +209,17 @@ const AddBlog = ({ onCancel, initialData }: AddBlogProps) => {
 
       {/* Buttons */}
       <div className="pt-4 border-t border-gray-100 flex justify-end space-x-3">
-        {/* Cancel Button */}
         <Button
           variant="outline"
           onClick={() => {
             setFormData({ title: "", description: "", images: [] });
-            onCancel(); // close modal
+            setPreviewImages([]);
+            onCancel();
           }}
-          className="flex items-center px-4 py-2 "
+          className="flex items-center px-4 py-2"
         >
           Cancel
         </Button>
-
         <Button
           type="submit"
           className="flex items-center px-4 py-2"
