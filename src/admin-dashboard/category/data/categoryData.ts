@@ -4,6 +4,8 @@ import icon3 from "@/assets/dashboard/category/icon3.png";
 import icon4 from "@/assets/dashboard/category/icon4.png";
 
 export type TCategory={
+  id: any;
+  subCategories: any;
     name: string, image:string
 }
 

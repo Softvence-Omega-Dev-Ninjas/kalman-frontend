@@ -17,6 +17,7 @@ export interface JobData {
   location: string;
   contact_method: "phone" | "email" | null;
   images: File[];
+  price: string;
 }
 
 const PostAJob = () => {
@@ -31,6 +32,7 @@ const PostAJob = () => {
     location: "",
     contact_method: null,
     images: [],
+    price: "" ,
   });
 
   const progressPercent = () => {

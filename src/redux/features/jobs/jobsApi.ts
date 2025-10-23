@@ -36,7 +36,7 @@ export const jobsApi = baseApi.injectEndpoints({
 
      
       // post a job mutation
-       postAJob: builder.mutation({
+      postAJob: builder.mutation({
       query: ({ data, images }) => {
         const formData = new FormData();
         formData.append("data", JSON.stringify(data));
