@@ -13,7 +13,7 @@ export type TBlog={
     title: string;
     description: string;
     author: string;
-    date: string;
+    createdAt: string;
 }
 
 export const blogData = [

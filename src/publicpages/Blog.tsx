@@ -3,9 +3,7 @@ import PageHeader from "../components/reuseable/PageHeader";
 import AllBlog from "@/components/PublicPages/Blog/AllBlog";
 
 function Blog() {
-  const { data, isLoading } = useGetAllBlogsQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-  });
+  const { data, isLoading } = useGetAllBlogsQuery(undefined);
 
   return (
     <div>
