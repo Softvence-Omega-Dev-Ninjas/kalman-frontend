@@ -49,7 +49,7 @@ import TradeSignUp from "./trade-dashboard/TradeSignUp";
 import GeneralAuthFlow from "./components/AuthComponents/GeneralAuthFlow";
 import ResetPassword from "./publicpages/ResetPassword";
 import AdminLogin from "./admin-dashboard/adminLogin/AdminLogin";
-
+import BlogDetails from "./publicpages/BlogDetails";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -88,6 +88,10 @@ const router = createBrowserRouter([
       {
         path: "blog",
         element: <Blog />,
+      },
+      {
+        path: "blog/:id",
+        element: <BlogDetails />,
       },
       {
         path: "contact",
@@ -140,74 +144,76 @@ const router = createBrowserRouter([
   },
   // trade person dashboard
   {
-    path: 'trade-person',
+    path: "trade-person",
     element: <TradePersonDashboardLayout />,
     children: [
       {
         index: true,
-        element: <TradeOverview />
+        element: <TradeOverview />,
       },
       {
-        path: 'jobs/:id',
-        element: <TradeJobDetails></TradeJobDetails>
+        path: "jobs/:id",
+        element: <TradeJobDetails></TradeJobDetails>,
       },
       {
-        path: 'messages',
-        element: <TradeMessage></TradeMessage>
-      }, {
-        path: 'payments',
-        element: <TradePayment></TradePayment>
-      }, {
-        path: 'reviews',
-        element: <TradeReviews></TradeReviews>
+        path: "messages",
+        element: <TradeMessage></TradeMessage>,
       },
       {
-        path: 'settings',
-        element: <TradeSetting></TradeSetting>
+        path: "payments",
+        element: <TradePayment></TradePayment>,
       },
-    ]
+      {
+        path: "reviews",
+        element: <TradeReviews></TradeReviews>,
+      },
+      {
+        path: "settings",
+        element: <TradeSetting></TradeSetting>,
+      },
+    ],
   },
 
   //without dashboard
   {
-    path: '/trade-person/personal-info',
-    element: <PersonalInfo />
+    path: "/trade-person/personal-info",
+    element: <PersonalInfo />,
   },
   {
-    path: '/trade-person/professional-info',
-    element: <ProfessionalInfo />
+    path: "/trade-person/professional-info",
+    element: <ProfessionalInfo />,
   },
   {
-    path: '/trade-person/business-info',
-    element: <BusinessInfo />
+    path: "/trade-person/business-info",
+    element: <BusinessInfo />,
   },
   {
-    path: '/trade-person/service-areas',
-    element: <ServiceAreas />
+    path: "/trade-person/service-areas",
+    element: <ServiceAreas />,
   },
   {
-    path: '/trade-person/credentials',
-    element: <Credentials />
+    path: "/trade-person/credentials",
+    element: <Credentials />,
   },
   {
-    path: '/trade-person/payment-terms',
-    element: <PaymentTerms />
+    path: "/trade-person/payment-terms",
+    element: <PaymentTerms />,
   },
   {
-    path: '/trade-person/business-details',
-    element: <BusinessDetails />
+    path: "/trade-person/business-details",
+    element: <BusinessDetails />,
   },
   {
-    path: '/trade-person/review-info',
-    element: <ReviewInfo />
+    path: "/trade-person/review-info",
+    element: <ReviewInfo />,
   },
   {
-    path: '/trade-login',
-    element: <TradeLogin />
+    path: "/trade-login",
+    element: <TradeLogin />,
   },
   {
-    path: '/trade-signup',
-    element: <TradeSignUp />
+    path: "/trade-signup",
+    element: <TradeSignUp />,
   },
 
   // super admin dashboard
@@ -223,9 +229,8 @@ const router = createBrowserRouter([
       {
         path: "admin/overview",
         element: <OverviewPage />,
-      }  
-      
-      ,
+      },
+
       {
         path: "admin/manage-users",
         element: <ManageUsersPage />,
@@ -252,11 +257,11 @@ const router = createBrowserRouter([
       },
     ],
   },
-  
-      {
-        path: "admin/login",
-        element: <AdminLogin />,
-      },
+
+  {
+    path: "admin/login",
+    element: <AdminLogin />,
+  },
   {
     path: "*",
     element: <NotFound />,
@@ -264,4 +269,3 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
-

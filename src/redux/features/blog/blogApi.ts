@@ -11,6 +11,13 @@ import { baseApi } from "@/redux/api/baseApi";
             providesTags:["Blogs"],
         }),
 
+        getSingleBlog:builder.query({
+            query:(id)=>({
+                url:`/blog/${id}`,
+                method:"GET",
+            }),
+        }),
+
         // Post a New Blog 
         postBlog:builder.mutation({
             query:(data)=>({
@@ -24,7 +31,7 @@ import { baseApi } from "@/redux/api/baseApi";
 
  });
 
- export const {useGetAllBlogsQuery,usePostBlogMutation}=blogApi;
+ export const {useGetAllBlogsQuery,usePostBlogMutation, useGetSingleBlogQuery}=blogApi;
 
 
 
