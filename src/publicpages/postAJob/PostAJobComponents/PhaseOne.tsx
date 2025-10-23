@@ -139,7 +139,7 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
           <button
             type="submit"
             onClick={handleNext}
-            className="bg-[#FF7346] text-white px-6 py-2 rounded-md flex items-center gap-2 font-semibold"
+            className="bg-[#FF7346] text-white px-6 py-2 rounded-md flex items-center gap-2 font-semibold cursor-pointer"
           >
             <span>Continue </span>
             <FaArrowRight />
