@@ -25,7 +25,7 @@ const BlogCard = ({
         className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden p-3"
       >
         <img
-          src={images?.[0]}
+          src={`${images?.[0]}`}
           alt={title}
           className="w-full h-60 object-cover rounded-md"
         />
