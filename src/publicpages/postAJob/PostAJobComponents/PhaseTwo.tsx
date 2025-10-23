@@ -1,25 +1,43 @@
-import phaseTwoImg from "../../assets/sample_images/phase2logo.png";
-import { useState } from "react";
-import flexibleIcon from "../../assets/sample_images/flexible.png"
-import emergencyIcon from "../../assets/sample_images/emergency.png"
-import urgentIcon from "../../assets/sample_images/urgent.png"
-import soonIcon from "../../assets/sample_images/soon.png"
+import phaseTwoImg from "../../../assets/sample_images/phase2logo.png";
+import flexibleIcon from "../../../assets/sample_images/flexible.png";
+import emergencyIcon from "../../../assets/sample_images/emergency.png";
+import urgentIcon from "../../../assets/sample_images/urgent.png";
+import soonIcon from "../../../assets/sample_images/soon.png";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { useState } from "react";
+import type { JobData } from "../PostAJob";
 
 const timelineOptions = [
-    { id: 'flexible', title: 'Flexible', subtitle: 'within 2 weeks', icon: flexibleIcon  },
-    { id: 'soon', title: 'Soon', subtitle: 'within 1 week', icon: soonIcon },
-    { id: 'urgent', title: 'Urgent', subtitle: 'within 2 days', icon: urgentIcon },
-    { id: 'emergency', title: 'Emergency', subtitle: 'ASAP', icon: emergencyIcon },
+  { id: "flexible", title: "Flexible", subtitle: "within 2 weeks", icon: flexibleIcon },
+  { id: "soon", title: "Soon", subtitle: "within 1 week", icon: soonIcon },
+  { id: "urgent", title: "Urgent", subtitle: "within 2 days", icon: urgentIcon },
+  { id: "emergency", title: "Emergency", subtitle: "ASAP", icon: emergencyIcon },
 ];
 
-const PhaseTwo = ({ phase, setPhase }: { phase: number; setPhase: (phase: number) => void; }) => {
-    const [selected, setSelected] = useState<string | null>(null);
-    const [date, setDate] = useState('');
-    const [time, setTime] = useState('Any time');
+// {"title":"Fix Leaky Roof","categoryId":"","description":"Roof repair on a two-story house.","location":"Suburb X","timeline":"3 days","contact_method":"Email","skills_needed":["Roofing","Waterproofing"],"price":150}
 
-    return (
-        <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-10">
+const PhaseTwo = ({
+  phase,
+  setPhase,
+  jobData,
+  setJobData,
+}: {
+  phase: number;
+  setPhase: (phase: number) => void;
+  jobData: JobData;
+  setJobData: React.Dispatch<React.SetStateAction<JobData>>;
+}) => {
+  const [selected, setSelected] = useState(jobData.timeline);
+  const [date, setDate] = useState(jobData.date);
+  const [time, setTime] = useState(jobData.time);
+
+  const handleNext = () => {
+    setJobData({ ...jobData, timeline: selected, date, time });
+    setPhase(phase + 1);
+  };
+
+  return (
+      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-10">
             <div className="flex flex-col items-center mb-8">
                 <div className="w-16 h-16 rounded-full bg-[#0B1B26] flex items-center justify-center mb-4">
                     <img src={phaseTwoImg} alt="timeline" />
@@ -70,11 +88,11 @@ const PhaseTwo = ({ phase, setPhase }: { phase: number; setPhase: (phase: number
 
                 <div className="flex items-center justify-between">
                     <button onClick={() => setPhase(phase - 1)} className="px-4 py-2 rounded-md border border-gray-200 flex items-center gap-2 font-semibold"><FaArrowLeft /> <span>Previous</span></button>
-                    <button onClick={() => setPhase(phase + 1)} className="px-6 py-2 rounded-md bg-[#FF7346] text-white flex items-center gap-2 font-semibold"><span>Continue</span> <FaArrowRight /></button>
+                    <button onClick={() => handleNext()} className="px-6 py-2 rounded-md bg-[#FF7346] text-white flex items-center gap-2 font-semibold"><span>Continue</span> <FaArrowRight /></button>
                 </div>
             </div>
         </div>
-    );
+  );
 };
 
 export default PhaseTwo;

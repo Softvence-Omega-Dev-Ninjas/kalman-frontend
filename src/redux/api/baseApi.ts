@@ -4,9 +4,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://pravaruka.sk" , // 🔹 Change this to your API base URL
+    baseUrl: "https://pravaruka.sk" , //  Change this to your API base URL
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as any)?.auth?.token;
+     const state = getState() as any;
+     const token = state.auth?.token || state.admin?.token;
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -14,7 +15,7 @@ export const baseApi = createApi({
     },
   }),
 
-  tagTypes: ["Auth", "Jobs", "Customer","Categories","Blogs"],
+  tagTypes: ["Auth", "Jobs", "Customer","Categories","Dasboard","Blogs"],
 
   endpoints: () => ({}),
 });
