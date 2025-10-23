@@ -42,7 +42,25 @@ const PhaseThree = ({ phase, setPhase, jobData }: any) => {
     fileInputRef.current?.click();
   };
 
-  // ✅ Fixed submitJob function to match API definition
+  // Handle drag and drop
+const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  e.preventDefault(); // prevent file from opening in browser
+  e.stopPropagation();
+};
+
+const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const droppedFiles = Array.from(e.dataTransfer.files).slice(0, 5); // limit 5
+  if (droppedFiles.length > 0) {
+    setImages((prev) => [...prev, ...droppedFiles]);
+    const urls = droppedFiles.map((file) => URL.createObjectURL(file));
+    setPreviewUrls((prev) => [...prev, ...urls]);
+  }
+};
+
+  //  Fixed submitJob function to match API definition
   const submitJob = async () => {
     try {
       const data = {
@@ -82,30 +100,37 @@ const PhaseThree = ({ phase, setPhase, jobData }: any) => {
 
       <div className="space-y-6">
         {/* Drop area */}
-        <div className="border-2 border-dashed border-gray-200 rounded-md p-8 text-center bg-gray-50">
-          <div className="p-2 bg-gray-200 rounded-full inline-block mb-4">
-            <MdOutlineFileUpload className="text-4xl text-gray-500" />
-          </div>
-          <div className="mb-2">Drop photos here or click to browse</div>
-          <div className="text-xs text-secondary mb-4">
-            Up to 5 photos, max 10MB each • JPG, PNG, WEBP
-          </div>
-          <button
-            type="button"
-            onClick={handleChooseClick}
-            className="px-4 py-2 border border-gray-200 rounded-md bg-white"
-          >
-            Choose Image
-          </button>
-          <input
-            type="file"
-            ref={fileInputRef}
-            multiple
-            accept="image/png, image/jpeg, image/webp"
-            onChange={handleFileChange}
-            className="hidden"
-          />
-        </div>
+       {/* Drop area */}
+            <div
+              className="border-2 border-dashed border-gray-200 rounded-md p-8 text-center bg-gray-50 cursor-pointer"
+              onClick={handleChooseClick} // <-- makes whole box clickable
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+            >
+              <div className="p-2 bg-gray-200 rounded-full inline-block mb-4">
+                <MdOutlineFileUpload className="text-4xl text-gray-500" />
+              </div>
+              <div className="mb-2">Drop photos here or click to browse</div>
+              <div className="text-xs text-secondary mb-4">
+                Up to 5 photos, max 10MB each • JPG, PNG, WEBP
+              </div>
+              <button
+                type="button"
+                onClick={handleChooseClick}
+                className="px-4 py-2 border border-gray-200 rounded-md bg-white cursor-pointer"
+              >
+                Choose Image
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                multiple
+                accept="image/png, image/jpeg, image/webp"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+            </div>
+
 
         {/* Image previews */}
         {previewUrls.length > 0 && (
