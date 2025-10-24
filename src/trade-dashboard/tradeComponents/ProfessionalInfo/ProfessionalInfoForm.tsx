@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useGetCategoriesHQuery, useGetCategoriesQuery } from "@/redux/features/admin/categoryApi";
+import { useGetCategoriesHQuery } from "@/redux/features/admin/categoryApi";
 import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from '@/redux/typeHook';
 import { saveProfessional } from '@/redux/features/tradeForm/tradeFormSlice';
