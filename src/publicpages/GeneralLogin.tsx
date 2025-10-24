@@ -41,77 +41,79 @@ const GeneralLogin: React.FC = () => {
     },
   });
 
-  const decodeJWT = (token: string) => {
-    try {
-      const base64Url = token.split(".")[1];
-      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split("")
-          .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-          .join("")
-      );
-      return JSON.parse(jsonPayload);
-    } catch (error) {
-      console.error("Error decoding JWT:", error);
-      return null;
-    }
-  };
+  // const decodeJWT = (token: string) => {
+  //   try {
+  //     const base64Url = token.split(".")[1];
+  //     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  //     const jsonPayload = decodeURIComponent(
+  //       atob(base64)
+  //         .split("")
+  //         .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+  //         .join("")
+  //     );
+  //     return JSON.parse(jsonPayload);
+  //   } catch (error) {
+  //     console.error("Error decoding JWT:", error);
+  //     return null;
+  //   }
+  // };
 
   const onSubmit = async (data: LoginFormInputs) => {
-    if (!data.rememberMe) {
-          toast.error("You must agree to the terms before continuing!");
-          return;
-        }
-    try {
-      const result = await login({
-        email: data.email,
-        password: data.password,
-      }).unwrap();
+  if (!data.rememberMe) {
+    toast.error("You must agree to the terms before continuing!");
+    return;
+  }
 
-      if (result.success && result.data) {
-        const token = result.data;
-        const decodedToken = decodeJWT(token);
+  try {
+    const result = await login({
+      email: data.email,
+      password: data.password,
+    }).unwrap();
 
-        if (decodedToken) {
-          const userData = {
-            id: decodedToken.id,
-            email: decodedToken.email,
-            phone: decodedToken.phone,
-            role: decodedToken.role,
-          };
+    if (result.success && result.data) {
+      const { token, user } = result.data;
 
-          dispatch(
-            setUser({
-              user: userData,
-              token,
-            })
-          );
+      const userData = {
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        image: user.image,
+      };
 
-          toast.success(result.message || "Login successful!");
+      // Store in Redux
+      dispatch(
+        setUser({
+          user: userData,
+          token,
+        })
+      );
 
-          if (data.rememberMe) {
-            localStorage.setItem("rememberMe", "true");
-          } else {
-            localStorage.removeItem("rememberMe");
-          }
+      // Store in localStorage for persistence
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(userData));
 
-          navigate("/");
-        } else {
-          toast.error("Failed to decode user information");
-        }
+      toast.success(result.message || "Login successful!");
+
+      if (data.rememberMe) {
+        localStorage.setItem("rememberMe", "true");
       } else {
-        toast.error("Login failed: Invalid response format");
+        localStorage.removeItem("rememberMe");
       }
-    } catch (err: any) {
-      console.error("Login error:", err);
-      const errorMessage =
-        err?.data?.message ||
-        err?.error ||
-        "Login failed! Please check your credentials.";
-      toast.error(errorMessage);
+
+      navigate("/");
+    } else {
+      toast.error("Login failed: Invalid response format");
     }
-  };
+  } catch (err: any) {
+    console.error("Login error:", err);
+    const errorMessage =
+      err?.data?.message ||
+      err?.error ||
+      "Login failed! Please check your credentials.";
+    toast.error(errorMessage);
+  }
+};
+
 
   const handleGoogleLogin = () => {
     toast.success("Google login coming soon!");
