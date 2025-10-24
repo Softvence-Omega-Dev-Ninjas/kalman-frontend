@@ -16,6 +16,7 @@ export const blogApi = baseApi.injectEndpoints({
         url: `/blog/${id}`,
         method: "GET",
       }),
+      providesTags: (id) => [{ type: "Blogs", id }],
     }),
 
     // Post a New Blog

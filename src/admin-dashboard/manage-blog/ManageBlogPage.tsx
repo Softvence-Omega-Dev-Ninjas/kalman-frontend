@@ -1,4 +1,4 @@
-import { Eye, Loader2, Plus, Search, SquarePen, Trash2 } from "lucide-react";
+import { Eye, Plus, Search, SquarePen, Trash2 } from "lucide-react";
 import { type TBlog } from "./data/blogData";
 
 import { useState } from "react";
@@ -11,21 +11,14 @@ import AddBlog from "./AddBlog";
 import {
   useDeleteBlogMutation,
   useGetAllBlogsQuery,
-  useGetSingleBlogQuery,
 } from "@/redux/features/blog/blogApi";
 
 const ManageBlogPage = () => {
   const { data } = useGetAllBlogsQuery(undefined);
-
   const [deleteBlog] = useDeleteBlogMutation();
-  const [editingBlogId, setEditingBlogId] = useState<number | null>(null);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data: singleBlogData, isLoading: isSingleLoading } =
-    useGetSingleBlogQuery(editingBlogId, {
-      skip: !editingBlogId, // only fetch if editingBlogId is set
-    });
+  const [editingBlog, setEditingBlog] = useState<TBlog | null>(null);
 
   // 3. Handlers for Modal
   const handleOpenModal = () => setIsModalOpen(true);
@@ -55,8 +48,12 @@ const ManageBlogPage = () => {
         <div className="flex items-center">
           <div className="flex-shrink-0 w-24 h-12 ">
             <img
-              className="w-24 h-12 "
-              src={row?.imeges?.[0]}
+              className="w-24 h-12"
+              src={
+                row?.imeges?.[0] instanceof File
+                  ? URL.createObjectURL(row?.imeges?.[0])
+                  : row?.imeges?.[0]
+              }
               alt={row?.title}
             />
           </div>
@@ -92,7 +89,7 @@ const ManageBlogPage = () => {
           </button>
           <button
             onClick={() => {
-              setEditingBlogId(row?.id);
+              setEditingBlog(row);
               handleOpenModal();
             }}
             className="text-gray-400 hover:text-primary focus:outline-none focus:text-primary cursor-pointer"
@@ -126,7 +123,7 @@ const ManageBlogPage = () => {
           </div>
           <Button
             onClick={() => {
-              setEditingBlogId(null);
+              setEditingBlog(null);
               setIsModalOpen(true);
             }}
             className="flex items-center px-4 py-2 "
@@ -146,23 +143,16 @@ const ManageBlogPage = () => {
 
       <Modal
         isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setEditingBlogId(null);
-        }}
-        title={editingBlogId ? "Edit Blog Post" : "Create New Blog Post"}
+        onClose={handleCloseModal}
+        title={editingBlog ? "Edit Blog Post" : "Create New Blog Post"}
       >
-        {editingBlogId && isSingleLoading ? (
-          <Loader2 />
-        ) : (
-          <AddBlog
-            initialData={editingBlogId ? singleBlogData?.data : null}
-            onCancel={() => {
-              handleCloseModal();
-              setEditingBlogId(null);
-            }}
-          />
-        )}
+        <AddBlog
+          initialData={editingBlog}
+          onCancel={() => {
+            handleCloseModal();
+            setEditingBlog(null);
+          }}
+        />
       </Modal>
     </div>
   );
