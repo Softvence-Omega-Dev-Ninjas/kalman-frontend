@@ -10,21 +10,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
   const [sendProposal, setSendProposal] = useState(false);
 
   const cusInfo = customer;
-  // console.log()
 
-  // Mock data to match the image
-  // const mockCustomer = {
-  //   name: "John Smith",
-  //   image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
-  //   location: "Banská Bystrica",
-  //   memberSince: "2018",
-  //   isVerified: true,
-  //   shortlistFee: "$20.00 + VAT",
-  //   shortlistedCount: "01",
-  //   invitationMessage: "The customer invited you to discuss their lead.",
-  // };
-
-  // const actualCustomer = customer || mockCustomer;
 
   return (
     <div className="space-y-4">
