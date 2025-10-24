@@ -11,7 +11,7 @@ interface IUserData {
   fileName: string;
   email: string;
   image?: string;
-  type: "Customer" | "Provider" | string;
+  type: "Customer" | "Tradesman" | string;
   status: "Active" | "Suspended" | "Deactivated" | string;
   location: string;
   performance?: {
@@ -44,12 +44,12 @@ console.log(users)
         id: user.id,
         fileName: user.name || user.email.split("@")[0],
         email: user.email,
-        image: user.profile_image || undefined,
+        // image: user.profile_image || undefined,
         type:
           user.role === "CUSTOMER"
             ? "Customer"
             : user.role === "TRADESMAN"
-            ? "Provider"
+            ? "Tradesman"
             : user.role,
         status: user.verification === "COMPLETE" ? "Active" : "Suspended",
         location: user.city || "-",

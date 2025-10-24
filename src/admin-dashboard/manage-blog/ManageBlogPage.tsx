@@ -12,11 +12,13 @@ import {
   useDeleteBlogMutation,
   useGetAllBlogsQuery,
 } from "@/redux/features/blog/blogApi";
+import ViewBlog from "./ViewBlog";
 
 const ManageBlogPage = () => {
   const { data } = useGetAllBlogsQuery(undefined);
   const [deleteBlog] = useDeleteBlogMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<"view" | "edit" | "add">("add");
 
   const [editingBlog, setEditingBlog] = useState<TBlog | null>(null);
 
@@ -84,12 +86,20 @@ const ManageBlogPage = () => {
       header: "Action",
       cell: (row) => (
         <div className="flex items-center space-x-2">
-          <button className="text-gray-400 hover:text-primary focus:outline-none focus:text-primary cursor-pointer">
+          <button
+            onClick={() => {
+              setEditingBlog(row);
+              setViewMode("view");
+              handleOpenModal();
+            }}
+            className="text-gray-400 hover:text-primary focus:outline-none focus:text-primary cursor-pointer"
+          >
             <Eye size={18} />
           </button>
           <button
             onClick={() => {
               setEditingBlog(row);
+              setViewMode("edit");
               handleOpenModal();
             }}
             className="text-gray-400 hover:text-primary focus:outline-none focus:text-primary cursor-pointer"
@@ -124,6 +134,7 @@ const ManageBlogPage = () => {
           <Button
             onClick={() => {
               setEditingBlog(null);
+              setViewMode("add");
               setIsModalOpen(true);
             }}
             className="flex items-center px-4 py-2 "
@@ -142,17 +153,28 @@ const ManageBlogPage = () => {
       />
 
       <Modal
+        widthClass={viewMode === "view" ? "max-w-7xl" : ""}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        title={editingBlog ? "Edit Blog Post" : "Create New Blog Post"}
+        title={
+          viewMode === "view"
+            ? "View Blog Post"
+            : editingBlog
+            ? "Edit Blog Post"
+            : "Create New Blog Post"
+        }
       >
-        <AddBlog
-          initialData={editingBlog}
-          onCancel={() => {
-            handleCloseModal();
-            setEditingBlog(null);
-          }}
-        />
+        {viewMode === "view" && editingBlog ? (
+          <ViewBlog data={editingBlog} />
+        ) : (
+          <AddBlog
+            initialData={editingBlog}
+            onCancel={() => {
+              handleCloseModal();
+              setEditingBlog(null);
+            }}
+          />
+        )}
       </Modal>
     </div>
   );
