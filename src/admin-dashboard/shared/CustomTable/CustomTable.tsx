@@ -55,7 +55,7 @@ const CustomTable = <T extends object>({
 
         <tbody className="bg-white divide-y divide-gray-200">
           {data?.map((row, rowIndex) => (
-            <tr key={rowIndex} className="hover:bg-gray-50">
+            <tr key={rowIndex} className={`hover:bg-primary/5 ${rowIndex%2!==0 && "bg-gray-50"}`}>
               {columns.map((column, colIndex) => (
                 <td
                   key={colIndex}
