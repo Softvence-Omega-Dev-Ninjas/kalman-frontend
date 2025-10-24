@@ -33,7 +33,7 @@ export const blogApi = baseApi.injectEndpoints({
     updateBlog: builder.mutation({
       query: ({ id, data }) => ({
         url: `/blog/${id}`,
-        method: "PUT", // or PATCH depending on your backend
+        method: "PATCH", // or PATCH depending on your backend
         body: data,
       }),
       invalidatesTags: ["Blogs"],
