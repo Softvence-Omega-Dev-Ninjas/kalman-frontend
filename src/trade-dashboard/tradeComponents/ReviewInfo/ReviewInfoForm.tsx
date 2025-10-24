@@ -1,10 +1,10 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "@/redux/typeHook";
-import { useEffect, useState, useCallback, useMemo } from 'react';
-import tradePersonSignupFormData from '@/lib/tradeFormData';
+import { useEffect, useState, useCallback, useMemo } from "react";
+import tradePersonSignupFormData from "@/lib/tradeFormData";
 import { useTradeSignUpMutation } from "@/redux/features/tradeForm/tradeSignUp";
-import { resetTradeForm } from '@/redux/features/tradeForm/tradeFormSlice';
+import { resetTradeForm } from "@/redux/features/tradeForm/tradeFormSlice";
 
 export default function ReviewInfoForm() {
   const navigate = useNavigate();
@@ -12,88 +12,104 @@ export default function ReviewInfoForm() {
   const savedPersonal = useAppSelector((s) => s.tradeForm.personal);
   const savedProfessional = useAppSelector((s) => s.tradeForm.professional);
   const [tradeSignUp, { isLoading }] = useTradeSignUpMutation();
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
   console.log("[ReviewInfoForm] Loaded personal info:", savedPersonal);
   console.log("[ReviewInfoForm] Loaded professional info:", savedProfessional);
   console.log("[ReviewInfoForm] ID Files check:", savedProfessional?.idFiles);
-  console.log("[ReviewInfoForm] Credential Files check:", savedProfessional?.credentialsFiles);
+  console.log(
+    "[ReviewInfoForm] Credential Files check:",
+    savedProfessional?.credentialsFiles
+  );
 
   useEffect(() => {
     try {
-      const fd = tradePersonSignupFormData({ personal: savedPersonal, professional: savedProfessional });
+      const fd = tradePersonSignupFormData({
+        personal: savedPersonal,
+        professional: savedProfessional,
+      });
       const entries: Array<[string, string]> = [];
       fd.forEach((value, key) => {
         entries.push([key, String(value)]);
       });
-      console.log('[ReviewInfoForm] FormData preview:', entries);
+      console.log("[ReviewInfoForm] FormData preview:", entries);
     } catch (err) {
-      console.error('[ReviewInfoForm] Failed building FormData preview', err);
+      console.error("[ReviewInfoForm] Failed building FormData preview", err);
     }
   }, [savedPersonal, savedProfessional]);
 
   // helper to convert dataUrl to base64 payload
   const dataUrlToBase64 = useCallback((dataUrl?: string) => {
     if (!dataUrl) return null;
-    const parts = dataUrl.split(',');
+    const parts = dataUrl.split(",");
     return parts.length > 1 ? parts[1] : parts[0];
   }, []);
 
-  const fileToBinaryObject = useCallback((f: { dataUrl?: string; name?: string; type?: string; size?: number } | undefined) => {
-    if (!f || !f.dataUrl) return null;
-    const b64 = dataUrlToBase64(f.dataUrl);
-    return {
-      filename: f.name ?? undefined,
-      contentType: f.type ?? undefined,
-      size: f.size ?? undefined,
-      $binary: b64,
-    };
-  }, [dataUrlToBase64]);
+  const fileToBinaryObject = useCallback(
+    (
+      f:
+        | { dataUrl?: string; name?: string; type?: string; size?: number }
+        | undefined
+    ) => {
+      if (!f || !f.dataUrl) return null;
+      const b64 = dataUrlToBase64(f.dataUrl);
+      return {
+        filename: f.name ?? undefined,
+        contentType: f.type ?? undefined,
+        size: f.size ?? undefined,
+        $binary: b64,
+      };
+    },
+    [dataUrlToBase64]
+  );
 
-  const tradePersonSignupData = useMemo(() => ({
-    doc: savedProfessional.idFiles,
-    docs: {
-      type: savedProfessional.idType,
-    },
-    credential: savedProfessional.credentialsFiles,
-    firstName: savedPersonal.firstName,
-    lastName: savedPersonal.lastName,
-    email: savedPersonal.email,
-    phoneNumber: savedPersonal.phone,
-    dateOfBirth: savedPersonal.dob,
-    address: savedPersonal.street,
-    city: savedPersonal.city,
-    state: savedPersonal.state,
-    zipCode: savedPersonal.zip,
-    categoryId: savedProfessional.categoryId,
-    subCategories: savedProfessional.subCategoryIds,
-    businessDetail: {
-      businessName: savedProfessional.businessName,
-      yearsOfExperience: savedProfessional.yearsExperience,
-      businessType: savedProfessional.businessType,
-      hourlyRate: savedProfessional.hourlyRate,
-      services: savedProfessional.services,
-      professionalDescription: savedProfessional.description,
-    },
-    serviceArea: {
-      address: savedProfessional.serviceAreaCenter?.address,
-      latitude: savedProfessional.serviceAreaCenter?.lat,
-      longitude: savedProfessional.serviceAreaCenter?.lng,
-      radius: savedProfessional.travelDistanceKm,
-    },
-    paymentMethod: {
-      expiryDate: savedProfessional.cardInfo?.expiry,
-      cvv: savedProfessional.cardInfo?.cvv,
-      cardHolderName: savedProfessional.cardInfo?.holderName,
-      city: savedProfessional.cardInfo?.billingAddress?.city,
-      saveCard: savedProfessional.cardInfo?.saveCard,
-      postCode: savedProfessional.cardInfo?.billingAddress?.postcode,
-      provider: "Visa/Mastercard/Amex",
-      streetAddress: savedProfessional.cardInfo?.billingAddress?.street,
-      agreedToTerms: true,
-      cardNumber: savedProfessional.cardInfo?.last4,
-      methodType: "Credit/Debit Card",
-    },
-  }), [savedPersonal, savedProfessional]);
+  const tradePersonSignupData = useMemo(
+    () => ({
+      doc: savedProfessional.idFiles,
+      docs: {
+        type: savedProfessional.idType,
+      },
+      credential: savedProfessional.credentialsFiles,
+      firstName: savedPersonal.firstName,
+      lastName: savedPersonal.lastName,
+      email: savedPersonal.email,
+      phoneNumber: savedPersonal.phone,
+      dateOfBirth: savedPersonal.dob,
+      address: savedPersonal.street,
+      city: savedPersonal.city,
+      state: savedPersonal.state,
+      zipCode: savedPersonal.zip,
+      categoryId: savedProfessional.categoryId,
+      subCategories: savedProfessional.subCategoryIds,
+      businessDetail: {
+        businessName: savedProfessional.businessName,
+        yearsOfExperience: savedProfessional.yearsExperience,
+        businessType: savedProfessional.businessType,
+        hourlyRate: savedProfessional.hourlyRate,
+        services: savedProfessional.services,
+        professionalDescription: savedProfessional.description,
+      },
+      serviceArea: {
+        address: savedProfessional.serviceAreaCenter?.address,
+        latitude: savedProfessional.serviceAreaCenter?.lat,
+        longitude: savedProfessional.serviceAreaCenter?.lng,
+        radius: savedProfessional.travelDistanceKm,
+      },
+      paymentMethod: {
+        expiryDate: savedProfessional.cardInfo?.expiry,
+        cvv: savedProfessional.cardInfo?.cvv,
+        cardHolderName: savedProfessional.cardInfo?.holderName,
+        city: savedProfessional.cardInfo?.billingAddress?.city,
+        saveCard: savedProfessional.cardInfo?.saveCard,
+        postCode: savedProfessional.cardInfo?.billingAddress?.postcode,
+        provider: "Visa/Mastercard/Amex",
+        streetAddress: savedProfessional.cardInfo?.billingAddress?.street,
+        agreedToTerms: true,
+        cardNumber: savedProfessional.cardInfo?.last4,
+        methodType: "Credit/Debit Card",
+      },
+    }),
+    [savedPersonal, savedProfessional]
+  );
 
   console.log("signup data:", tradePersonSignupData);
 
@@ -105,8 +121,8 @@ export default function ReviewInfoForm() {
       Object.entries(tradePersonSignupData).forEach(([k, v]) => {
         if (v === undefined || v === null) return;
         // handle doc and credential specially below
-        if (k === 'doc' || k === 'credential') return;
-        if (typeof v === 'object') {
+        if (k === "doc" || k === "credential") return;
+        if (typeof v === "object") {
           fd.append(k, JSON.stringify(v));
         } else {
           fd.append(k, String(v));
@@ -116,42 +132,68 @@ export default function ReviewInfoForm() {
       // doc: can be single or array
       const docs = tradePersonSignupData.doc as unknown;
       if (docs) {
-        const arr = Array.isArray(docs) ? (docs as Array<unknown>) : [docs as unknown];
+        const arr = Array.isArray(docs)
+          ? (docs as Array<unknown>)
+          : [docs as unknown];
         arr.forEach((f) => {
-          const obj = fileToBinaryObject(f as { dataUrl?: string; name?: string; type?: string; size?: number });
-          if (obj) fd.append('doc', JSON.stringify(obj));
+          const obj = fileToBinaryObject(
+            f as {
+              dataUrl?: string;
+              name?: string;
+              type?: string;
+              size?: number;
+            }
+          );
+          if (obj) fd.append("doc", JSON.stringify(obj));
         });
       }
 
       // credential
       const creds = tradePersonSignupData.credential as unknown;
       if (creds) {
-        const arr = Array.isArray(creds) ? (creds as Array<unknown>) : [creds as unknown];
+        const arr = Array.isArray(creds)
+          ? (creds as Array<unknown>)
+          : [creds as unknown];
         arr.forEach((f) => {
-          const obj = fileToBinaryObject(f as { dataUrl?: string; name?: string; type?: string; size?: number });
-          if (obj) fd.append('credential', JSON.stringify(obj));
+          const obj = fileToBinaryObject(
+            f as {
+              dataUrl?: string;
+              name?: string;
+              type?: string;
+              size?: number;
+            }
+          );
+          if (obj) fd.append("credential", JSON.stringify(obj));
         });
       }
 
       const entries: Array<[string, string]> = [];
       fd.forEach((value, key) => entries.push([key, String(value)]));
-      console.log('[ReviewInfoForm] tradePersonSignupData -> FormData:', entries);
+      console.log(
+        "[ReviewInfoForm] tradePersonSignupData -> FormData:",
+        entries
+      );
     } catch (err) {
-      console.error('[ReviewInfoForm] Failed to convert signup data to FormData', err);
+      console.error(
+        "[ReviewInfoForm] Failed to convert signup data to FormData",
+        err
+      );
     }
   }, [tradePersonSignupData, fileToBinaryObject]);
 
   const handleContinue = async () => {
     try {
-      setError('');
+      setError("");
 
       // Validate that documents are uploaded
       const docs = tradePersonSignupData.doc as unknown;
       const hasDocFiles = docs && Array.isArray(docs) && docs.length > 0;
-      
+
       if (!hasDocFiles) {
-        setError('Please upload your identity documents before submitting.');
-        console.error('[ReviewInfoForm] No doc files found in tradePersonSignupData');
+        setError("Please upload your identity documents before submitting.");
+        console.error(
+          "[ReviewInfoForm] No doc files found in tradePersonSignupData"
+        );
         return;
       }
 
@@ -159,9 +201,9 @@ export default function ReviewInfoForm() {
 
       // Helper to convert dataURL to Blob/File
       const dataUrlToFile = (dataUrl: string, filename: string): File => {
-        const arr = dataUrl.split(',');
+        const arr = dataUrl.split(",");
         const mimeMatch = arr[0].match(/:(.*?);/);
-        const mime = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
+        const mime = mimeMatch ? mimeMatch[1] : "application/octet-stream";
         const bstr = atob(arr[1]);
         let n = bstr.length;
         const u8arr = new Uint8Array(n);
@@ -174,8 +216,8 @@ export default function ReviewInfoForm() {
       // Append simple fields (skip doc, docs, credential)
       Object.entries(tradePersonSignupData).forEach(([k, v]) => {
         if (v === undefined || v === null) return;
-        if (k === 'doc' || k === 'credential' || k === 'docs') return;
-        if (typeof v === 'object') {
+        if (k === "doc" || k === "credential" || k === "docs") return;
+        if (typeof v === "object") {
           fd.append(k, JSON.stringify(v));
         } else {
           fd.append(k, String(v));
@@ -184,20 +226,24 @@ export default function ReviewInfoForm() {
 
       // Append docs metadata
       if (tradePersonSignupData.docs) {
-        fd.append('docs', JSON.stringify(tradePersonSignupData.docs));
+        fd.append("docs", JSON.stringify(tradePersonSignupData.docs));
       }
 
       // Convert and append doc files as actual File objects
       if (docs && Array.isArray(docs)) {
-        console.log('[ReviewInfoForm] Processing doc files:', docs.length);
+        console.log("[ReviewInfoForm] Processing doc files:", docs.length);
         docs.forEach((f: { dataUrl?: string; name?: string }) => {
           if (f?.dataUrl && f?.name) {
             try {
               const file = dataUrlToFile(f.dataUrl, f.name);
-              fd.append('doc', file);
-              console.log('[ReviewInfoForm] Added doc file:', f.name);
+              fd.append("doc", file);
+              console.log("[ReviewInfoForm] Added doc file:", f.name);
             } catch (err) {
-              console.error('[ReviewInfoForm] Failed to convert doc file:', f.name, err);
+              console.error(
+                "[ReviewInfoForm] Failed to convert doc file:",
+                f.name,
+                err
+              );
             }
           }
         });
@@ -206,15 +252,22 @@ export default function ReviewInfoForm() {
       // Convert and append credential files as actual File objects
       const creds = tradePersonSignupData.credential as unknown;
       if (creds && Array.isArray(creds)) {
-        console.log('[ReviewInfoForm] Processing credential files:', creds.length);
+        console.log(
+          "[ReviewInfoForm] Processing credential files:",
+          creds.length
+        );
         creds.forEach((f: { dataUrl?: string; name?: string }) => {
           if (f?.dataUrl && f?.name) {
             try {
               const file = dataUrlToFile(f.dataUrl, f.name);
-              fd.append('credential', file);
-              console.log('[ReviewInfoForm] Added credential file:', f.name);
+              fd.append("credential", file);
+              console.log("[ReviewInfoForm] Added credential file:", f.name);
             } catch (err) {
-              console.error('[ReviewInfoForm] Failed to convert credential file:', f.name, err);
+              console.error(
+                "[ReviewInfoForm] Failed to convert credential file:",
+                f.name,
+                err
+              );
             }
           }
         });
@@ -229,31 +282,40 @@ export default function ReviewInfoForm() {
           entries.push([key, String(value)]);
         }
       });
-      console.log('[ReviewInfoForm] Submitting FormData:', entries);
-      
+      console.log("[ReviewInfoForm] Submitting FormData:", entries);
+
       const res = await tradeSignUp(fd).unwrap();
-      
-      console.log('[ReviewInfoForm] tradeSignUp response:', res);
-      
+
+      console.log("[ReviewInfoForm] tradeSignUp response:", res);
+
       if (res.success) {
-        console.log('[ReviewInfoForm] Signup successful, navigating...');
-        navigate(`${res.data.onboardingUrl}`);
+        console.log("[ReviewInfoForm] Signup successful, navigating...");
+        dispatch(resetTradeForm());
+        setError("");
+        window.open(res.data.onboardingUrl, "_blank");
+        // navigate(`${res.data.onboardingUrl}`);
       } else {
-        setError(res.message || 'Signup failed. Please try again.');
+        setError(res.message || "Signup failed. Please try again.");
       }
     } catch (err: unknown) {
-      console.error('[ReviewInfoForm] tradeSignUp error:', err);
-      const message = (err as { data?: { message?: string } })?.data?.message || 'An error occurred during signup.';
+      console.error("[ReviewInfoForm] tradeSignUp error:", err);
+      const message =
+        (err as { data?: { message?: string } })?.data?.message ||
+        "An error occurred during signup.";
       setError(message);
     }
   };
 
   const handleClear = () => {
-    if (window.confirm('Are you sure you want to clear all form data? This action cannot be undone.')) {
-      console.log('[ReviewInfoForm] Clearing all trade form data');
+    if (
+      window.confirm(
+        "Are you sure you want to clear all form data? This action cannot be undone."
+      )
+    ) {
+      console.log("[ReviewInfoForm] Clearing all trade form data");
       dispatch(resetTradeForm());
-      setError('');
-      navigate('/trade-person/personal-info');
+      setError("");
+      navigate("/trade-person/personal-info");
     }
   };
 
@@ -391,7 +453,7 @@ export default function ReviewInfoForm() {
       <div className="mt-16 flex justify-between items-center">
         <div className="flex gap-3">
           <Link to="/trade-person/business-details">
-            <button 
+            <button
               className="flex items-center gap-2 px-5 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
               disabled={isLoading}
             >
@@ -400,7 +462,7 @@ export default function ReviewInfoForm() {
             </button>
           </Link>
 
-          <button 
+          <button
             onClick={handleClear}
             disabled={isLoading}
             className="flex items-center gap-2 px-5 py-2 border border-red-300 bg-red-50 rounded-lg text-red-700 hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -409,12 +471,12 @@ export default function ReviewInfoForm() {
           </button>
         </div>
 
-        <button 
+        <button
           onClick={handleContinue}
           disabled={isLoading}
           className="flex items-center gap-2 px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? 'Submitting...' : 'Continue'}
+          {isLoading ? "Submitting..." : "Continue"}
           {!isLoading && <ArrowRight size={18} />}
         </button>
       </div>

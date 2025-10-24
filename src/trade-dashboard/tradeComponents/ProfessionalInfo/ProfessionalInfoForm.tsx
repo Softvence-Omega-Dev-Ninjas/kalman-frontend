@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useGetCategoriesQuery } from "@/redux/features/admin/categoryApi";
+import { useGetCategoriesHQuery, useGetCategoriesQuery } from "@/redux/features/admin/categoryApi";
 import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from '@/redux/typeHook';
 import { saveProfessional } from '@/redux/features/tradeForm/tradeFormSlice';
@@ -11,7 +11,8 @@ const ProfessionalInfoForm = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [categoryId, setCategoryId] = useState<string | null>(null);
   const [selectedSubCats, setSelectedSubCats] = useState<string[]>([]);
-  const { data } = useGetCategoriesQuery({ page: 1, limit: 10 });
+  // const { data } = useGetCategoriesQuery({ page: 1, limit: 10 });
+  const { data } = useGetCategoriesHQuery();
   const categories = data?.data.result || [];
   console.log("Categories:", categories);
   const subCategories = categories.filter((category: any) => category.id === categoryId)[0]?.subCategories || [];

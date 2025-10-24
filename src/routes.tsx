@@ -49,7 +49,9 @@ import GeneralAuthFlow from "./components/AuthComponents/GeneralAuthFlow";
 import ResetPassword from "./publicpages/ResetPassword";
 import AdminLogin from "./admin-dashboard/adminLogin/AdminLogin";
 import BlogDetails from "./publicpages/BlogDetails";
-import TradeSignUp from "./trade-dashboard/TradeSignUp";
+// import TradeSignUp from "./trade-dashboard/TradeSignUp";
+import TradeSignUpPage from "./trade-dashboard/tradeComponents/TradeSignUp/TradeSignUpPage";
+import TradeSuccessPage from "./trade-dashboard/tradeComponents/TradeSuccessPage";
 // import TradeSignUpPage from "./trade-dashboard/tradeComponents/TradeSignUp/TradeSignUpPage";
 
 
@@ -215,7 +217,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/trade-signup",
-    element: <TradeSignUp />,
+    element: <TradeSignUpPage />,
+  },
+  {
+    path: "/onboarding-success",
+    element: <TradeSuccessPage />,
   },
 
   // super admin dashboard

@@ -59,9 +59,12 @@ const TradeLogInComponent: React.FC = () => {
         password: data.password,
       }).unwrap();
 
+      console.log("Login result:", result);
       if (result.success && result.data) {
-        const token = result.data;
+        const token = result.data.token;
+        console.log("Received Token:", token);
         const decodedToken = decodeJWT(token);
+        console.log("Decoded Token:", decodedToken);
 
         if (decodedToken) {
           const userData = {
