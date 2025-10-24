@@ -1,13 +1,5 @@
-import { BsThreeDots } from "react-icons/bs";
-import {
-  MdOutlineKeyboardArrowLeft,
-  MdOutlineKeyboardArrowRight,
-} from "react-icons/md";
 import TradespersonCard from "../reuseable/TradePersonCard";
 import trade1 from "../../assets/sample_images/trade1.png";
-import trade2 from "../../assets/sample_images/trade2.png";
-import trade3 from "../../assets/sample_images/trade3.png";
-import trade4 from "../../assets/sample_images/trade4.png";
 import { Loader2 } from "lucide-react";
 import { PaginationControls } from "../Jobs/common/PaginationControls";
 
@@ -26,98 +18,6 @@ const AllServices: React.FC<AllTradesmanProps> = ({
   setPage,
   totalPages,
 }) => {
-  const tradespeople = [
-    {
-      image: trade1,
-      name: "Ronald Higgins",
-      profession: "Plumber",
-      rating: "5.0",
-      availability: "Full Time",
-      location: "At near your location",
-      hourlyRate: "20.00",
-    },
-    {
-      image: trade2,
-      name: "Wade Warren",
-      profession: "Handyman",
-      rating: "5.0",
-      availability: "Part Time",
-      location: "At near your location",
-      hourlyRate: "30.00",
-    },
-    {
-      image: trade3,
-      name: "Ronald Higgins",
-      profession: "Electrician",
-      rating: "5.0",
-      availability: "Full Time",
-      location: "At near your location",
-      hourlyRate: "40.00",
-    },
-    {
-      image: trade2,
-      name: "Wade Warren",
-      profession: "Handyman",
-      rating: "5.0",
-      availability: "Part Time",
-      location: "At near your location",
-      hourlyRate: "30.00",
-    },
-    {
-      image: trade3,
-      name: "Ronald Higgins",
-      profession: "Electrician",
-      rating: "5.0",
-      availability: "Full Time",
-      location: "At near your location",
-      hourlyRate: "40.00",
-    },
-    {
-      image: trade4,
-      name: "Jacob Jones",
-      profession: "Interior Designer",
-      rating: "5.0",
-      availability: "Part Time",
-      location: "At near your location",
-      hourlyRate: "50.00",
-    },
-    {
-      image: trade3,
-      name: "Ronald Higgins",
-      profession: "Electrician",
-      rating: "5.0",
-      availability: "Full Time",
-      location: "At near your location",
-      hourlyRate: "40.00",
-    },
-    {
-      image: trade4,
-      name: "Jacob Jones",
-      profession: "Interior Designer",
-      rating: "5.0",
-      availability: "Part Time",
-      location: "At near your location",
-      hourlyRate: "50.00",
-    },
-    {
-      image: trade3,
-      name: "Ronald Higgins",
-      profession: "Electrician",
-      rating: "5.0",
-      availability: "Full Time",
-      location: "At near your location",
-      hourlyRate: "40.00",
-    },
-    {
-      image: trade4,
-      name: "Jacob Jones",
-      profession: "Interior Designer",
-      rating: "5.0",
-      availability: "Part Time",
-      location: "At near your location",
-      hourlyRate: "50.00",
-    },
-  ];
   console.log("tradesman", tradesman);
   const handleContact = (name: string) => {
     console.log(`Contacting ${name}`);
@@ -134,7 +34,7 @@ const AllServices: React.FC<AllTradesmanProps> = ({
         {tradesman.map((person, index) => (
           <TradespersonCard
             key={index}
-            image={person.image}
+            image={trade1}
             name={`${person.firstName} ${person.lastName}`}
             profession={person.businessDetail.businessName}
             rating={person.businessDetail.yearsOfExperience}
