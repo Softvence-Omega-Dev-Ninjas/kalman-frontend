@@ -73,15 +73,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <div className="mt-2">
-                <div className="text-2xl font-bold text-white">
-                  <Link to="/">
-                    <h1 className="text-2xl md:text-3xl font-bold text-[#0D1B2A]">
-                      Stavbar
-                    </h1>
-                  </Link>
+              <Link to="/">
+                <div className="mt-2">
+                  <div className="text-2xl font-bold text-white">
+            
+                      <h1 className="text-2xl md:text-3xl font-bold text-[#0D1B2A]">
+                        Stavbar
+                      </h1>
+                  
+                  </div>
                 </div>
-              </div>
+            </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
