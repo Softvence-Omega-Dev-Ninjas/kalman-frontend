@@ -29,7 +29,7 @@ const PhaseThree = ({ phase, setPhase, jobData }: any) => {
       setImages((prev) => [...prev, ...selected]);
       const urls = selected.map((file) => URL.createObjectURL(file));
       setPreviewUrls((prev) => [...prev, ...urls]);
-      e.target.value = ""; // ✅ reset input so same file can be re-selected
+      e.target.value = ""; //  reset input so same file can be re-selected
     }
   };
 

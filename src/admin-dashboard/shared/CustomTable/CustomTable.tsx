@@ -41,7 +41,7 @@ const CustomTable = <T extends object>({
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            {columns.map((column, index) => (
+            {columns?.map((column, index) => (
               <th
                 key={index}
                 scope="col"
@@ -54,7 +54,7 @@ const CustomTable = <T extends object>({
         </thead>
 
         <tbody className="bg-white divide-y divide-gray-200">
-          {data.map((row, rowIndex) => (
+          {data?.map((row, rowIndex) => (
             <tr key={rowIndex} className="hover:bg-gray-50">
               {columns.map((column, colIndex) => (
                 <td

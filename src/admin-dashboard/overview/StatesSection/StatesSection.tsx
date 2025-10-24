@@ -21,7 +21,7 @@ const StatesSection : React.FC<StatesSectionProps> = ({overview}) => {
           <p className="text-2xl font-bold text-gray-800">{overview?.totalUser}</p>
           <div className="text-green-500 flex items-center gap-1 mt-1">
             <TrendingUp />
-            <span>+{overview?.userGrowth} this month</span>
+            <p>+{overview?.userGrowth} this month</p>
           </div>
         </div>
         <div className="bg-[#0181FA] rounded-full w-14 h-14 flex items-center justify-center p-2">
