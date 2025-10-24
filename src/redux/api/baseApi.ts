@@ -7,15 +7,16 @@ export const baseApi = createApi({
     baseUrl: "https://pravaruka.sk" , //  Change this to your API base URL
     prepareHeaders: (headers, { getState }) => {
      const state = getState() as any;
-     const token = state.auth?.token || state.admin?.token;
+     const token = state.admin?.token || state.user?.token;
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
+        console.log(token)
       }
       return headers;
     },
   }),
 
-  tagTypes: ["Auth", "Jobs", "Customer","Categories","Dasboard","Blogs"],
+  tagTypes: ["Auth", "Jobs", "Customer","Categories", "Dasboard", "Blogs" , "Admin"],
 
   endpoints: () => ({}),
 });

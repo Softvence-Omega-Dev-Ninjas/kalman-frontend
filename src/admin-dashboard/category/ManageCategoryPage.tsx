@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Search } from "lucide-react";
+import { Search, SquarePen, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import {
   useCreateCategoryMutation,
@@ -9,7 +8,7 @@ import {
   useGetCategoriesQuery,
 } from "@/redux/features/admin/categoryApi";
 import CreateCategory from "./CreateCategory";
-import CategoryTable from "./CategoryTable";
+import CustomTable, { type Column } from "../shared/CustomTable/CustomTable";
 import { PaginationControls } from "@/components/Jobs/common/PaginationControls";
 import { Button } from "@/components/ui/button";
 
@@ -18,6 +17,7 @@ interface TCategory {
   name: string;
   image: string;
   subCategories?: string[];
+  createdAt?: string;
 }
 
 const ManageCategoryPage = () => {
@@ -32,7 +32,7 @@ const ManageCategoryPage = () => {
     page: currentPage,
     limit: pageSize,
   });
-console.log(data)
+
   const categories: TCategory[] = data?.data?.result ?? [];
   const totalItems = data?.data?.metadata?.totalItem ?? 0;
   const totalPages = Math.ceil(totalItems / pageSize);
@@ -41,56 +41,42 @@ console.log(data)
   const [updateCategory] = useUpdateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
 
-  // Handle create or update
-// Handle create or update
-// Handle create or update
-const handleCreateOrUpdate = async (formData: FormData) => {
-  try {
-    if (editingCategory?.id) {
-      // Prepare JSON payload for PATCH
-      const data: any = {};
-
-      formData.forEach((value, key) => {
-        if (key === "subCategories") {
-          if (typeof value === "string" && value.trim() !== "") {
-            // Convert CSV string to array only if not empty
-            data[key] = value.split(",").map((v) => v.trim());
+  const handleCreateOrUpdate = async (formData: FormData) => {
+    try {
+      if (editingCategory?.id) {
+        // Prepare JSON payload for PATCH
+        const data: any = {};
+        formData.forEach((value, key) => {
+          if (key === "subCategories") {
+            if (typeof value === "string" && value.trim() !== "") {
+              data[key] = value.split(",").map((v) => v.trim());
+            }
+          } else if (key !== "image") {
+            data[key] = value;
           }
-          // if empty, do not include subCategories
-        } else if (key !== "image") {
-          data[key] = value;
-        }
-      });
+        });
 
-      console.log("PATCH payload:", data);
-      await updateCategory({ id: editingCategory.id, data }).unwrap();
-      toast.success("Category updated successfully!");
-    } else {
-      // CreateCategory keeps FormData (multipart/form-data)
-      await createCategory(formData).unwrap();
-      toast.success("Category created successfully!");
+        await updateCategory({ id: editingCategory.id, data }).unwrap();
+        toast.success("Category updated successfully!");
+      } else {
+        await createCategory(formData).unwrap();
+        toast.success("Category created successfully!");
+      }
+
+      refetch();
+      setEditingCategory(null);
+      setModalOpen(false);
+    } catch (err: any) {
+      console.error("Operation error:", err);
+      toast.error(err?.data?.message || "Operation failed");
     }
+  };
 
-    refetch();
-    setEditingCategory(null);
-    setModalOpen(false);
-  } catch (err: any) {
-    console.error("Operation error:", err);
-    toast.error(err?.data?.message || "Operation failed");
-  }
-};
-
-
-
-
-
-  // Edit category
   const handleEdit = (category: TCategory) => {
     setEditingCategory(category);
     setModalOpen(true);
   };
 
-  // Delete category
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this category?")) return;
     try {
@@ -102,11 +88,60 @@ const handleCreateOrUpdate = async (formData: FormData) => {
     }
   };
 
-  // Add new category
   const handleAdd = () => {
-    setEditingCategory(null); // Clear edit data
-    setModalOpen(true);       // Open modal blank
+    setEditingCategory(null);
+    setModalOpen(true);
   };
+
+  // Define CustomTable columns
+  const categoryColumns: Column<TCategory>[] = [
+    { header: "", cell: () => <input type="checkbox" className="w-4 h-4" /> },
+    {
+      header: "Image",
+      cell: (row) => (
+       <img
+  src={row?.image}
+  alt={row?.name}
+  className="w-16 h-10 object-cover rounded"
+/>
+
+      ),
+    },
+    { header: "Name", accessor: "name" },
+    {
+      header: "Subcategories",
+      cell: (row) =>
+        row.subCategories?.length ? (
+          <span>{row.subCategories.join(", ")}</span>
+        ) : (
+          <span className="text-gray-400 italic">—</span>
+        ),
+    },
+    {
+      header: "Created",
+      cell: (row) =>
+        row.createdAt ? new Date(row.createdAt).toLocaleDateString() : "—",
+    },
+    {
+      header: "Actions",
+      cell: (row) => (
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={() => handleEdit(row)}
+            className="text-blue-500 hover:text-blue-700 text-sm"
+          >
+           <SquarePen size={18} />
+          </button>
+          <button
+            onClick={() => handleDelete(row.id)}
+            className="text-red-500 hover:text-red-700 text-sm"
+          >
+            <Trash2 size={18}/>
+          </button>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="p-5 bg-gray-50 rounded-lg shadow-sm">
@@ -115,7 +150,6 @@ const handleCreateOrUpdate = async (formData: FormData) => {
         <h1 className="text-2xl font-bold text-gray-900">Category Management</h1>
 
         <div className="flex items-center space-x-4 flex-wrap gap-5">
-          {/* Search */}
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <Search size={18} className="text-gray-400" />
@@ -132,10 +166,10 @@ const handleCreateOrUpdate = async (formData: FormData) => {
             />
           </div>
 
-          {/* Add Category */}
-          <Button onClick={handleAdd} className="cursor-pointer">Add Category</Button>
+          <Button onClick={handleAdd} className="cursor-pointer">
+            Add Category
+          </Button>
 
-          {/* Create/Edit Modal */}
           <CreateCategory
             onCreate={handleCreateOrUpdate}
             editingCategory={editingCategory}
@@ -145,15 +179,11 @@ const handleCreateOrUpdate = async (formData: FormData) => {
         </div>
       </header>
 
-      {/* Loading */}
-      {isLoading && <p className="text-gray-500 mb-3">Loading categories...</p>}
-
-      {/* Category Table */}
-      <CategoryTable
+      {/* Table */}
+      <CustomTable
+        columns={categoryColumns}
         data={categories}
         isLoading={isLoading}
-        onDelete={handleDelete}
-        onEdit={handleEdit}
       />
 
       {/* Pagination */}
