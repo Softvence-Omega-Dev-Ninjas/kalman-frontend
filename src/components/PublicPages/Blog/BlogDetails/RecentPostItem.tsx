@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface PostProps {
   id: string;
@@ -17,14 +18,14 @@ const RecentPostItem: React.FC<PostProps> = ({ id, title, date, imageUrl }) => {
       />
       <div className="flex flex-col gap-y-1">
         <p className="text-xs text-blue-500 mt-0.5">Category</p>
-        <a
-          href={`/blog/${id}`}
+        <Link
+          to={`/blog/${id}`}
           className="flex flex-col text-sm font-sans text-gray-700 hover:text-primary leading-snug transition-colors"
         >
           <span className="font-medium">
             {title.length > 50 ? title.slice(0, 50) + "…" : title}
           </span>
-        </a>
+        </Link>
 
         <div className="flex items-center text-gray-500 text-xs space-x-2">
           <span>{date?.split("T")[0]}</span>

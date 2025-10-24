@@ -14,7 +14,7 @@ export type TBlog = {
   description: string;
   author: string;
   createdAt: string;
-  imeges: string;
+  imeges: (string | File)[];
 };
 
 export const blogData = [

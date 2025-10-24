@@ -11,8 +11,8 @@ function BlogDetails() {
       <PageHeader
         title="BlogDetails"
         breadcrumbs={[
-          { label: "Home", href: "/blog/:id" },
-          { label: "Blog" },
+          { label: "Home", href: "/" },
+          { label: "Blog", href: "/blog" },
           { label: "Details" },
         ]}
       />
