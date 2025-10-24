@@ -4,7 +4,10 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import {
+  Card,
 
+} from "@/components/ui/card"
 import avatar from "@/assets/dashboard/header/avatar.png";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import useScrollTrigger from "@/hooks/useScrollTrigger";
@@ -43,7 +46,9 @@ const AdminDashboardLayout = () => {
           </header>
           <div className="bg-[#F9FAFB] min-h-[calc(100vh)] z-0">
             <div className="p-5">
-              <Outlet />
+            <Card className="p-5">
+                <Outlet/>
+            </Card>
             </div>
           </div>
           {/* <footer className="w-full px-4 py-6 bg-primary-200 text-sm text-white text-center">

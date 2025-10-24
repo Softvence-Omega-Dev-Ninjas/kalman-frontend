@@ -144,7 +144,7 @@ const ManageCategoryPage = () => {
   ];
 
   return (
-    <div className="p-5 bg-gray-50 rounded-lg shadow-sm">
+    <div className=" rounded-lg ">
       {/* Header */}
       <header className="flex items-center justify-between mb-8 flex-wrap gap-5">
         <h1 className="text-2xl font-bold text-gray-900">Category Management</h1>

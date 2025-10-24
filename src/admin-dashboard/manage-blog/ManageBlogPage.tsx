@@ -48,9 +48,9 @@ const ManageBlogPage = () => {
       header: "Image",
       cell: (row) => (
         <div className="flex items-center">
-          <div className="flex-shrink-0 w-24 h-12 ">
+          <div className="flex-shrink-0 w-20 h-12 ">
             <img
-              className="w-24 h-12"
+              className="w-24 h-12 rounded-md"
               src={
                 row?.imeges?.[0] instanceof File
                   ? URL.createObjectURL(row?.imeges?.[0])
