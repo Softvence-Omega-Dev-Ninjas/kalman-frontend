@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 type StepProgressBarProps = {
   title: string;
@@ -13,6 +14,8 @@ const StepProgressBar: React.FC<StepProgressBarProps> = ({
   totalSteps,
   progress,
 }) => {
+
+  const navigate = useNavigate();
   return (
     <div className="sticky top-0 z-50 bg-white w-full shadow-sm">
       <div className="w-full max-w-5xl mx-auto px-4 py-6">
@@ -20,7 +23,7 @@ const StepProgressBar: React.FC<StepProgressBarProps> = ({
         <div className="flex justify-between items-center flex-wrap">
           {/* Left side - Title */}
           <div className="flex items-center space-x-3 mb-2 sm:mb-0">
-            <span className="text-2xl font-bold text-black">✕</span>
+            <span onClick={() => navigate(-1)} className="text-2xl font-bold text-black">✕</span>
             <h1 className="text-xl font-bold text-gray-900">{title}</h1>
           </div>
 
