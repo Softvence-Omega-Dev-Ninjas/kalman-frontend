@@ -1,14 +1,35 @@
-import { Eye, Plus, Search, SquarePen, Trash2 } from "lucide-react";
-import { blogData, type TBlog } from "./data/blogData";
+import { Eye, Loader2, Plus, Search, SquarePen, Trash2 } from "lucide-react";
+import { type TBlog } from "./data/blogData";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { Column } from "../shared/CustomTable/CustomTable";
 import CustomTable from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
+import Modal from "@/components/reuseable/Modal";
+import AddBlog from "./AddBlog";
+import {
+  useDeleteBlogMutation,
+  useGetAllBlogsQuery,
+  useGetSingleBlogQuery,
+} from "@/redux/features/blog/blogApi";
 
 const ManageBlogPage = () => {
-  // {"title":"Fix Leaky Roof","description":"Roof repair on a two-story house."}
+  const { data } = useGetAllBlogsQuery(undefined);
+
+  const [deleteBlog] = useDeleteBlogMutation();
+  const [editingBlogId, setEditingBlogId] = useState<number | null>(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { data: singleBlogData, isLoading: isSingleLoading } =
+    useGetSingleBlogQuery(editingBlogId, {
+      skip: !editingBlogId, // only fetch if editingBlogId is set
+    });
+
+  // 3. Handlers for Modal
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
   //Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 4;
@@ -33,7 +54,11 @@ const ManageBlogPage = () => {
       cell: (row) => (
         <div className="flex items-center">
           <div className="flex-shrink-0 w-24 h-12 ">
-            <img className="w-24 h-12 " src={row.image} alt={row.title} />
+            <img
+              className="w-24 h-12 "
+              src={row?.imeges?.[0]}
+              alt={row?.title}
+            />
           </div>
         </div>
       ),
@@ -47,26 +72,37 @@ const ManageBlogPage = () => {
       header: "Description",
       cell: (row) => (
         <p className="truncate">
-          {row.description.split(" ").slice(0, 6).join(" ")}
-          {row.description.split(" ").length > 6 ? "..." : ""}
+          {row?.description.split(" ").slice(0, 6).join(" ")}
+          {row?.description.split(" ").length > 6 ? "..." : ""}
         </p>
       ),
     },
     {
       header: "Date",
-      accessor: "date",
+      cell: (row) => (
+        <p className="truncate">{row?.createdAt?.split("T")[0]}</p>
+      ),
     },
     {
       header: "Action",
-      cell: () => (
+      cell: (row) => (
         <div className="flex items-center space-x-2">
           <button className="text-gray-400 hover:text-primary focus:outline-none focus:text-primary cursor-pointer">
             <Eye size={18} />
           </button>
-          <button className="text-gray-400 hover:text-primary focus:outline-none focus:text-primary cursor-pointer">
+          <button
+            onClick={() => {
+              setEditingBlogId(row?.id);
+              handleOpenModal();
+            }}
+            className="text-gray-400 hover:text-primary focus:outline-none focus:text-primary cursor-pointer"
+          >
             <SquarePen size={18} />
           </button>
-          <button className="text-gray-400 hover:text-red-600 focus:outline-none focus:text-red-600 cursor-pointer">
+          <button
+            onClick={() => deleteBlog(row?.id)}
+            className="text-gray-400 hover:text-red-600 focus:outline-none focus:text-red-600 cursor-pointer"
+          >
             <Trash2 size={18} />
           </button>
         </div>
@@ -88,19 +124,46 @@ const ManageBlogPage = () => {
               placeholder="Search Project..."
             />
           </div>
-          <Button className="flex items-center px-4 py-2 ">
+          <Button
+            onClick={() => {
+              setEditingBlogId(null);
+              setIsModalOpen(true);
+            }}
+            className="flex items-center px-4 py-2 "
+          >
             <Plus size={18} className="mr-2" />
             Add Blog
           </Button>
         </div>
       </header>
-      <CustomTable columns={blogColumns} data={blogData} />
+      <CustomTable columns={blogColumns} data={data?.data} />
       <CustomPagination
-        totalItems={blogData.length}
+        totalItems={data?.data.length}
         pageSize={pageSize}
         currentPage={currentPage}
         onPageChange={setCurrentPage}
       />
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingBlogId(null);
+        }}
+        title={editingBlogId ? "Edit Blog Post" : "Create New Blog Post"}
+      >
+        {editingBlogId && isSingleLoading ? (
+          <Loader2 />
+        ) : (
+          <AddBlog
+            initialData={editingBlogId ? singleBlogData?.data : null}
+            onCancel={() => {
+              handleCloseModal();
+              setEditingBlogId(null);
+            }}
+          />
+        )}
+      </Modal>
     </div>
   );
 };

@@ -70,17 +70,17 @@ const StatesChart = () => {
         <DashboardSection title="Recent Activity">
           {recentActivity.map((activity) => (
             <div
-              key={activity.id}
+              key={activity?.id}
               className="flex items-start space-x-3 py-2 border-b last:border-b-0"
             >
               <span className="flex-shrink-0 text-gray-600">
-                {activity.icon}
+                {activity?.icon}
               </span>
               <div>
                 <p className="text-sm font-medium text-gray-700">
-                  {activity.text}
+                  {activity?.text}
                 </p>
-                <p className="text-xs text-gray-400">{activity.time}</p>
+                <p className="text-xs text-gray-400">{activity?.time}</p>
               </div>
             </div>
           ))}

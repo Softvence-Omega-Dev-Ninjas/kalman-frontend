@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/redux/features/admin/categoryApi.ts
 import { baseApi } from "@/redux/api/baseApi";
 

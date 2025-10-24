@@ -10,7 +10,7 @@ const PersonalInfo = () => {
                 totalSteps={8}
                 progress={20}
             />
-            <div className="bg-[#EFF2F7] min-h-screen py-16">
+            <div className="bg-[#EFF2F7] min-h-screen py-8">
                 <PersonalInfoForm />
             </div>
 

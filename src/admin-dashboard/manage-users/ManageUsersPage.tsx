@@ -1,47 +1,107 @@
-import { Eye, Filter, Search, Star, Trash2 } from "lucide-react";
+import { Eye, Filter, Search, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { type IUserData, userData } from "./data/usersData";
-import type { Column } from "../shared/CustomTable/CustomTable";
-import CustomTable from "../shared/CustomTable/CustomTable";
+import CustomTable, { type Column } from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
+import toast from "react-hot-toast";
+import { useDeleteAdminCustomerMutation, useGetAllAdminCustomersQuery } from "@/redux/features/admin/adminCustomerApi";
+
+
+interface IUserData {
+  id: string;
+  fileName: string;
+  email: string;
+  image?: string;
+  type: "Customer" | "Provider" | string;
+  status: "Active" | "Suspended" | "Deactivated" | string;
+  location: string;
+  performance?: {
+    earned?: string;
+    jobsPosted?: number;
+    rating?: number;
+    completed?: number;
+  };
+  lastActive?: string;
+}
 
 const ManageUsersPage = () => {
-  //Pagination states
   const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
   const pageSize = 4;
 
-  // const paginatedData = userData.slice(
-  //   (currentPage - 1) * pageSize,
-  //   currentPage * pageSize
-  // );
+  // Fetch users
+  const { data, isLoading, refetch } = useGetAllAdminCustomersQuery({
+    page: currentPage,
+    limit: pageSize,
+  });
+// console.log(data, "data")
+const users = data?.data
+console.log(users)
+  const [deleteCustomer] = useDeleteAdminCustomerMutation();
 
-  //Table Config
+  // Map backend response to table structure
+  const customers: IUserData[] = Array.isArray(users)
+    ? users.map((user: any) => ({
+        id: user.id,
+        fileName: user.name || user.email.split("@")[0],
+        email: user.email,
+        image: user.profile_image || undefined,
+        type:
+          user.role === "CUSTOMER"
+            ? "Customer"
+            : user.role === "TRADESMAN"
+            ? "Provider"
+            : user.role,
+        status: user.verification === "COMPLETE" ? "Active" : "Suspended",
+        location: user.city || "-",
+        performance: {
+          jobsPosted: user._count?.jobs || 0,
+        },
+        lastActive: new Date(user.updatedAt).toLocaleDateString(),
+      }))
+    : [];
+
+  // console.log(users); // Correct logging
+
+  const totalItems: number = users?.length || 0; // total users for pagination
+  const totalPages = Math.ceil(totalItems / pageSize);
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this user?")) return;
+    try {
+      await deleteCustomer(id).unwrap();
+      toast.success("User deleted successfully!");
+      refetch();
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err?.data?.message || "Delete failed");
+    }
+  };
+
   const userColumns: Column<IUserData>[] = [
-    // Checkbox Column (first column)
     {
       header: "",
       cell: () => (
         <div className="flex items-center">
           <input
-            id="checkbox-table-1"
             type="checkbox"
-            className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+            className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded"
           />
         </div>
       ),
     },
-    // File Name Column
     {
       header: "File Name",
       cell: (row) => (
         <div className="flex items-center">
-          <div className="flex-shrink-0 w-10 h-10">
-            <img
-              className="w-10 h-10 rounded-full"
-              src={row.image}
-              alt={row.fileName}
-            />
-          </div>
+          {row.image && (
+            <div className="flex-shrink-0 w-10 h-10">
+              <img
+                className="w-10 h-10 rounded-full"
+                src={row.image}
+                alt={row.fileName}
+              />
+            </div>
+          )}
           <div className="ml-4">
             <div className="text-sm font-medium text-gray-900">
               {row.fileName}
@@ -50,12 +110,7 @@ const ManageUsersPage = () => {
         </div>
       ),
     },
-    // Email Column
-    {
-      header: "Email",
-      accessor: "email",
-    },
-    // Type Column
+    { header: "Email", accessor: "email" },
     {
       header: "Type",
       cell: (row) => (
@@ -70,7 +125,6 @@ const ManageUsersPage = () => {
         </span>
       ),
     },
-    // Status Column
     {
       header: "Status",
       cell: (row) => {
@@ -83,67 +137,45 @@ const ManageUsersPage = () => {
             colorClass = "bg-red-100 text-red-800 border border-[#E01C3D]";
             break;
           case "Deactivated":
-            colorClass =
-              "bg-violet-100 text-violet-600 border border-violet-600";
+            colorClass = "bg-violet-100 text-violet-600 border border-violet-600";
             break;
           default:
             colorClass = "bg-gray-100 text-gray-800";
         }
         return (
           <span
-            className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md  ${colorClass}`}
+            className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md ${colorClass}`}
           >
             {row.status}
           </span>
         );
       },
     },
-    // Location Column
-    {
-      header: "Location",
-      accessor: "location",
-    },
-    // Performance Column
+    { header: "Location", accessor: "location" },
     {
       header: "Performance",
       cell: (row) => (
         <div className="flex flex-col items-start">
-          <span className="text-sm font-medium text-gray-900">
-            {row.performance.earned} spent
-          </span>
-          <span className="text-xs text-gray-500">
-            {row.performance.jobsPosted} jobs posted
-          </span>
-          {row.performance.completed && (
+          {row.performance?.jobsPosted !== undefined && (
             <span className="text-xs text-gray-500">
-              {row.performance.completed} completed
+              {row.performance.jobsPosted} jobs posted
             </span>
-          )}
-          {row.performance.rating && (
-            <div className="flex items-center mt-1">
-              <Star size={12} className="text-yellow-400 fill-current" />
-              <span className="ml-1 text-xs text-gray-500">
-                {row.performance.rating}
-              </span>
-            </div>
           )}
         </div>
       ),
     },
-    // Last Active Column
-    {
-      header: "Last Active",
-      accessor: "lastActive",
-    },
-    // Action Column
+    { header: "Last Active", accessor: "lastActive" },
     {
       header: "Action",
-      cell: () => (
+      cell: (row) => (
         <div className="flex items-center space-x-2">
-          <button className="text-gray-400 hover:text-indigo-600 focus:outline-none focus:text-indigo-600 cursor-pointer">
+          <button className="text-gray-400 hover:text-indigo-600 cursor-pointer">
             <Eye size={18} />
           </button>
-          <button className="text-gray-400 hover:text-red-600 focus:outline-none focus:text-red-600 cursor-pointer">
+          <button
+            onClick={() => handleDelete(row.id)}
+            className="text-gray-400 hover:text-red-600 cursor-pointer"
+          >
             <Trash2 size={18} />
           </button>
         </div>
@@ -163,22 +195,27 @@ const ManageUsersPage = () => {
             <input
               type="text"
               className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-purple-500 focus:border-purple-500"
-              placeholder="Search Project..."
+              placeholder="Search User..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
           <button className="flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
-            <Filter size={18} className="mr-2" />
-            Filter By
+            <Filter size={18} className="mr-2" /> Filter By
           </button>
         </div>
       </header>
-      <CustomTable columns={userColumns} data={userData} />
-      <CustomPagination
-        totalItems={userData.length}
-        pageSize={pageSize}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
+
+      <CustomTable columns={userColumns} data={customers} isLoading={isLoading} />
+
+      {totalPages > 1 && (
+        <CustomPagination
+          totalItems={totalItems}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </div>
   );
 };
