@@ -128,13 +128,13 @@ const ManageCategoryPage = () => {
         <div className="flex items-center space-x-3">
           <button
             onClick={() => handleEdit(row)}
-            className="text-blue-500 hover:text-blue-700 text-sm"
+            className="cursor-pointer hover:text-blue-600 text-sm"
           >
            <SquarePen size={18} />
           </button>
           <button
             onClick={() => handleDelete(row.id)}
-            className="text-red-500 hover:text-red-700 text-sm"
+            className="cursor-pointer hover:text-red-600 text-sm"
           >
             <Trash2 size={18}/>
           </button>
