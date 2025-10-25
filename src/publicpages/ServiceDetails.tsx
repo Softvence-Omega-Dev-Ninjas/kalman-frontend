@@ -5,16 +5,44 @@ import image3 from "../assets/sample_images/image3.png";
 import { MdOutlineReport } from "react-icons/md";
 import { useState } from "react";
 import BookingModal from "../components/ServiceComponents/BookingModal";
+import RatingReviews from "@/components/ServiceComponents/RatingReviews";
+import ReviewCard from "@/components/ServiceComponents/ReviewCard";
+
+const reviews = {
+  "1": {
+    id: "1",
+    name: "Courtney Henry",
+    title: "Event Planner Miernil FL",
+    avatar: image1,
+    rating: 4,
+    comment:
+      "As a service provider on Dozaar, I love the platform's professionalism. The payment protection and client screening make my work much smoother.",
+  },
+  "2": {
+    id: "2",
+    name: "Dianne Russell",
+    title: "Event Planner Miernil FL",
+    avatar: image2,
+    rating: 2,
+    comment:
+      "Found an amazing contractor through Dozaar who completely renovated my kitchen. The escrow system gave me peace of mind, and the quality was exceptional.",
+  },
+};
 
 const ServiceDetails = () => {
   const [openContact, setOpenContact] = useState(false);
-  const handleBookingSubmit = (data: { location: string; date: string; duration: string; notes: string }) => {
-    console.log('booking', data);
+  const handleBookingSubmit = (data: {
+    location: string;
+    date: string;
+    duration: string;
+    notes: string;
+  }) => {
+    console.log("booking", data);
     setOpenContact(false);
-  }
+  };
   return (
-    <div className="bg-[#f3f5f7] min-h-screen py-10 px-6">
-      <div className="max-w-[1580px] mx-auto">
+    <div className="bg-[#f3f5f7] min-h-screen py-16 px-16">
+      <div className="max-w-[1490px] mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-semibold mb-6">Cleaning Service</h2>
           <button className="flex items-center gap-1 px-2 py-1 border border-gray-300 rounded-md">
@@ -48,35 +76,50 @@ const ServiceDetails = () => {
 
           <div className="flex items-start gap-8 mt-10">
             <div className="w-2/3 pr-10">
-              <div className="flex items-start gap-4 ">
-                <img
-                  src={image2}
-                  alt="avatar"
-                  className="w-16 h-16 rounded-full object-cover"
-                />
-                <div>
-                  <div className="font-semibold text-lg">Ronald Higgins</div>
-                  <div className="text-sm text-secondary">Tradesperson</div>
-                  <div className="text-sm text-secondary flex items-center gap-1">
-                    <IoLocationOutline />
-                    <span>Bratislava, Slovakia</span>
-                  </div>
-                  <div className="text-sm text-primary font-semibold mt-1">
-                    ★ 4.8 (170 Reviews)
+              <div>
+                <div className="flex items-start gap-4 ">
+                  <img
+                    src={image2}
+                    alt="avatar"
+                    className="w-16 h-16 rounded-full object-cover"
+                  />
+                  <div>
+                    <div className="font-semibold text-lg">Ronald Higgins</div>
+                    <div className="text-sm text-secondary">Tradesperson</div>
+                    <div className="text-sm text-secondary flex items-center gap-1">
+                      <IoLocationOutline />
+                      <span>Bratislava, Slovakia</span>
+                    </div>
+                    <div className="text-sm text-primary font-semibold mt-1">
+                      ★ 4.8 (170 Reviews)
+                    </div>
                   </div>
                 </div>
+
+                <hr className="my-6 border-t border-gray-200" />
+
+                <h3 className="text-lg font-semibold mb-2">Service Details</h3>
+                <p className=" text-secondary">
+                  From daily maintenance to deep cleaning, our office cleaning
+                  services are tailored to meet your business needs. We use
+                  professional-grade equipment and eco-friendly products to
+                  ensure a clean, hygienic, and welcoming environment for your
+                  employees and clients.
+                </p>
               </div>
-
-              <hr className="my-6 border-t border-gray-200" />
-
-              <h3 className="text-lg font-semibold mb-2">Service Details</h3>
-              <p className=" text-secondary">
-                From daily maintenance to deep cleaning, our office cleaning
-                services are tailored to meet your business needs. We use
-                professional-grade equipment and eco-friendly products to ensure
-                a clean, hygienic, and welcoming environment for your employees
-                and clients.
-              </p>
+              <RatingReviews />
+              <div className="mt-8">
+                {Object.values(reviews).map((review) => (
+                  <ReviewCard
+                    key={review.id}
+                    name={review.name}
+                    title={review.title}
+                    avatar={review.avatar}
+                    rating={review.rating}
+                    comment={review.comment}
+                  />
+                ))}
+              </div>
             </div>
             {/* Right column card */}
             <div className="w-1/3 space-y-6">
@@ -108,15 +151,22 @@ const ServiceDetails = () => {
                   </span>
                 </div>
 
-                <button onClick={() => setOpenContact(true)} className="w-full mt-6 bg-[#FF7346] text-white px-4 py-3 rounded-md">
+                <button
+                  onClick={() => setOpenContact(true)}
+                  className="w-full mt-6 bg-[#FF7346] hover:bg-orange-600 text-white px-4 py-3 rounded-md"
+                >
                   Contact for Shortlist
                 </button>
               </div>
             </div>
             {
-              // openContact && ( Show modal) 
+              // openContact && ( Show modal)
             }
-            <BookingModal open={openContact} onClose={() => setOpenContact(false)} onSubmit={handleBookingSubmit} />
+            <BookingModal
+              open={openContact}
+              onClose={() => setOpenContact(false)}
+              onSubmit={handleBookingSubmit}
+            />
           </div>
         </div>
       </div>
