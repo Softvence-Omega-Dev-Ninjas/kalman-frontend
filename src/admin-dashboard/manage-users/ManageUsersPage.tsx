@@ -3,22 +3,22 @@ import { useState } from "react";
 import CustomTable, { type Column } from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
 import toast from "react-hot-toast";
-import { useDeleteAdminCustomerMutation, useGetAllAdminCustomersQuery } from "@/redux/features/admin/adminCustomerApi";
-
+import {
+  useDeleteAdminCustomerMutation,
+  useGetAllAdminCustomersQuery,
+} from "@/redux/features/admin/adminCustomerApi";
+import UserDetailDialog from "./UserDetailDialog"; // import dialog
 
 interface IUserData {
   id: string;
   fileName: string;
   email: string;
-  image?: string;
+  image?: string | null;
   type: "Customer" | "Tradesman" | string;
   status: "Active" | "Suspended" | "Deactivated" | string;
   location: string;
   performance?: {
-    earned?: string;
     jobsPosted?: number;
-    rating?: number;
-    completed?: number;
   };
   lastActive?: string;
 }
@@ -33,18 +33,39 @@ const ManageUsersPage = () => {
     page: currentPage,
     limit: pageSize,
   });
-// console.log(data, "data")
-const users = data?.data
-console.log(users)
+
+  const users = data?.data || [];
+
+  // Dialog state
+  const [selectedUser, setSelectedUser] = useState<IUserData | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Delete mutation
   const [deleteCustomer] = useDeleteAdminCustomerMutation();
 
-  // Map backend response to table structure
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this user?")) return;
+    try {
+      await deleteCustomer(id).unwrap();
+      toast.success("User deleted successfully!");
+      refetch();
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Delete failed");
+    }
+  };
+
+  const handleView = (user: IUserData) => {
+    setSelectedUser(user);
+    setIsDialogOpen(true);
+  };
+
+  // Map users for table
   const customers: IUserData[] = Array.isArray(users)
     ? users.map((user: any) => ({
         id: user.id,
         fileName: user.name || user.email.split("@")[0],
         email: user.email,
-        // image: user.profile_image || undefined,
+        image: user.profile_image || null,
         type:
           user.role === "CUSTOMER"
             ? "Customer"
@@ -60,23 +81,10 @@ console.log(users)
       }))
     : [];
 
-  // console.log(users); // Correct logging
-
-  const totalItems: number = users?.length || 0; // total users for pagination
+  const totalItems: number = users?.length || 0;
   const totalPages = Math.ceil(totalItems / pageSize);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this user?")) return;
-    try {
-      await deleteCustomer(id).unwrap();
-      toast.success("User deleted successfully!");
-      refetch();
-    } catch (err: any) {
-      console.error(err);
-      toast.error(err?.data?.message || "Delete failed");
-    }
-  };
-
+  // Table columns
   const userColumns: Column<IUserData>[] = [
     {
       header: "",
@@ -93,19 +101,22 @@ console.log(users)
       header: "File Name",
       cell: (row) => (
         <div className="flex items-center">
-          {row.image && (
+          {row.image ?
             <div className="flex-shrink-0 w-10 h-10">
               <img
-                className="w-10 h-10 rounded-full"
+                className="w-10 h-10 rounded-full object-cover"
                 src={row.image}
                 alt={row.fileName}
-              />
-            </div>
-          )}
+              /> 
+            </div>: 
+              <div className="w-10 h-10 bg-gray-100 flex items-center justify-center rounded-full shadow-lg border-4 border-gray-200">
+                {/* <span className="text-gray-400 font-semibold text-center text-lg">
+                  No Image
+                </span> */}
+              </div>
+          }
           <div className="ml-4">
-            <div className="text-sm font-medium text-gray-900">
-              {row.fileName}
-            </div>
+            <div className="text-sm font-medium text-gray-900">{row.fileName}</div>
           </div>
         </div>
       ),
@@ -131,16 +142,14 @@ console.log(users)
         let colorClass = "";
         switch (row.status) {
           case "Active":
-            colorClass = "bg-green-100 text-green-800 border border-[#62D235]";
+            colorClass = "bg-green-100 text-green-800 border border-green-500";
             break;
           case "Suspended":
-            colorClass = "bg-red-100 text-red-800 border border-[#E01C3D]";
+            colorClass = "bg-red-100 text-red-800 border border-red-500";
             break;
           case "Deactivated":
-            colorClass = "bg-violet-100 text-violet-600 border border-violet-600";
+            colorClass = "bg-gray-100 text-gray-800 border";
             break;
-          default:
-            colorClass = "bg-gray-100 text-gray-800";
         }
         return (
           <span
@@ -169,7 +178,10 @@ console.log(users)
       header: "Action",
       cell: (row) => (
         <div className="flex items-center space-x-2">
-          <button className="text-gray-400 hover:text-indigo-600 cursor-pointer">
+          <button
+            onClick={() => handleView(row)}
+            className="text-gray-400 hover:text-indigo-600 cursor-pointer"
+          >
             <Eye size={18} />
           </button>
           <button
@@ -216,6 +228,13 @@ console.log(users)
           onPageChange={setCurrentPage}
         />
       )}
+
+      {/* User Dialog */}
+      <UserDetailDialog
+        user={selectedUser}
+        open={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+      />
     </div>
   );
 };

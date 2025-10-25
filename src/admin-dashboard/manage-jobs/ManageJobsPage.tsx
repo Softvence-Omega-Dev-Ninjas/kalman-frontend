@@ -8,20 +8,31 @@ import {
   useDeleteAdminJobMutation,
   useGetAllAdminJobsQuery,
 } from "@/redux/features/admin/adminJobApi";
+import JobDetailDialog from "./JobDetailDialog";
 
-interface IJobData {
+export interface IJobData {
   id: string;
   title: string;
   location: string;
-  customer: string;
+  customer: {
+    name: string;
+    email: string;
+    profile_image?: string;
+    verification?: string;
+  };
   isComplete: boolean;
-  price: string;
+  price: number;
+  description: string;
+  image?: string[];
+  skills_needed?: string[];
+  timeline?: string;
 }
 
 const ManageJobsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
   const [search, setSearch] = useState("");
+  const [selectedJob, setSelectedJob] = useState<IJobData | null>(null);
 
   // Fetch jobs dynamically
   const { data, isLoading, isError, refetch } = useGetAllAdminJobsQuery({
@@ -32,21 +43,18 @@ const ManageJobsPage = () => {
   // Delete job mutation
   const [deleteJob] = useDeleteAdminJobMutation();
 
+  const handleDelete = async (id: string) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this job?");
+    if (!confirmDelete) return;
 
-
-const handleDelete = async (id: string) => {
-  const confirmDelete = window.confirm("Are you sure you want to delete this job?");
-  if (!confirmDelete) return;
-
-  try {
-    await deleteJob(id).unwrap();
-    toast.success("Job deleted successfully!");
-    refetch();
-  } catch (error: any) {
-    toast.error(error?.data?.message || "Failed to delete job!");
-  }
-};
-
+    try {
+      await deleteJob(id).unwrap();
+      toast.success("Job deleted successfully!");
+      refetch();
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to delete job!");
+    }
+  };
 
   const jobs: IJobData[] = data?.data || [];
   const totalJobs = data?.meta?.total || 0;
@@ -73,38 +81,43 @@ const handleDelete = async (id: string) => {
         </div>
       ),
     },
-    { header: "Location", accessor: "location" },
-    { header: "Customer", accessor: "customer" },
+    {
+      header: "Location",
+      accessor: "location",
+    },
+    {
+      header: "Customer",
+      cell: (row) => row.customer?.name || "N/A",
+    },
     {
       header: "Status",
       accessor: "isComplete",
       cell: (row) => {
         const statusText = row.isComplete ? "Completed" : "In Progress";
-        const colorClass = row.isComplete 
+        const colorClass = row.isComplete
           ? "text-[#0B5A4A] border bg-[#ABEFD530] !rounded-sm border border-[#ABEFD5]"
           : "text-[#C67608] border bg-[#FCE38C30] !rounded-sm border border-[#FCE38C]";
         return (
-          <span
-            className={`px-3 py-1 inline-flex text-xs font-semibold rounded-md ${colorClass}`}
-          >
+          <span className={`px-3 py-1 inline-flex text-xs font-semibold rounded-md ${colorClass}`}>
             {statusText}
           </span>
         );
       },
     },
     {
-  header: "Amount",
-  cell: (row) => (
-    <span className="text-gray-800 font-medium">
-      ${row.price}
-    </span>
-  ),
-},
+      header: "Amount",
+      cell: (row) => (
+        <span className="text-gray-800 font-medium">${row.price}</span>
+      ),
+    },
     {
       header: "Action",
       cell: (row) => (
         <div className="flex items-center space-x-2">
-          <button className="text-gray-400 cursor-pointer hover:text-primary">
+          <button
+            className="text-gray-400 cursor-pointer hover:text-primary"
+            onClick={() => setSelectedJob(row)}
+          >
             <Eye size={18} />
           </button>
           <button
@@ -123,6 +136,7 @@ const handleDelete = async (id: string) => {
 
   return (
     <div>
+      {/* Header */}
       <header className="flex items-center justify-between mb-8 flex-wrap">
         <h1 className="text-2xl font-bold text-gray-900">Job Management</h1>
 
@@ -153,16 +167,21 @@ const handleDelete = async (id: string) => {
       <CustomTable columns={jobColumns} data={jobs} />
 
       {/* Pagination */}
-      {
-        data?.length > pageSize && 
-         <CustomPagination
-                totalItems={totalJobs}
-                pageSize={pageSize}
-                currentPage={currentPage}
-                onPageChange={setCurrentPage}
-           />
-      }
-     
+      {data && (
+        <CustomPagination
+          totalItems={totalJobs}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
+      )}
+
+      {/* Job Detail Dialog */}
+      <JobDetailDialog
+        job={selectedJob}
+        open={!!selectedJob}
+        onClose={() => setSelectedJob(null)}
+      />
     </div>
   );
 };
