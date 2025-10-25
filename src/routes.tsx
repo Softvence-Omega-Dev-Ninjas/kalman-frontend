@@ -52,6 +52,7 @@ import BlogDetails from "./publicpages/BlogDetails";
 // import TradeSignUp from "./trade-dashboard/TradeSignUp";
 import TradeSignUpPage from "./trade-dashboard/tradeComponents/TradeSignUp/TradeSignUpPage";
 import TradeSuccessPage from "./trade-dashboard/tradeComponents/TradeSuccessPage";
+import ManageCommision from "./admin-dashboard/manage-commision/ManageCommision";
 // import TradeSignUpPage from "./trade-dashboard/tradeComponents/TradeSignUp/TradeSignUpPage";
 
 
@@ -263,6 +264,10 @@ const router = createBrowserRouter([
         path: "admin/manage-blog",
         element: <ManageBlogPage />,
       },
+      {
+        path : "admin/Commision",
+        element: <ManageCommision />
+      }
     ],
   },
 
