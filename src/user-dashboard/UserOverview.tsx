@@ -145,16 +145,15 @@ const UserOverview = () => {
               Quick Action
             </h2>
 
-            <div className="space-y-4">
-              <Link to="/post-a-job">
-                <div className="bg-white p-3 rounded-lg border-gray-200 border-1">
-                  Post a Job
-                </div>
+            <div className="flex flex-col space-y-4">
+              <Link
+                to="/post-a-job"
+                className="bg-white p-3 rounded-lg border-gray-200 border-1"
+              >
+                Post a Job
               </Link>
-              <Link to="/jobs">
-                <div className="bg-white p-3 rounded-lg border-gray-200 border-1">
-                  Find Tradespeople
-                </div>
+              <Link to="/jobs" className="bg-white p-3 rounded-lg border-gray-200 border-1">
+                Find Tradespeople
               </Link>
             </div>
           </div>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import PhaseOne from "./PostAJobComponents/PhaseOne";
 import PhaseTwo from "./PostAJobComponents/PhaseTwo";
 import PhaseThree from "./PostAJobComponents/PhaseThree";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 /* {"title":"Fix Leaky Roof","categoryId":"","description":"Roof repair on a two-story house.","location":"Suburb X","timeline":"3 days","contact_method":"Email","skills_needed":["Roofing","Waterproofing"],"price":150}*/
 
@@ -40,6 +40,8 @@ const PostAJob = () => {
     return 90;
   };
 
+  const navigate = useNavigate();
+
   return (
     <div>
       {/* Header */}
@@ -51,10 +53,9 @@ const PostAJob = () => {
               Step {phase} of 3 · Add the finishing touches
             </div>
           </div>
-          <Link to="/">
-            {" "}
-            <button className="text-2xl cursor-pointer">✕</button>
-          </Link>
+          
+            <button onClick={() => navigate(-1)} className="text-2xl cursor-pointer">✕</button>
+          
         </div>
 
         <div className="max-w-[1180px] mx-auto mt-4">
