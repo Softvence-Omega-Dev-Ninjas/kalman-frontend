@@ -11,7 +11,6 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
 
   const cusInfo = customer;
 
-
   return (
     <div className="space-y-4">
       {/* Customer Information Card */}
@@ -62,7 +61,9 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
           <div className="flex justify-between items-center">
             <span className="text-sm text-gray-600">Member since</span>
             <span className="font-medium text-gray-900">
-              {cusInfo.customer?.createdAt || "1990"}
+              {cusInfo.customer?.createdAt
+                ? new Date(cusInfo.customer.createdAt).getFullYear()
+                : "1990"}
             </span>
           </div>
         </div>
@@ -120,35 +121,37 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
       </div>
 
       {/* Map Card */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-        <div className="h-48 bg-gradient-to-br from-green-100 to-blue-100 relative">
-          {/* Mock map with some visual elements */}
-          <div className="absolute inset-0 bg-gray-100">
-            <div className="w-full h-full relative overflow-hidden">
-              {/* Mock roads */}
-              <div className="absolute top-1/3 left-0 w-full h-0.5 bg-gray-300 transform rotate-12"></div>
-              <div className="absolute top-2/3 left-0 w-full h-0.5 bg-gray-300 transform -rotate-6"></div>
-              <div className="absolute left-1/3 top-0 w-0.5 h-full bg-gray-300 transform rotate-12"></div>
+      <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300">
+        {/* Map Section */}
+        <div className="relative h-56">
+          <iframe
+            title="Google Map"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            loading="lazy"
+            allowFullScreen
+            className="rounded-t-2xl"
+            src={`https://www.google.com/maps?q=${encodeURIComponent(
+              cusInfo?.location || "Dhaka, Bangladesh"
+            )}&output=embed`}
+          ></iframe>
 
-              {/* Mock green areas */}
-              <div className="absolute top-4 left-4 w-16 h-12 bg-green-200 rounded-lg opacity-60"></div>
-              <div className="absolute bottom-4 right-8 w-20 h-16 bg-green-200 rounded-lg opacity-60"></div>
-
-              {/* Location marker */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white shadow-lg"></div>
-              </div>
-            </div>
-          </div>
+          {/* Overlay Gradient for better text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none rounded-t-2xl"></div>
         </div>
 
-        <div className="p-4">
-          <div className="flex items-center gap-2">
+        {/* Info Section */}
+        <div className="p-5">
+          <div className="flex items-center gap-2 mb-2">
             <CiLocationOn className="text-gray-500" size={18} />
-            <span className="text-sm font-medium text-gray-700">
-              Location: {cusInfo?.location}
+            <span className="text-lg font-medium text-gray-700">
+              Location: {cusInfo?.location || "Unknown"}
             </span>
           </div>
+          <p className="text-sm text-gray-600">
+            You can view this customer’s real-time location on Google Maps.
+          </p>
         </div>
       </div>
 
