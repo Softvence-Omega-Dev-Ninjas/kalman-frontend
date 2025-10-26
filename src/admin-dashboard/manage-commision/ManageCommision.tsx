@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, SquarePen, Trash2 } from "lucide-react";
+import { SquarePen, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 import CustomTable, { type Column } from "../shared/CustomTable/CustomTable";
