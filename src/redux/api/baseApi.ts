@@ -31,6 +31,7 @@ export const baseApi = createApi({
     "Contact",
     "Admin",
     "Chat",
+    "Profile"
   ],
 
   endpoints: () => ({}),

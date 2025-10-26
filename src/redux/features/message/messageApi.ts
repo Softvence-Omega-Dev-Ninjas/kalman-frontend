@@ -20,13 +20,7 @@ export const messageApi = baseApi.injectEndpoints({
       providesTags: ["Chat"],
     }),
 
-    adminLogin: builder.mutation({
-      query: (data) => ({
-        url: "/auth/admin-login",
-        method: "POST",
-        body: data,
-      }),
-    }),
+
   }),
 });
 
@@ -34,5 +28,4 @@ export const {
 
   useGetChatListQuery,
     useGetChatHistoryQuery,
-  useAdminLoginMutation
 } = messageApi;
