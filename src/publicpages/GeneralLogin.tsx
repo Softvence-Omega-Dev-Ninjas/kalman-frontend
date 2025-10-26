@@ -41,28 +41,29 @@ const GeneralLogin: React.FC = () => {
     },
   });
 
-  const decodeJWT = (token: string) => {
-    try {
-      const base64Url = token.split(".")[1];
-      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split("")
-          .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-          .join("")
-      );
-      return JSON.parse(jsonPayload);
-    } catch (error) {
-      console.error("Error decoding JWT:", error);
-      return null;
-    }
-  };
+  // const decodeJWT = (token: string) => {
+  //   try {
+  //     const base64Url = token.split(".")[1];
+  //     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  //     const jsonPayload = decodeURIComponent(
+  //       atob(base64)
+  //         .split("")
+  //         .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+  //         .join("")
+  //     );
+  //     return JSON.parse(jsonPayload);
+  //   } catch (error) {
+  //     console.error("Error decoding JWT:", error);
+  //     return null;
+  //   }
+  // };
 
   const onSubmit = async (data: LoginFormInputs) => {
     if (!data.rememberMe) {
-          toast.error("You must agree to the terms before continuing!");
-          return;
-        }
+      toast.error("You must agree to the terms before continuing!");
+      return;
+    }
+
     try {
       const result = await login({
         email: data.email,
@@ -70,36 +71,37 @@ const GeneralLogin: React.FC = () => {
       }).unwrap();
 
       if (result.success && result.data) {
-        const token = result.data;
-        const decodedToken = decodeJWT(token);
+        const { token, user } = result.data;
 
-        if (decodedToken) {
-          const userData = {
-            id: decodedToken.id,
-            email: decodedToken.email,
-            phone: decodedToken.phone,
-            role: decodedToken.role,
-          };
+        const userData = {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          image: user.image,
+        };
 
-          dispatch(
-            setUser({
-              user: userData,
-              token,
-            })
-          );
+        // Store in Redux
+        dispatch(
+          setUser({
+            user: userData,
+            token,
+          })
+        );
 
-          toast.success(result.message || "Login successful!");
+        // Store in localStorage for persistence
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(userData));
 
-          if (data.rememberMe) {
-            localStorage.setItem("rememberMe", "true");
-          } else {
-            localStorage.removeItem("rememberMe");
-          }
+        toast.success(result.message || "Login successful!");
 
-          navigate("/");
+        if (data.rememberMe) {
+          localStorage.setItem("rememberMe", "true");
         } else {
-          toast.error("Failed to decode user information");
+          localStorage.removeItem("rememberMe");
         }
+
+        navigate("/");
       } else {
         toast.error("Login failed: Invalid response format");
       }
@@ -259,7 +261,6 @@ const GeneralLogin: React.FC = () => {
                 </div>
                 <div className="flex-1 h-px bg-gray-200" />
               </div>
-              
 
               {/* Google login */}
               <Button
@@ -291,4 +292,3 @@ const GeneralLogin: React.FC = () => {
 };
 
 export default GeneralLogin;
-

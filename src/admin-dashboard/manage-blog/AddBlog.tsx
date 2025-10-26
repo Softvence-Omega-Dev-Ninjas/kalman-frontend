@@ -11,7 +11,7 @@ type AddBlogProps = {
 };
 
 type BlogData = {
-  id: string;
+  id: number;
   title: string;
   description: string;
   imeges: (string | File)[];
@@ -209,17 +209,6 @@ const AddBlog = ({ onCancel, initialData }: AddBlogProps) => {
 
       {/* Buttons */}
       <div className="pt-4 border-t border-gray-100 flex justify-end space-x-3">
-        <Button
-          variant="outline"
-          onClick={() => {
-            setFormData({ title: "", description: "", images: [] });
-            setPreviewImages([]);
-            onCancel();
-          }}
-          className="flex items-center px-4 py-2"
-        >
-          Cancel
-        </Button>
         <Button
           type="submit"
           className="flex items-center px-4 py-2"

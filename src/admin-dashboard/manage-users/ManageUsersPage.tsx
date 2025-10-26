@@ -1,24 +1,24 @@
 import { Eye, Filter, Search, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomTable, { type Column } from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
 import toast from "react-hot-toast";
-import { useDeleteAdminCustomerMutation, useGetAllAdminCustomersQuery } from "@/redux/features/admin/adminCustomerApi";
-
+import {
+  useDeleteAdminCustomerMutation,
+  useGetAllAdminCustomersQuery,
+} from "@/redux/features/admin/adminCustomerApi";
+import UserDetailDialog from "./UserDetailDialog";
 
 interface IUserData {
   id: string;
   fileName: string;
   email: string;
-  image?: string;
-  type: "Customer" | "Provider" | string;
+  image?: string | null;
+  type: "Customer" | "Tradesman" | string;
   status: "Active" | "Suspended" | "Deactivated" | string;
   location: string;
   performance?: {
-    earned?: string;
     jobsPosted?: number;
-    rating?: number;
-    completed?: number;
   };
   lastActive?: string;
 }
@@ -26,44 +26,35 @@ interface IUserData {
 const ManageUsersPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
-  const pageSize = 4;
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const pageSize = 10;
+// console.log(search)
+  // debounce search
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+      setCurrentPage(1);
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [search]);
 
   // Fetch users
   const { data, isLoading, refetch } = useGetAllAdminCustomersQuery({
     page: currentPage,
     limit: pageSize,
+    search: debouncedSearch,
   });
-// console.log(data, "data")
-const users = data?.data
-console.log(users)
+
+  const users = data?.data.users || [];
+  const totalUser = data?.data.totalUser || 0;
+
+  // Dialog state
+  const [selectedUser, setSelectedUser] = useState<IUserData | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Delete mutation
   const [deleteCustomer] = useDeleteAdminCustomerMutation();
-
-  // Map backend response to table structure
-  const customers: IUserData[] = Array.isArray(users)
-    ? users.map((user: any) => ({
-        id: user.id,
-        fileName: user.name || user.email.split("@")[0],
-        email: user.email,
-        image: user.profile_image || undefined,
-        type:
-          user.role === "CUSTOMER"
-            ? "Customer"
-            : user.role === "TRADESMAN"
-            ? "Provider"
-            : user.role,
-        status: user.verification === "COMPLETE" ? "Active" : "Suspended",
-        location: user.city || "-",
-        performance: {
-          jobsPosted: user._count?.jobs || 0,
-        },
-        lastActive: new Date(user.updatedAt).toLocaleDateString(),
-      }))
-    : [];
-
-  // console.log(users); // Correct logging
-
-  const totalItems: number = users?.length || 0; // total users for pagination
-  const totalPages = Math.ceil(totalItems / pageSize);
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this user?")) return;
@@ -72,11 +63,38 @@ console.log(users)
       toast.success("User deleted successfully!");
       refetch();
     } catch (err: any) {
-      console.error(err);
       toast.error(err?.data?.message || "Delete failed");
     }
   };
 
+  const handleView = (user: IUserData) => {
+    setSelectedUser(user);
+    setIsDialogOpen(true);
+  };
+
+  // Map users for table
+  const customers: IUserData[] = Array.isArray(users)
+    ? users.map((user: any) => ({
+        id: user.id,
+        fileName: user.name || user.email.split("@")[0],
+        email: user.email,
+        image: user.profile_image || null,
+        type:
+          user.role === "CUSTOMER"
+            ? "Customer"
+            : user.role === "TRADESMAN"
+            ? "Tradesman"
+            : user.role,
+        status: user.verification === "COMPLETE" ? "Active" : "Suspended",
+        location: user.city || "-",
+        performance: { jobsPosted: user._count?.jobs || 0 },
+        lastActive: new Date(user.updatedAt).toLocaleDateString(),
+      }))
+    : [];
+
+  const totalPages = Math.ceil(totalUser / pageSize);
+
+  // Table columns
   const userColumns: Column<IUserData>[] = [
     {
       header: "",
@@ -93,19 +111,19 @@ console.log(users)
       header: "File Name",
       cell: (row) => (
         <div className="flex items-center">
-          {row.image && (
+          {row.image ? (
             <div className="flex-shrink-0 w-10 h-10">
               <img
-                className="w-10 h-10 rounded-full"
+                className="w-10 h-10 rounded-full object-cover"
                 src={row.image}
                 alt={row.fileName}
               />
             </div>
+          ) : (
+            <div className="w-10 h-10 bg-gray-100 flex items-center justify-center rounded-full shadow-lg border-4 border-gray-200" />
           )}
           <div className="ml-4">
-            <div className="text-sm font-medium text-gray-900">
-              {row.fileName}
-            </div>
+            <div className="text-sm font-medium text-gray-900">{row.fileName}</div>
           </div>
         </div>
       ),
@@ -131,16 +149,14 @@ console.log(users)
         let colorClass = "";
         switch (row.status) {
           case "Active":
-            colorClass = "bg-green-100 text-green-800 border border-[#62D235]";
+            colorClass = "bg-green-100 text-green-800 border border-green-500";
             break;
           case "Suspended":
-            colorClass = "bg-red-100 text-red-800 border border-[#E01C3D]";
+            colorClass = "bg-red-100 text-red-800 border border-red-500";
             break;
           case "Deactivated":
-            colorClass = "bg-violet-100 text-violet-600 border border-violet-600";
+            colorClass = "bg-gray-100 text-gray-800 border";
             break;
-          default:
-            colorClass = "bg-gray-100 text-gray-800";
         }
         return (
           <span
@@ -169,7 +185,10 @@ console.log(users)
       header: "Action",
       cell: (row) => (
         <div className="flex items-center space-x-2">
-          <button className="text-gray-400 hover:text-indigo-600 cursor-pointer">
+          <button
+            onClick={() => handleView(row)}
+            className="text-gray-400 hover:text-indigo-600 cursor-pointer"
+          >
             <Eye size={18} />
           </button>
           <button
@@ -206,16 +225,27 @@ console.log(users)
         </div>
       </header>
 
-      <CustomTable columns={userColumns} data={customers} isLoading={isLoading} />
+      <CustomTable
+        columns={userColumns}
+        data={customers}
+        isLoading={isLoading}
+        emptyMessage={"No User Found!"}
+      />
 
       {totalPages > 1 && (
         <CustomPagination
-          totalItems={totalItems}
+          totalItems={totalUser}
           pageSize={pageSize}
           currentPage={currentPage}
           onPageChange={setCurrentPage}
         />
       )}
+
+      <UserDetailDialog
+        user={selectedUser as any}
+        open={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+      />
     </div>
   );
 };

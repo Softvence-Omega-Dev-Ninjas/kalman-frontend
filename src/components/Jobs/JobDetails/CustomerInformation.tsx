@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { CiLocationOn } from "react-icons/ci";
-import { IoAlertCircleOutline, IoCheckmarkCircle } from "react-icons/io5";
+import { IoAlertCircleOutline } from "react-icons/io5";
 import { LuSend } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 
@@ -9,19 +9,8 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
   const [reportModal, setReportModal] = useState(false);
   const [sendProposal, setSendProposal] = useState(false);
 
-  // Mock data to match the image
-  const mockCustomer = {
-    name: "John Smith",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
-    location: "Banská Bystrica",
-    memberSince: "2018",
-    isVerified: true,
-    shortlistFee: "$20.00 + VAT",
-    shortlistedCount: "01",
-    invitationMessage: "The customer invited you to discuss their lead.",
-  };
+  const cusInfo = customer;
 
-  const actualCustomer = customer || mockCustomer;
 
   return (
     <div className="space-y-4">
@@ -44,21 +33,27 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
         <div className="p-4">
           <div className="flex items-center gap-3 mb-4">
             <img
-              src={actualCustomer.image}
+              src={
+                cusInfo?.customer?.profile_image ||
+                "https://randomuser.me/api/portraits/men/60.jpg"
+              }
               alt=""
               className="w-12 h-12 rounded-full object-cover"
             />
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-medium text-gray-900">
-                  {actualCustomer.name}
+                  {cusInfo.customer?.name || "Customer Name"}
                 </h3>
-                {actualCustomer.isVerified && (
+                {/* {cusInfo.isVerified && (
                   <IoCheckmarkCircle className="text-blue-500" size={16} />
-                )}
+                )} */}
               </div>
               <div className="flex items-center gap-1 text-green-500">
-                <p className="text-sm ">Verified</p>
+                <p className="text-sm ">
+                  {" "}
+                  {cusInfo?.customer?.verification && "Verified"}
+                </p>
                 <MdOutlineVerifiedUser />
               </div>
             </div>
@@ -67,7 +62,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
           <div className="flex justify-between items-center">
             <span className="text-sm text-gray-600">Member since</span>
             <span className="font-medium text-gray-900">
-              {actualCustomer.memberSince || "2023"}
+              {cusInfo.customer?.createdAt || "1990"}
             </span>
           </div>
         </div>
@@ -78,7 +73,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
         <div className="p-4">
           <h3 className="font-medium text-gray-900 mb-2">Shortlist fee</h3>
           <p className="text-2xl font-semibold text-orange-500 mb-3">
-            {actualCustomer.shortlistFee || "$20.00 + VAT"}
+            {cusInfo?.shortlist_fee || "$20.00 + VAT"}
           </p>
 
           <div className="p-3 rounded-md bg-gray-100">
@@ -93,21 +88,21 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
           <div className="flex items-center justify-center gap-8 mb-4 py-3">
             <div className="flex items-center gap-2 text-center">
               <p className="text-2xl font-bold text-gray-900">
-                {actualCustomer.shortlistedCount || "01"}
+                {cusInfo.shortlist_fee || "01"}
               </p>
               <p className="text-sm text-gray-600">Shortlisted</p>
             </div>
             <div className="flex items-center gap-2 text-center border-l border-gray-300 pl-8">
               <p className="text-2xl font-bold text-gray-900">
-                {actualCustomer.shortlistedCount || "01"}
+                {cusInfo.shortlistedCount || "01"}
               </p>
               <p className="text-sm text-gray-600">Shortlisted</p>
             </div>
           </div>
 
           <p className="text-sm text-gray-700 mb-4">
-            {actualCustomer.invitationMessage ||
-              "The customer invited you to discuss their lead."}
+            {/* {actualCustomer.invitationMessage ||
+              "The customer invited you to discuss their lead."} */}
           </p>
 
           <div className="flex gap-3">
@@ -151,7 +146,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
           <div className="flex items-center gap-2">
             <CiLocationOn className="text-gray-500" size={18} />
             <span className="text-sm font-medium text-gray-700">
-              Location: {actualCustomer.location}
+              Location: {cusInfo?.location}
             </span>
           </div>
         </div>

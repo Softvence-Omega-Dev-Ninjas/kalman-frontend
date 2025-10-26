@@ -1,21 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/redux/api/baseApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "https://pravaruka.sk", //  Change this to your API base URL
     baseUrl: "http://10.10.10.54:7000", //  Change this to your API base URL
     prepareHeaders: (headers, { getState }) => {
-
-     const state = getState() as any;
-     console.log("Current state in prepareHeaders:", state);
-     const token = state.auth?.token;
-     console.log("Preparing headers with token:", token);
+      const state = getState() as any;
+      const token =
+        state.auth?.token || state.admin?.token || state.user?.token;
 
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
-        console.log("Authorization header set:", token);
+        console.log(token);
       }
       return headers;
     },
@@ -31,7 +29,10 @@ export const baseApi = createApi({
     "Contact",
     "Admin",
     "Chat",
-    "Profile"
+    "Profile",
+    "Tradesman",
+    "Commision",
+    "Reviews",
   ],
 
   endpoints: () => ({}),

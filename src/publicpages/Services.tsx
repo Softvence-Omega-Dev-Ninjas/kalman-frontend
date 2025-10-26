@@ -2,8 +2,12 @@ import { IoMdOptions } from "react-icons/io";
 import { MdDoubleArrow } from "react-icons/md";
 import SideFilterForService from "../components/ServiceComponents/SideFilterForService";
 import AllServices from "../components/ServiceComponents/AllServices";
+import { useTradesman } from "@/redux/features/tradesman/hooks/useTradesman";
 
 function Services() {
+  const { tradesmen, isLoading, page, setPage, totalPages, total } =
+    useTradesman();
+
   return (
     <div>
       <div className="bg-[#0D1B2A] py-20 flex flex-col items-center justify-center gap-5">
@@ -26,19 +30,25 @@ function Services() {
           <div className="w-full lg:w-3/4">
             <div className="flex items-center justify-between mb-3">
               <h1 className="text-lg text-primary-txt font-semibold">
-                Available Tradespeople (35)
+                Available Tradespeople ({total})
               </h1>
               <select className="border border-secondary rounded-md px-3 py-2 focus:outline-none">
                 <option value="relevance">
-                  <span className="font-semibold">Sort by:</span> My
-                  Most Relevant
+                  <span className="font-semibold">Sort by:</span> My Most
+                  Relevant
                 </option>
                 <option value="date">Sort by </option>
                 <option value="rate-asc">Sort by </option>
                 <option value="rate-desc">Sort by </option>
               </select>
             </div>
-            <AllServices />
+            <AllServices
+              tradesman={tradesmen}
+              isLoading={isLoading}
+              page={page}
+              setPage={setPage}
+              totalPages={totalPages}
+            />
           </div>
         </div>
       </div>

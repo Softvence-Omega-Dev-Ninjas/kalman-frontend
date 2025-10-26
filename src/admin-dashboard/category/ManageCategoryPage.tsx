@@ -128,13 +128,13 @@ const ManageCategoryPage = () => {
         <div className="flex items-center space-x-3">
           <button
             onClick={() => handleEdit(row)}
-            className="text-blue-500 hover:text-blue-700 text-sm"
+            className="cursor-pointer hover:text-blue-600 text-sm"
           >
            <SquarePen size={18} />
           </button>
           <button
             onClick={() => handleDelete(row.id)}
-            className="text-red-500 hover:text-red-700 text-sm"
+            className="cursor-pointer hover:text-red-600 text-sm"
           >
             <Trash2 size={18}/>
           </button>
@@ -144,7 +144,7 @@ const ManageCategoryPage = () => {
   ];
 
   return (
-    <div className="p-5 bg-gray-50 rounded-lg shadow-sm">
+    <div className=" rounded-lg ">
       {/* Header */}
       <header className="flex items-center justify-between mb-8 flex-wrap gap-5">
         <h1 className="text-2xl font-bold text-gray-900">Category Management</h1>
@@ -184,6 +184,7 @@ const ManageCategoryPage = () => {
         columns={categoryColumns}
         data={categories}
         isLoading={isLoading}
+        emptyMessage={"No Category Found!"}
       />
 
       {/* Pagination */}

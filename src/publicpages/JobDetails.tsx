@@ -1,36 +1,43 @@
-import { jobs } from "../assets/DummyData/DummyData";
-
 import { FaArrowLeft } from "react-icons/fa";
-
 import { useNavigate, useParams } from "react-router-dom";
-import JobInformation from "../components/Jobs/JobDetails/JobInformaiton";
 import CustomerInformation from "../components/Jobs/JobDetails/CustomerInformation";
+import { useGetJobByIdQuery } from "@/redux/features/jobs/jobsApi";
+import JobInformation from "@/components/Jobs/JobDetails/JobInformaiton";
 
 const JobDetails = () => {
-  const {id: jobid}  = useParams();
-  console.log(jobid);
+  const { id: jobid } = useParams();
   const navigate = useNavigate();
-  const job = jobs.find(
-    (j) =>
-      j.id ===
-      (jobid && typeof jobid === "string" ? parseInt(jobid, 10) : undefined)
-  );
-  console.log(job);
-  return (
-    <div className="max-w-[1550px] mx-auto px-4 md:px-10 py-5">
-      <div
-        className="flex items-center gap-2 cursor-pointer mb-5"
-        onClick={() => navigate(-1)}
-      >
-        <FaArrowLeft />
-        <span>Back</span>
+
+  if (!jobid) return null;
+
+  const { data: job, isLoading } = useGetJobByIdQuery(jobid);
+  const singlejob = job?.data;
+
+  if (isLoading) {
+    return (
+      <div className="max-w-[1550px] mx-auto px-4 md:px-10 py-5">
+        <p className="text-gray-500 text-lg">Loading job details...</p>
       </div>
-      <div className="flex items-start gap-6">
-        <div className="w-3/4">
-          <JobInformation job={job} />
+    );
+  }
+
+  return (
+    <div className="bg-[#F2F4F8]">
+      <div className="max-w-[1550px] mx-auto px-4 md:px-10 py-5 mt-9">
+        <div
+          className="flex items-center gap-2 cursor-pointer mb-5"
+          onClick={() => navigate(-1)}
+        >
+          <FaArrowLeft />
+          <span>Back To Jobs</span>
         </div>
-        <div className="w-1/4">
-          <CustomerInformation customer={job} />
+        <div className="flex items-start gap-6">
+          <div className="w-3/4">
+            <JobInformation job={singlejob} />
+          </div>
+          <div className="w-1/4">
+            <CustomerInformation customer={singlejob} />
+          </div>
         </div>
       </div>
     </div>

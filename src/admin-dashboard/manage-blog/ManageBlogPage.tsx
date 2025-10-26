@@ -1,4 +1,4 @@
-import { Eye, Loader2, Plus, Search, SquarePen, Trash2 } from "lucide-react";
+import { Eye, Plus, Search, SquarePen, Trash2 } from "lucide-react";
 import { type TBlog } from "./data/blogData";
 
 import { useState } from "react";
@@ -11,21 +11,16 @@ import AddBlog from "./AddBlog";
 import {
   useDeleteBlogMutation,
   useGetAllBlogsQuery,
-  useGetSingleBlogQuery,
 } from "@/redux/features/blog/blogApi";
+import ViewBlog from "./ViewBlog";
 
 const ManageBlogPage = () => {
   const { data } = useGetAllBlogsQuery(undefined);
-
   const [deleteBlog] = useDeleteBlogMutation();
-  const [editingBlogId, setEditingBlogId] = useState<number | null>(null);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<"view" | "edit" | "add">("add");
 
-  const { data: singleBlogData, isLoading: isSingleLoading } =
-    useGetSingleBlogQuery(editingBlogId, {
-      skip: !editingBlogId, // only fetch if editingBlogId is set
-    });
+  const [editingBlog, setEditingBlog] = useState<TBlog | null>(null);
 
   // 3. Handlers for Modal
   const handleOpenModal = () => setIsModalOpen(true);
@@ -53,10 +48,14 @@ const ManageBlogPage = () => {
       header: "Image",
       cell: (row) => (
         <div className="flex items-center">
-          <div className="flex-shrink-0 w-24 h-12 ">
+          <div className="flex-shrink-0 w-20 h-12 ">
             <img
-              className="w-24 h-12 "
-              src={row?.imeges?.[0]}
+              className="w-24 h-12 rounded-md"
+              src={
+                row?.imeges?.[0] instanceof File
+                  ? URL.createObjectURL(row?.imeges?.[0])
+                  : row?.imeges?.[0]
+              }
               alt={row?.title}
             />
           </div>
@@ -87,12 +86,20 @@ const ManageBlogPage = () => {
       header: "Action",
       cell: (row) => (
         <div className="flex items-center space-x-2">
-          <button className="text-gray-400 hover:text-primary focus:outline-none focus:text-primary cursor-pointer">
+          <button
+            onClick={() => {
+              setEditingBlog(row);
+              setViewMode("view");
+              handleOpenModal();
+            }}
+            className="text-gray-400 hover:text-primary focus:outline-none focus:text-primary cursor-pointer"
+          >
             <Eye size={18} />
           </button>
           <button
             onClick={() => {
-              setEditingBlogId(row?.id);
+              setEditingBlog(row);
+              setViewMode("edit");
               handleOpenModal();
             }}
             className="text-gray-400 hover:text-primary focus:outline-none focus:text-primary cursor-pointer"
@@ -126,7 +133,8 @@ const ManageBlogPage = () => {
           </div>
           <Button
             onClick={() => {
-              setEditingBlogId(null);
+              setEditingBlog(null);
+              setViewMode("add");
               setIsModalOpen(true);
             }}
             className="flex items-center px-4 py-2 "
@@ -136,7 +144,7 @@ const ManageBlogPage = () => {
           </Button>
         </div>
       </header>
-      <CustomTable columns={blogColumns} data={data?.data} />
+      <CustomTable columns={blogColumns} data={data?.data}     emptyMessage={"No Blog Found!"}/>
       <CustomPagination
         totalItems={data?.data.length}
         pageSize={pageSize}
@@ -145,21 +153,25 @@ const ManageBlogPage = () => {
       />
 
       <Modal
+        widthClass={viewMode === "view" ? "max-w-7xl" : ""}
         isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setEditingBlogId(null);
-        }}
-        title={editingBlogId ? "Edit Blog Post" : "Create New Blog Post"}
+        onClose={handleCloseModal}
+        title={
+          viewMode === "view"
+            ? "View Blog Post"
+            : editingBlog
+            ? "Edit Blog Post"
+            : "Create New Blog Post"
+        }
       >
-        {editingBlogId && isSingleLoading ? (
-          <Loader2 />
+        {viewMode === "view" && editingBlog ? (
+          <ViewBlog data={editingBlog} />
         ) : (
           <AddBlog
-            initialData={editingBlogId ? singleBlogData?.data : null}
+            initialData={editingBlog}
             onCancel={() => {
               handleCloseModal();
-              setEditingBlogId(null);
+              setEditingBlog(null);
             }}
           />
         )}

@@ -5,9 +5,20 @@ interface ModalProps {
   onClose: () => void;
   title: string;
   children: ReactNode;
+  widthClass?: string;
+  heightClass?: string;
+  overflowYClass?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
+const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  widthClass,
+  heightClass,
+  overflowYClass,
+}) => {
   const [shouldRender, setShouldRender] = useState(isOpen);
 
   useEffect(() => {
@@ -30,13 +41,15 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
 
   return (
     <div
-      className={`fixed inset-0 flex items-start justify-center z-50 transition-opacity duration-500 bg-gray-400/50 ${backdropClasses}`}
+      className={`overflow-y-auto absolute inset-0 flex items-start justify-center z-50 transition-opacity duration-500 bg-gray-400/50 ${backdropClasses}`}
       onClick={onClose}
     >
       <div
-        className={`bg-white p-6 rounded-lg shadow-2xl w-full max-w-lg mx-4 mt-20 transition-all duration-500 transform ${
-          isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"
-        }`}
+        className={`bg-white p-6 rounded-lg shadow-2xl w-full mx-4 mt-20 transition-all duration-500 transform
+    ${widthClass || "max-w-xl"}
+    ${heightClass || "max-h-[85vh]"}
+    ${overflowYClass || "overflow-y-auto"}
+    ${isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"}`}
         onClick={handleModalClick}
       >
         {/* Header */}

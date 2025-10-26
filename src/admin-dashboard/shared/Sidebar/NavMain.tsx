@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
   SidebarMenuSub,
 } from "@/components/ui/sidebar";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import type { IconType } from "react-icons/lib";
 
 export type TSidbarItem = {
@@ -41,9 +41,10 @@ export function NavMain({ items }: { items: TSidbarItem }) {
                 key={item.title}
                 asChild
                 defaultOpen={item.isActive}
-                className="group/collapsible"
+                className="group/collapsible cursor-pointer"
               >
-                <SidebarMenuItem>
+               <Link to={`${item.url}`} className="cursor-pointer">
+                       <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
                     {item?.items ? (
                       <SidebarMenuButton
@@ -102,6 +103,7 @@ export function NavMain({ items }: { items: TSidbarItem }) {
                     </>
                   ) : null}
                 </SidebarMenuItem>
+               </Link>
               </Collapsible>
             )
           );

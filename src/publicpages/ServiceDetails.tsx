@@ -5,18 +5,31 @@ import image3 from "../assets/sample_images/image3.png";
 import { MdOutlineReport } from "react-icons/md";
 import { useState } from "react";
 import BookingModal from "../components/ServiceComponents/BookingModal";
+import RatingReviews from "@/components/ServiceComponents/RatingReviews";
+import ReviewCard from "@/components/ServiceComponents/ReviewCard";
+import { useParams } from "react-router-dom";
+import { useGetSingleTradesmanQuery } from "@/redux/features/tradesman/tradesmanApi";
+import TradesManBusinessDetails from "@/components/ServiceComponents/TradesManBusinessDetails";
 
 const ServiceDetails = () => {
+  const { id } = useParams<{ id: string }>();
+  const { data } = useGetSingleTradesmanQuery(id);
   const [openContact, setOpenContact] = useState(false);
-  const handleBookingSubmit = (data: { location: string; date: string; duration: string; notes: string }) => {
-    console.log('booking', data);
+  const handleBookingSubmit = (data: {
+    location: string;
+    date: string;
+    duration: string;
+    notes: string;
+  }) => {
+    console.log("booking", data);
     setOpenContact(false);
-  }
+  };
+  console.log("tradesman details", data);
   return (
-    <div className="bg-[#f3f5f7] min-h-screen py-10 px-6">
-      <div className="max-w-[1580px] mx-auto">
+    <div className="bg-[#f3f5f7] min-h-screen py-16 px-16">
+      <div className="max-w-[1490px] mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-semibold mb-6">Cleaning Service</h2>
+          <h2 className="text-2xl font-semibold mb-6">Service</h2>
           <button className="flex items-center gap-1 px-2 py-1 border border-gray-300 rounded-md">
             <span>Report</span>
             <MdOutlineReport />
@@ -46,77 +59,74 @@ const ServiceDetails = () => {
             </div>
           </div>
 
-          <div className="flex items-start gap-8 mt-10">
-            <div className="w-2/3 pr-10">
-              <div className="flex items-start gap-4 ">
-                <img
-                  src={image2}
-                  alt="avatar"
-                  className="w-16 h-16 rounded-full object-cover"
-                />
-                <div>
-                  <div className="font-semibold text-lg">Ronald Higgins</div>
-                  <div className="text-sm text-secondary">Tradesperson</div>
-                  <div className="text-sm text-secondary flex items-center gap-1">
-                    <IoLocationOutline />
-                    <span>Bratislava, Slovakia</span>
-                  </div>
-                  <div className="text-sm text-primary font-semibold mt-1">
-                    ★ 4.8 (170 Reviews)
+          <div className="flex flex-col  md:flex-row items-start gap-8 mt-10">
+            <div className="w-full md:w-2/3 pr-10">
+              <div>
+                <div className="flex items-start gap-4 ">
+                  <img
+                    src={image2}
+                    alt="avatar"
+                    className="w-16 h-16 rounded-full object-cover"
+                  />
+                  <div>
+                    <div className="font-semibold text-lg">{`${data?.data?.firstName} ${data?.data?.lastName}`}</div>
+                    <div className="text-sm text-secondary">Tradesperson</div>
+                    <div className="text-sm text-secondary flex items-center gap-1">
+                      <IoLocationOutline />
+                      <span>{data?.data?.address}</span>
+                    </div>
+                    <div className="text-sm text-primary font-semibold mt-1">
+                      ★ 4.8 (170 Reviews)
+                    </div>
                   </div>
                 </div>
+
+                <hr className="my-6 border-t border-gray-200" />
+
+                <h3 className="text-lg font-semibold mb-2">Service Details</h3>
+                <p className=" text-secondary">
+                  {data?.data?.businessDetail?.professionalDescription}
+                </p>
               </div>
 
-              <hr className="my-6 border-t border-gray-200" />
-
-              <h3 className="text-lg font-semibold mb-2">Service Details</h3>
-              <p className=" text-secondary">
-                From daily maintenance to deep cleaning, our office cleaning
-                services are tailored to meet your business needs. We use
-                professional-grade equipment and eco-friendly products to ensure
-                a clean, hygienic, and welcoming environment for your employees
-                and clients.
-              </p>
+              <div className="block md:hidden mt-6">
+                <TradesManBusinessDetails
+                  data={data?.data}
+                  setOpenContact={setOpenContact}
+                />
+              </div>
+              <RatingReviews />
+              {data?.data?.review.length > 0 && (
+                <div className="mt-8">
+                  {data?.data?.review.map((rev: any) => (
+                    <ReviewCard
+                      key={rev.id}
+                      name={rev.customer?.name}
+                      title={rev.title}
+                      avatar={rev.customer?.profile_image}
+                      rating={rev.rating}
+                      comment={rev.text}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
             {/* Right column card */}
-            <div className="w-1/3 space-y-6">
-              <div className="bg-white rounded-lg p-6 shadow-md">
-                <div className="flex items-start justify-between">
-                  <div className="font-semibold text-xl">
-                    Carpentry & Woodwork
-                  </div>
 
-                  <div className="text-black">
-                    Starting At{" "}
-                    <span className="font-semibold text-primary">
-                      $20.00/hr
-                    </span>
-                  </div>
-                </div>
-                <div className="mt-4 text-lg text-secondary">
-                  Skills and Services
-                </div>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-gray-100 rounded-md text-sm">
-                    Handyman
-                  </span>
-                  <span className="px-2 py-1 bg-gray-100 rounded-md text-sm">
-                    Gardening
-                  </span>
-                  <span className="px-2 py-1 bg-gray-100 rounded-md text-sm">
-                    Renovation
-                  </span>
-                </div>
-
-                <button onClick={() => setOpenContact(true)} className="w-full mt-6 bg-[#FF7346] text-white px-4 py-3 rounded-md">
-                  Contact for Shortlist
-                </button>
-              </div>
+            <div className="w-full  md:block hidden md:w-1/3 space-y-6">
+              <TradesManBusinessDetails
+                data={data?.data}
+                setOpenContact={setOpenContact}
+              />
             </div>
             {
-              // openContact && ( Show modal) 
+              // openContact && ( Show modal)
             }
-            <BookingModal open={openContact} onClose={() => setOpenContact(false)} onSubmit={handleBookingSubmit} />
+            <BookingModal
+              open={openContact}
+              onClose={() => setOpenContact(false)}
+              onSubmit={handleBookingSubmit}
+            />
           </div>
         </div>
       </div>
