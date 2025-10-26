@@ -18,7 +18,6 @@ const AllServices: React.FC<AllTradesmanProps> = ({
   setPage,
   totalPages,
 }) => {
-  console.log("tradesman", tradesman);
   const handleContact = (name: string) => {
     console.log(`Contacting ${name}`);
   };
@@ -33,6 +32,7 @@ const AllServices: React.FC<AllTradesmanProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {tradesman.map((person, index) => (
           <TradespersonCard
+            id={person.id}
             key={index}
             image={trade1}
             name={`${person.firstName} ${person.lastName}`}

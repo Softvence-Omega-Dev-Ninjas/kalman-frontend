@@ -59,61 +59,61 @@ const GeneralLogin: React.FC = () => {
   // };
 
   const onSubmit = async (data: LoginFormInputs) => {
-  if (!data.rememberMe) {
-    toast.error("You must agree to the terms before continuing!");
-    return;
-  }
-
-  try {
-    const result = await login({
-      email: data.email,
-      password: data.password,
-    }).unwrap();
-
-    if (result.success && result.data) {
-      const { token, user } = result.data;
-
-      const userData = {
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        image: user.image,
-      };
-
-      // Store in Redux
-      dispatch(
-        setUser({
-          user: userData,
-          token,
-        })
-      );
-
-      // Store in localStorage for persistence
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(userData));
-
-      toast.success(result.message || "Login successful!");
-
-      if (data.rememberMe) {
-        localStorage.setItem("rememberMe", "true");
-      } else {
-        localStorage.removeItem("rememberMe");
-      }
-
-      navigate("/");
-    } else {
-      toast.error("Login failed: Invalid response format");
+    if (!data.rememberMe) {
+      toast.error("You must agree to the terms before continuing!");
+      return;
     }
-  } catch (err: any) {
-    console.error("Login error:", err);
-    const errorMessage =
-      err?.data?.message ||
-      err?.error ||
-      "Login failed! Please check your credentials.";
-    toast.error(errorMessage);
-  }
-};
 
+    try {
+      const result = await login({
+        email: data.email,
+        password: data.password,
+      }).unwrap();
+
+      if (result.success && result.data) {
+        const { token, user } = result.data;
+
+        const userData = {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          image: user.image,
+        };
+
+        // Store in Redux
+        dispatch(
+          setUser({
+            user: userData,
+            token,
+          })
+        );
+
+        // Store in localStorage for persistence
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(userData));
+
+        toast.success(result.message || "Login successful!");
+
+        if (data.rememberMe) {
+          localStorage.setItem("rememberMe", "true");
+        } else {
+          localStorage.removeItem("rememberMe");
+        }
+
+        navigate("/");
+      } else {
+        toast.error("Login failed: Invalid response format");
+      }
+    } catch (err: any) {
+      console.error("Login error:", err);
+      const errorMessage =
+        err?.data?.message ||
+        err?.error ||
+        "Login failed! Please check your credentials.";
+      toast.error(errorMessage);
+    }
+  };
 
   const handleGoogleLogin = () => {
     toast.success("Google login coming soon!");
@@ -261,7 +261,6 @@ const GeneralLogin: React.FC = () => {
                 </div>
                 <div className="flex-1 h-px bg-gray-200" />
               </div>
-              
 
               {/* Google login */}
               <Button
@@ -293,4 +292,3 @@ const GeneralLogin: React.FC = () => {
 };
 
 export default GeneralLogin;
-

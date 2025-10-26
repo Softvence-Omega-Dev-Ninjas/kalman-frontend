@@ -7,7 +7,7 @@ import { useTradesman } from "@/redux/features/tradesman/hooks/useTradesman";
 function Services() {
   const { tradesmen, isLoading, page, setPage, totalPages, total } =
     useTradesman();
-  console.log(total);
+
   return (
     <div>
       <div className="bg-[#0D1B2A] py-20 flex flex-col items-center justify-center gap-5">
