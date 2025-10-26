@@ -1,8 +1,11 @@
 "use client";
 
-import type React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Star } from "lucide-react";
+import { usePostReviewMutation } from "@/redux/features/review/reviewApi";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 
 interface RatingReviewsProps {
   initialRating?: number;
@@ -11,38 +14,51 @@ interface RatingReviewsProps {
 
 interface ReviewData {
   rating: number;
-  comment: string;
+  text: string;
+  customerId: string;
+  tradesManId: string;
 }
 
-const RatingReviews: React.FC<RatingReviewsProps> = ({
-  initialRating = 1,
-  onSubmit,
-}) => {
+const RatingReviews: React.FC<RatingReviewsProps> = ({ initialRating = 0 }) => {
+  const { id: tradesManId } = useParams<{ id: string }>();
+  const [postReview, { isLoading }] = usePostReviewMutation();
+
+  const currentUser = useSelector(selectCurrentUser);
+  const customerId = currentUser?.id;
+
   const [comment, setComment] = useState<string>("");
   const [rating, setRating] = useState<number>(initialRating);
   const [hoverRating, setHoverRating] = useState<number>(0);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const reviewData: ReviewData = { rating, comment };
-
-    if (onSubmit) {
-      onSubmit(reviewData);
+    if (!customerId || !tradesManId) {
+      return;
     }
 
-    console.log(reviewData);
-    setComment("");
-    setRating(initialRating);
+    const reviewData: ReviewData = {
+      rating,
+      text: comment,
+      customerId,
+      tradesManId,
+    };
+    try {
+      await postReview(reviewData).unwrap();
+      setComment("");
+      setRating(initialRating);
+    } catch (error) {
+      console.error("Failed to post review:", error);
+    }
   };
 
-  const renderStars = (): React.ReactNode => {
+  const renderStars = () => {
     const displayRating = hoverRating || rating;
 
-    return [...Array(5)].map((_, i: number) => (
+    return [...Array(5)].map((_, i) => (
       <button
         key={i}
         type="button"
-        onClick={() => setRating(rating === i + 1 ? rating - 1 : i + 1)}
+        onClick={() => setRating(i + 1)}
         onMouseEnter={() => setHoverRating(i + 1)}
         onMouseLeave={() => setHoverRating(0)}
         className="cursor-pointer transition-transform hover:scale-110"
@@ -62,48 +78,40 @@ const RatingReviews: React.FC<RatingReviewsProps> = ({
 
   return (
     <div className="w-full bg-gray-100 py-8 rounded-lg">
-      {/* Header Section */}
+      {/* Header */}
       <div className="mb-8">
-        <h2 className="text-xl font-semibold  mb-2">Rating & Reviews</h2>
+        <h2 className="text-xl font-semibold mb-2">Rating & Reviews</h2>
         <p className="text-secondary">
           Customers rated this pro highly for work quality, professionalism, and
           responsiveness.
         </p>
       </div>
 
-      {/* Star Rating Display with Count */}
+      {/* Star Rating */}
       <div className="mb-8 flex items-center gap-3">
         <div className="flex gap-2">{renderStars()}</div>
-        <span className="text-lg font-semibold text-gray-700">
-          {rating > 0
-            ? `${rating} star${rating !== 1 ? "s" : ""}`
-            : "Click to rate"}
-        </span>
       </div>
 
       {/* Review Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Comment Input */}
         <textarea
           value={comment}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-            setComment(e.target.value)
-          }
-          placeholder="Type your comment ....."
+          onChange={(e) => setComment(e.target.value)}
+          placeholder="Type your comment..."
           className="w-full p-4 bg-white border border-gray-200 rounded-lg text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
           rows={5}
-          aria-label="Review comment"
         />
 
-        {/* Send Button */}
         <button
           type="submit"
-          className="px-6 py-3 bg-primary hover:bg-orange-600 text-white font-medium rounded-lg transition-colors"
+          disabled={isLoading}
+          className="px-6 py-3 bg-primary hover:bg-orange-600 text-white font-medium rounded-lg transition-colors disabled:opacity-60"
         >
-          Send Review
+          {isLoading ? "Submitting..." : "Send Review"}
         </button>
       </form>
     </div>
   );
 };
+
 export default RatingReviews;

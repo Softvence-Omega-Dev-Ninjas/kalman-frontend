@@ -33,9 +33,10 @@ export const tradesmanApi = baseApi.injectEndpoints({
 
     getSingleTradesman: builder.query({
       query: (id) => ({
-        url: `/blog/${id}`,
+        url: `/tradesman/${id}`,
         method: "GET",
       }),
+      providesTags: (id) => [{ type: "Tradesman", id }],
     }),
   }),
 });
