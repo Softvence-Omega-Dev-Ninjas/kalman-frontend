@@ -161,9 +161,7 @@ const Navbar = () => {
                 >
                   <div className="relative">
                     <img
-                      src={
-                        icon || "https://randomuser.me/api/portraits/men/61.jpg"
-                      }
+                      src={userState?.image || icon}
                       alt="User"
                       className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-white shadow-lg transition-all duration-300 group-hover:border-orange-400 group-hover:scale-105"
                     />
