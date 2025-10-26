@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -38,6 +37,7 @@ const CreateCategory: React.FC<CreateCategoryProps> = ({
   const [subCategories, setSubCategories] = useState<string[]>([]);
   const [subInput, setSubInput] = useState("");
   const [image, setImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
   useEffect(() => {
     if (editingCategory) {
@@ -45,11 +45,13 @@ const CreateCategory: React.FC<CreateCategoryProps> = ({
       setSubCategories(editingCategory.subCategories || []);
       setSubInput("");
       setImage(null);
+      setPreview(editingCategory.image || null);
     } else {
       setName("");
       setSubCategories([]);
       setSubInput("");
       setImage(null);
+      setPreview(null);
     }
   }, [editingCategory, isOpen]);
 
@@ -62,6 +64,13 @@ const CreateCategory: React.FC<CreateCategoryProps> = ({
 
   const handleRemoveSubCategory = (index: number) => {
     setSubCategories(subCategories.filter((_, i) => i !== index));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImage(file);
+    setPreview(URL.createObjectURL(file));
   };
 
   const handleSubmit = () => {
@@ -77,9 +86,11 @@ const CreateCategory: React.FC<CreateCategoryProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent  className="sm:max-w-lg ">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>{editingCategory ? "Edit Category" : "Create Category"}</DialogTitle>
+          <DialogTitle>
+            {editingCategory ? "Edit Category" : "Create Category"}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 mt-4">
@@ -99,18 +110,29 @@ const CreateCategory: React.FC<CreateCategoryProps> = ({
               <Input
                 value={subInput}
                 onChange={(e) => setSubInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddSubCategory())}
+                onKeyDown={(e) =>
+                  e.key === "Enter" &&
+                  (e.preventDefault(), handleAddSubCategory())
+                }
                 placeholder="Type and press Enter"
                 className="focus:!ring-0 ring-0"
               />
-              <Button className="cursor-pointer" onClick={handleAddSubCategory}>Add</Button>
+              <Button className="cursor-pointer" onClick={handleAddSubCategory}>
+                Add
+              </Button>
             </div>
 
             <div className="flex flex-wrap gap-2 mt-2">
               {subCategories.map((sub, i) => (
-                <div key={i} className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded">
+                <div
+                  key={i}
+                  className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded"
+                >
                   <span>{sub}</span>
-                  <button onClick={() => handleRemoveSubCategory(i)} className="text-red-600 font-bold">
+                  <button
+                    onClick={() => handleRemoveSubCategory(i)}
+                    className="text-red-600 font-bold"
+                  >
                     <RxCross2 />
                   </button>
                 </div>
@@ -118,19 +140,45 @@ const CreateCategory: React.FC<CreateCategoryProps> = ({
             </div>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <Label>Image {editingCategory ? "(optional to change)" : "*"}</Label>
+          <div className="flex flex-col gap-2">
+            <Label>
+              Image {editingCategory ? "(optional to change)" : "*"}
+            </Label>
             <Input
               type="file"
               accept="image/*"
-              onChange={(e) => e.target.files && setImage(e.target.files[0])}
+              onChange={handleImageChange}
               className="focus:!ring-0 ring-0"
             />
+
+            {preview && (
+              <div className="mt-3 flex justify-center">
+                <div className="relative w-32 h-32 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="object-cover w-full h-full"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPreview(null);
+                      setImage(null);
+                    }}
+                    className="absolute top-1 right-1 bg-white/80 rounded-full p-1 shadow hover:bg-white"
+                  >
+                    <RxCross2 className="text-red-500 w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
         <DialogFooter>
-          <Button className="cursor-pointer" onClick={handleSubmit}>{editingCategory ? "Update" : "Create"}</Button>
+          <Button className="cursor-pointer" onClick={handleSubmit}>
+            {editingCategory ? "Update" : "Create"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

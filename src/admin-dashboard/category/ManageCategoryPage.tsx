@@ -184,6 +184,7 @@ const ManageCategoryPage = () => {
         columns={categoryColumns}
         data={categories}
         isLoading={isLoading}
+        emptyMessage={"No Category Found!"}
       />
 
       {/* Pagination */}
