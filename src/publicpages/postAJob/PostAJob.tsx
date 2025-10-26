@@ -2,8 +2,7 @@ import { useState } from "react";
 import PhaseOne from "./PostAJobComponents/PhaseOne";
 import PhaseTwo from "./PostAJobComponents/PhaseTwo";
 import PhaseThree from "./PostAJobComponents/PhaseThree";
-
-
+import { Link } from "react-router-dom";
 
 /* {"title":"Fix Leaky Roof","categoryId":"","description":"Roof repair on a two-story house.","location":"Suburb X","timeline":"3 days","contact_method":"Email","skills_needed":["Roofing","Waterproofing"],"price":150}*/
 
@@ -17,7 +16,7 @@ export interface JobData {
   location: string;
   contact_method: "phone" | "email" | null;
   images: File[];
-  price:string | number;
+  price: string | number;
 }
 
 const PostAJob = () => {
@@ -32,7 +31,7 @@ const PostAJob = () => {
     location: "",
     contact_method: null,
     images: [],
-    price: 0 ,
+    price: 0,
   });
 
   const progressPercent = () => {
@@ -44,7 +43,7 @@ const PostAJob = () => {
   return (
     <div>
       {/* Header */}
-      <div className="py-5 px-4 fixed top-[14%] left-0 right-0 bg-white shadow-md z-10">
+      <div className="py-5 px-4 fixed top-[12%] left-0 right-0 bg-white shadow-md z-10">
         <div className="max-w-[1180px] mx-auto flex items-center justify-between">
           <div>
             <div className="text-sm font-medium">Budget & Timeline</div>
@@ -52,7 +51,10 @@ const PostAJob = () => {
               Step {phase} of 3 · Add the finishing touches
             </div>
           </div>
-          <button className="text-2xl">✕</button>
+          <Link to="/">
+            {" "}
+            <button className="text-2xl cursor-pointer">✕</button>
+          </Link>
         </div>
 
         <div className="max-w-[1180px] mx-auto mt-4">
@@ -69,8 +71,7 @@ const PostAJob = () => {
       </div>
 
       {/* Phases */}
-      <div className="bg-[#eff2f7] min-h-screen pt-[9%] py-10">
-
+      <div className="bg-[#eff2f7] min-h-screen pt-[9%] py-10 mt-2">
         {phase === 1 && (
           <PhaseOne
             phase={phase}

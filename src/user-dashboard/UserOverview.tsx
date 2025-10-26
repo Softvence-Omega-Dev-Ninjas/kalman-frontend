@@ -1,8 +1,16 @@
-import { useState } from 'react';
-import { Clock, TrendingUp, Calendar, MapPin, Clock3, ChevronDown } from 'lucide-react';
+import { useState } from "react";
+import {
+  Clock,
+  TrendingUp,
+  Calendar,
+  MapPin,
+  Clock3,
+  ChevronDown,
+} from "lucide-react";
+import { Link } from "react-router-dom";
 
 const UserOverview = () => {
-  const [selectedMonth, setSelectedMonth] = useState('Month');
+  const [selectedMonth, setSelectedMonth] = useState("Month");
 
   const recentJobs = [
     {
@@ -10,25 +18,23 @@ const UserOverview = () => {
       title: "Emergency Boiler Repair",
       date: "24/01/2024",
       location: "Select Location",
-      urgency: "ASAP"
+      urgency: "ASAP",
     },
     {
       id: 2,
       title: "Kitchen Cabinet Installation",
       date: "24/01/2024",
       location: "Select Location",
-      urgency: "Flexible"
+      urgency: "Flexible",
     },
     {
       id: 3,
       title: "Emergency Boiler Repair",
       date: "24/01/2024",
       location: "Select Location",
-      urgency: "ASAP"
-    }
+      urgency: "ASAP",
+    },
   ];
-
-
 
   return (
     <div className="min-h-screen p-4 md:p-6">
@@ -38,13 +44,24 @@ const UserOverview = () => {
           <div className=" rounded-lg shadow-sm border border-gray-200 p-3 bg-gray-100">
             <div className="flex items-center gap-2 mb-6">
               <Clock className="w-5 h-5 text-gray-600" />
-              <h2 className="text-lg font-semibold text-gray-900">Recent shortlist</h2>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Recent shortlist
+              </h2>
             </div>
 
             <div className="space-y-2">
               {recentJobs.map((job, index) => (
-                <div key={job.id} className={`${index !== recentJobs.length - 1 ? ' border-gray-100 pb-4' : ''} mb-2 bg-white p-3 rounded-lg border-gray-200 border-1`}>
-                  <h3 className="text-base font-medium text-gray-900 mb-3">{job.title}</h3>
+                <div
+                  key={job.id}
+                  className={`${
+                    index !== recentJobs.length - 1
+                      ? " border-gray-100 pb-4"
+                      : ""
+                  } mb-2 bg-white p-3 rounded-lg border-gray-200 border-1`}
+                >
+                  <h3 className="text-base font-medium text-gray-900 mb-3">
+                    {job.title}
+                  </h3>
                   <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                     <div className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
@@ -83,15 +100,19 @@ const UserOverview = () => {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-gray-600" />
-                <h2 className="text-lg font-semibold text-gray-900">Activity</h2>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Activity
+                </h2>
               </div>
             </div>
 
             <div className="mb-4 bg-white p-3 rounded-lg border-gray-200 border-1">
               <div className="flex items-center justify-between mb-2 ">
-                <span className="text-md font-semibold text-gray-600">This Months</span>
+                <span className="text-md font-semibold text-gray-600">
+                  This Months
+                </span>
                 <div className="relative">
-                  <select 
+                  <select
                     value={selectedMonth}
                     onChange={(e) => setSelectedMonth(e.target.value)}
                     className="appearance-none border border-gray-200 rounded-md px-3 py-1 text-sm text-gray-700 pr-8 focus:outline-none focus:border-orange-500 bg-gray-100 font-semibold"
@@ -120,18 +141,22 @@ const UserOverview = () => {
 
           {/* MY Shortlist */}
           <div className=" border-gray-200 p-3 bg-gray-100 rounded-lg shadow-sm border">
-            <h2 className="text-lg font-semibold text-gray-900 mb-6">Quick Action</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">
+              Quick Action
+            </h2>
 
             <div className="space-y-4">
-
-                <div className='bg-white p-3 rounded-lg border-gray-200 border-1'>
+              <Link to="/post-a-job">
+                <div className="bg-white p-3 rounded-lg border-gray-200 border-1">
                   Post a Job
                 </div>
-                <div className='bg-white p-3 rounded-lg border-gray-200 border-1'>
-                 Find Tradespeople
+              </Link>
+              <Link to="/jobs">
+                <div className="bg-white p-3 rounded-lg border-gray-200 border-1">
+                  Find Tradespeople
                 </div>
+              </Link>
             </div>
-
           </div>
         </div>
       </div>

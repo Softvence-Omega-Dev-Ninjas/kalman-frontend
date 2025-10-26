@@ -78,7 +78,7 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
               <button
                 key={s.id}
                 onClick={() => setSelectedCategory(s.id)}
-                className={`flex flex-col items-start gap-3 p-4 rounded-lg border ${
+                className={`flex flex-col items-start gap-3 p-4 cursor-pointer rounded-lg border ${
                   selectedCategory === s.id ? "border-[#FF7346]" : "border-gray-200"
                 } bg-white text-left`}
               >

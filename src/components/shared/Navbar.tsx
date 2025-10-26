@@ -32,6 +32,7 @@ const Navbar = () => {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const userState = useSelector(selectCurrentUser);
+  console.log('userState', userState)
 
   // Check if mobile device
   useEffect(() => {
