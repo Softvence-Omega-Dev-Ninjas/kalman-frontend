@@ -46,7 +46,7 @@ const AdminDashboardLayout = () => {
           </header>
           <div className="bg-[#F9FAFB] min-h-[calc(100vh)] z-0">
             <div className="p-5">
-            <Card className="p-5">
+            <Card className="p-5 min-h-[88vh]">
                 <Outlet/>
             </Card>
             </div>
