@@ -8,8 +8,7 @@ import { MdDashboard } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 import { clearUser, selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { FiMenu, FiX, FiChevronDown, FiLogIn } from "react-icons/fi";
-import icon from '@/assets/user-icon/user-icon1.png';
-
+import icon from "@/assets/user-icon/user-icon1.png";
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -27,38 +26,45 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const dispatch = useDispatch();
-  
+
   const dropdownRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const userState = useSelector(selectCurrentUser);
-  console.log('userState', userState)
+  console.log("userState", userState);
 
   // Check if mobile device
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setDropdownOpen(false);
       }
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node) && open) {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node) &&
+        open
+      ) {
         setOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
   const handleSignUp = () => {
@@ -74,7 +80,7 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(clearUser());
     setDropdownOpen(false);
-    window.location.href = "/general-login";
+    window.location.href = "/";
   };
 
   const handleNavLinkClick = () => {
@@ -87,15 +93,22 @@ const Navbar = () => {
       <div className="w-full bg-gradient-to-r from-orange-50 to-amber-50 border-b border-orange-100">
         <div className="max-w-[1580px] mx-auto px-4 py-2 text-sm text-gray-700 flex items-center justify-between gap-5">
           <div className="flex items-center gap-2">
-            <span className="bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-bold">NEW</span>
+            <span className="bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+              NEW
+            </span>
             Are you a tradesperson looking for leads?{" "}
-            <Link to="/trade-signup" className="underline font-semibold text-orange-600 hover:text-orange-700">
+            <Link
+              to="/trade-signup"
+              className="underline font-semibold text-orange-600 hover:text-orange-700"
+            >
               Join for free
             </Link>
           </div>
           <div className="hidden sm:flex items-center gap-2 text-sm">
             <span className="text-gray-500">Language</span>
-            <span className="font-semibold bg-white px-2 py-1 rounded border">EN</span>
+            <span className="font-semibold bg-white px-2 py-1 rounded border">
+              EN
+            </span>
           </div>
         </div>
       </div>
@@ -124,8 +137,8 @@ const Navbar = () => {
                     to={item.path}
                     className={({ isActive }) =>
                       `font-medium transition-colors duration-200 px-3 py-2 rounded-lg ${
-                        isActive 
-                          ? "text-orange-600 bg-orange-50 font-semibold" 
+                        isActive
+                          ? "text-orange-600 bg-orange-50 font-semibold"
                           : "text-gray-700 hover:text-orange-500 hover:bg-gray-50"
                       }`
                     }
@@ -148,13 +161,15 @@ const Navbar = () => {
                 >
                   <div className="relative">
                     <img
-                       src={icon || "https://randomuser.me/api/portraits/men/61.jpg"}
+                      src={
+                        icon || "https://randomuser.me/api/portraits/men/61.jpg"
+                      }
                       alt="User"
                       className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-white shadow-lg transition-all duration-300 group-hover:border-orange-400 group-hover:scale-105"
                     />
                     <div className="absolute -bottom-0 -right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
                   </div>
-                  
+
                   {/* Show user info on desktop */}
                   {!isMobile && (
                     <div className="hidden lg:flex flex-col items-start">
@@ -163,15 +178,14 @@ const Navbar = () => {
                       </span>
                       <span className="text-xs text-gray-500 capitalize">
                         {userState.role}
-
                       </span>
                     </div>
                   )}
-                  
-                  <FiChevronDown 
+
+                  <FiChevronDown
                     className={`text-gray-400 transition-transform duration-300 ${
-                      dropdownOpen ? 'rotate-180' : ''
-                    }`} 
+                      dropdownOpen ? "rotate-180" : ""
+                    }`}
                   />
                 </button>
 
@@ -182,13 +196,16 @@ const Navbar = () => {
                     <div className="px-4 py-3 border-b border-gray-100">
                       <div className="flex items-center gap-3">
                         <img
-                          src={icon || "https://randomuser.me/api/portraits/men/61.jpg"}
+                          src={
+                            icon ||
+                            "https://randomuser.me/api/portraits/men/61.jpg"
+                          }
                           alt="User"
                           className="w-12 h-12 rounded-full object-cover border-2 border-orange-100"
                         />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold text-gray-900 truncate">
-                              {userState.name || userState.role}
+                            {userState.name || userState.role}
                           </p>
                           <p className="text-xs text-gray-500 truncate mt-1">
                             {userState.email}
@@ -204,26 +221,36 @@ const Navbar = () => {
 
                     {/* Menu Items */}
                     <div className="py-2">
+                      {/* Conditionally render dashboard link based on role */}
                       <Link
-                        to="/user-dashboard"
+                        to={
+                          userState.role === "CUSTOMER"
+                            ? "/user-dashboard"
+                            : "/trade-person"
+                        }
                         className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-orange-50 transition-colors duration-200 group"
                         onClick={() => setDropdownOpen(false)}
                       >
                         <MdDashboard className="text-gray-400 group-hover:text-orange-500 text-lg" />
                         <span>Dashboard</span>
                       </Link>
-                      
+
+                      {/* Conditionally render profile settings link based on role */}
                       <Link
-                        to="/user-dashboard/settings"
+                        to={
+                          userState.role === "CUSTOMER"
+                            ? "/user-dashboard/settings"
+                            : "/trade-person/settings"
+                        }
                         className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-orange-50 transition-colors duration-200 group"
                         onClick={() => setDropdownOpen(false)}
                       >
                         <IoSettingsSharp className="text-gray-400 group-hover:text-orange-500 text-lg" />
                         <span>Profile Settings</span>
                       </Link>
-                      
+
                       <div className="border-t border-gray-100 my-2"></div>
-                      
+
                       <button
                         className="flex items-center gap-3 w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 transition-colors duration-200 group"
                         onClick={handleLogout}
@@ -271,13 +298,17 @@ const Navbar = () => {
                 onClick={() => setOpen((v) => !v)}
                 className="p-3 rounded-xl bg-white shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50"
               >
-                {open ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
+                {open ? (
+                  <FiX className="w-5 h-5" />
+                ) : (
+                  <FiMenu className="w-5 h-5" />
+                )}
               </button>
 
               {/* Mobile Slide-over Menu */}
-              <div 
+              <div
                 className={`fixed inset-0 z-40 transition-opacity duration-300 ${
-                  open ? 'opacity-100 visible' : 'opacity-0 invisible'
+                  open ? "opacity-100 visible" : "opacity-0 invisible"
                 }`}
                 aria-hidden={!open}
               >
@@ -285,28 +316,30 @@ const Navbar = () => {
                 <div
                   onClick={() => setOpen(false)}
                   className={`absolute inset-0 bg-black transition-opacity duration-300 ${
-                    open ? 'opacity-30' : 'opacity-0'
+                    open ? "opacity-30" : "opacity-0"
                   }`}
                   aria-hidden="true"
                 />
 
                 {/* Panel */}
-                <aside 
+                <aside
                   className={`absolute right-0 top-0 h-full w-4/5 max-w-sm bg-white shadow-xl transform transition-transform duration-300 ${
-                    open ? 'translate-x-0' : 'translate-x-full'
-                  }`} 
-                  role="dialog" 
+                    open ? "translate-x-0" : "translate-x-full"
+                  }`}
+                  role="dialog"
                   aria-modal="true"
                 >
                   <div className="p-6 h-full flex flex-col">
                     {/* Header */}
                     <div className="flex items-center justify-between mb-8">
                       <Link to="/" onClick={handleNavLinkClick}>
-                        <h1 className="text-2xl font-bold text-gray-900">Stavbar</h1>
+                        <h1 className="text-2xl font-bold text-gray-900">
+                          Stavbar
+                        </h1>
                       </Link>
-                      <button 
-                        aria-label="Close menu" 
-                        onClick={() => setOpen(false)} 
+                      <button
+                        aria-label="Close menu"
+                        onClick={() => setOpen(false)}
                         className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
                       >
                         <FiX className="w-6 h-6" />
@@ -324,8 +357,8 @@ const Navbar = () => {
                               className={({ isActive }) =>
                                 `block py-4 px-4 rounded-xl transition-colors font-medium ${
                                   isActive
-                                    ? 'text-orange-600 bg-orange-50 font-semibold'
-                                    : 'text-gray-700 hover:text-orange-500 hover:bg-gray-50'
+                                    ? "text-orange-600 bg-orange-50 font-semibold"
+                                    : "text-gray-700 hover:text-orange-500 hover:bg-gray-50"
                                 }`
                               }
                             >
@@ -339,13 +372,13 @@ const Navbar = () => {
                     {/* Auth Buttons - Only show if not logged in */}
                     {!userState && (
                       <div className="mt-8 pt-6 border-t border-gray-200">
-                        <button 
+                        <button
                           onClick={handleSignIn}
                           className="w-full text-center py-4 font-semibold text-gray-700 hover:bg-gray-50 rounded-xl transition-colors mb-3"
                         >
                           Sign In
                         </button>
-                        <button 
+                        <button
                           onClick={handleSignUp}
                           className="w-full text-center py-4 font-semibold bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
                         >
@@ -359,38 +392,51 @@ const Navbar = () => {
                       <div className="mt-8 pt-6 border-t border-gray-200">
                         <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-xl">
                           <img
-                             src={icon || "https://randomuser.me/api/portraits/men/61.jpg"}
+                            src={
+                              icon ||
+                              "https://randomuser.me/api/portraits/men/61.jpg"
+                            }
                             alt="User"
                             className="w-10 h-10 rounded-full object-cover"
                           />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-gray-900 truncate">
-                              {userState.name ||  userState.role}
+                              {userState.name || userState.role}
                             </p>
                             <p className="text-xs text-gray-500 capitalize">
                               {userState.role}
                             </p>
                           </div>
                         </div>
-                        
+
+                        {/* Conditionally render dashboard link based on role for mobile */}
                         <Link
-                          to="/user-dashboard"
+                          to={
+                            userState.role === "CUSTOMER"
+                              ? "/user-dashboard"
+                              : "/trade-person-dashboard"
+                          }
                           onClick={handleNavLinkClick}
                           className="flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors"
                         >
                           <MdDashboard className="text-lg" />
                           <span>Dashboard</span>
                         </Link>
-                        
+
+                        {/* Conditionally render profile settings link based on role for mobile */}
                         <Link
-                          to="/profile"
+                          to={
+                            userState.role === "CUSTOMER"
+                              ? "/user-dashboard/settings"
+                              : "/trade-person-dashboard/settings"
+                          }
                           onClick={handleNavLinkClick}
                           className="flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors"
                         >
                           <IoSettingsSharp className="text-lg" />
                           <span>Profile Settings</span>
                         </Link>
-                        
+
                         <button
                           onClick={() => {
                             handleNavLinkClick();
