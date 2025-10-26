@@ -15,7 +15,7 @@ const TradeMessage = () => {
   const [selectedRecipientId, setSelectedRecipientId] = useState("");
   
   const [message, setMessage] = useState('');
-  const [selectedContact, setSelectedContact] = useState('Kate Morrison');
+  const [selectedContact, setSelectedContact] = useState();
   const [showChat, setShowChat] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { data: chatLists, isLoading: isLoadingChatLists, refetch: refetchChatLists } = useGetChatListQuery({});

@@ -1,5 +1,7 @@
 // src/redux/features/auth/authApi.ts
+
 import { baseApi } from "@/redux/api/baseApi";
+
 
 export const settingsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -13,10 +15,18 @@ export const settingsApi = baseApi.injectEndpoints({
       invalidatesTags: ["Profile"],
     }),
 
+    getAboutMe: builder.query({
+      query: () => ({
+        url: "/customer/get-me",
+      }),
+      providesTags: ["Profile"],
+    })
+
 
   }),
 });
 
 export const {
     useUpdateSettingsMutation,
+    useGetAboutMeQuery
 } = settingsApi;

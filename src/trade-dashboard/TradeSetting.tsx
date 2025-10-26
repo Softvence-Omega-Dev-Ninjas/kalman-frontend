@@ -4,7 +4,7 @@ import {
   Wand2,
   Plus,
 } from "lucide-react";
-import { useUpdateSettingsMutation } from "@/redux/features/settingsapi/settingsApi";
+import { useGetAboutMeQuery, useUpdateSettingsMutation } from "@/redux/features/settingsapi/settingsApi";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
@@ -31,6 +31,8 @@ const SettingPage = () => {
   );
   const [updateSettings, { isLoading }] = useUpdateSettingsMutation();
   const user = useSelector(selectCurrentUser);
+  const { data: aboutMeData } = useGetAboutMeQuery({});
+  console.log("About Me Data:", aboutMeData);
   
   const [formData, setFormData] = useState<FormData>({
     fullName: user?.name || "",
@@ -189,10 +191,10 @@ const SettingPage = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="Sarah Johnson"
+                  placeholder={aboutMeData?.data?.name || "Update Name"}
                   value={formData.fullName}
                   onChange={(e) => handleInputChange("fullName", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className="w-full p-3 placeholder-gray-400 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
                 />
                 {errors.fullName && (
                   <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
@@ -222,10 +224,10 @@ const SettingPage = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="+1 (555) 123-4567"
+                  placeholder={aboutMeData?.data?.phone || "Update Phone"}
                   value={formData.phone}
                   onChange={(e) => handleInputChange("phone", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className="w-full placeholder-gray-400 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
                 />
               </div>
 
@@ -235,10 +237,10 @@ const SettingPage = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="Profession"
+                  placeholder={aboutMeData?.data?.profession || "Update Profession"}
                   value={formData.profession}
                   onChange={(e) => handleInputChange("profession", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className="w-full placeholder-gray-400 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
                 />
               </div>
 
@@ -250,11 +252,11 @@ const SettingPage = () => {
                   </span>
                 </div>
                 <textarea
-                  placeholder="I'm a homeowner..."
+                  placeholder={aboutMeData?.data?.bio || "Update Bio..."}
                   rows={4}
                   value={formData.bio}
                   onChange={(e) => handleInputChange("bio", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 resize-none outline-none"
+                  className="w-full p-3 placeholder-gray-400 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 resize-none outline-none"
                 />
               </div>
             </div>
@@ -272,10 +274,10 @@ const SettingPage = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="123 Main Street"
+                  placeholder={aboutMeData?.data?.street_address || "Update Street Address"}
                   value={formData.street}
                   onChange={(e) => handleInputChange("street", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className="w-full placeholder-gray-400 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
                 />
                 {errors.street && (
                   <p className="text-red-500 text-xs mt-1">{errors.street}</p>
@@ -288,36 +290,31 @@ const SettingPage = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="City"
+                  placeholder={aboutMeData?.data?.city || "Update City"}
                   value={formData.city}
                   onChange={(e) => handleInputChange("city", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className="w-full placeholder-gray-400 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
                 />
                 {errors.city && (
                   <p className="text-red-500 text-xs mt-1">{errors.city}</p>
                 )}
               </div>
 
-              <div>
+                <div>
                 <label className="text-sm font-medium text-gray-600 block mb-1">
                   State *
                 </label>
-                <select
+                <input
+                  type="text"
+                  placeholder={aboutMeData?.data?.state || "Update State"}
                   value={formData.state}
                   onChange={(e) => handleInputChange("state", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 bg-white outline-none"
-                >
-                  <option value="">State</option>
-                  <option value="CA">California</option>
-                  <option value="NY">New York</option>
-                  <option value="TX">Texas</option>
-                  <option value="FL">Florida</option>
-                  <option value="IL">Illinois</option>
-                </select>
+                  className="w-full placeholder-gray-400 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                />
                 {errors.state && (
                   <p className="text-red-500 text-xs mt-1">{errors.state}</p>
                 )}
-              </div>
+                </div>
 
               <div className="md:col-span-2">
                 <label className="text-sm font-medium text-gray-600 block mb-1">
@@ -325,10 +322,10 @@ const SettingPage = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="12345"
+                  placeholder={aboutMeData?.data?.zip_code || "Update ZIP Code"}
                   value={formData.zipCode}
                   onChange={(e) => handleInputChange("zipCode", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className="w-full placeholder-gray-400 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
                 />
                 {errors.zipCode && (
                   <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>

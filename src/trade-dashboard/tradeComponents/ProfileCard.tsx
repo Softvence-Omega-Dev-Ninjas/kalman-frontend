@@ -1,7 +1,12 @@
+import { useGetAboutMeQuery } from "@/redux/features/settingsapi/settingsApi";
 import { CheckCircle, Star, Award, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function ProfileCard() {
+   const { data: aboutMeData } = useGetAboutMeQuery({});
+   const data = aboutMeData?.data?.profile;
+    console.log("About Me Data:", aboutMeData);
+    
   return (
     <div className="max-w-5xl mx-auto mt-8">
       <Link to='/'>
@@ -18,7 +23,7 @@ export default function ProfileCard() {
         <div className="flex items-center gap-4">
           {/* Avatar */}
           <img
-            src="https://randomuser.me/api/portraits/men/32.jpg"
+            src={data?.profile_image}
             alt="Esther Howard"
             className="w-20 h-20 rounded-full object-cover"
           />
@@ -31,7 +36,9 @@ export default function ProfileCard() {
             <div className="flex items-center gap-2 mt-1">
               <span className="flex items-center gap-1 text-sm text-orange-500 font-medium">
                 <CheckCircle size={16} className="text-orange-500" />
-                Verified
+                {
+                  data?.verification == "COMPLETE" ? "Verified" : "Unverified"
+                }
               </span>
               <span className="flex items-center gap-1 text-sm text-orange-500 font-medium">
                 <Award size={16} className="text-orange-500" />
@@ -40,8 +47,8 @@ export default function ProfileCard() {
             </div>
 
             {/* Role & Location */}
-            <p className="text-sm text-gray-500 mt-1">Senior Kitchen Designer</p>
-            <p className="text-sm text-gray-500">San Francisco, CA</p>
+            <p className="text-sm text-gray-500 mt-1">{data.profession}</p>
+            <p className="text-sm text-gray-500">{data.street_address}</p>
             <p className="text-sm text-gray-500 mt-1">
               $85.00/hourly rate
             </p>
