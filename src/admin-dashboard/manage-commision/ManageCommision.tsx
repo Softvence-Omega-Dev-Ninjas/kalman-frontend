@@ -88,7 +88,7 @@ console.log(commissions)
 
         <div className="flex items-center space-x-4 flex-wrap gap-5">
             {
-                !commissions &&  
+                commissions.length === 0 &&  
                 <Button onClick={handleAdd} className="cursor-pointer">
                     Add Commission
                 </Button>

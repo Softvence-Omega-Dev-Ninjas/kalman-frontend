@@ -2,10 +2,13 @@ import { useState } from "react";
 import PhaseOne from "./PostAJobComponents/PhaseOne";
 import PhaseTwo from "./PostAJobComponents/PhaseTwo";
 import PhaseThree from "./PostAJobComponents/PhaseThree";
+// import { Cross } from "lucide-react";
+import { RxCross2 } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
 
 
 
-/* {"title":"Fix Leaky Roof","categoryId":"","description":"Roof repair on a two-story house.","location":"Suburb X","timeline":"3 days","contact_method":"Email","skills_needed":["Roofing","Waterproofing"],"price":150}*/
+/* {"title":"Fix Leaky Roof","categoryId":"","description":"Roof repair on a two-story house.","location":"Suburb X","timeline":"3 days","contact_method":"Email","skills_needed":["Roofing","Waterproofing"],"price":150 , "subCategory" : [""]}*/
 
 export interface JobData {
   title: string;
@@ -18,9 +21,11 @@ export interface JobData {
   contact_method: "phone" | "email" | null;
   images: File[];
   price:string | number;
+  subCategory: string[]
 }
 
 const PostAJob = () => {
+  const navigate = useNavigate()
   const [phase, setPhase] = useState(1);
   const [jobData, setJobData] = useState<JobData>({
     title: "",
@@ -33,6 +38,7 @@ const PostAJob = () => {
     contact_method: null,
     images: [],
     price: 0 ,
+    subCategory: []
   });
 
   const progressPercent = () => {
@@ -40,6 +46,27 @@ const PostAJob = () => {
     if (phase === 2) return 60;
     return 90;
   };
+
+  const HanleCancle = ()=>{
+       if(phase >1 ){
+         setPhase(1) 
+        setJobData({
+          title: "",
+        description: "",
+        categoryId: null,
+        timeline: "",
+        date: "",
+        time: "",
+        location: "",
+        contact_method: null,
+        images: [],
+        price: 0 ,
+        subCategory: []
+        })
+       } else {
+          navigate("/")
+       }
+  }
 
   return (
     <div>
@@ -52,7 +79,7 @@ const PostAJob = () => {
               Step {phase} of 3 · Add the finishing touches
             </div>
           </div>
-          <button className="text-2xl">✕</button>
+          <button onClick={()=>HanleCancle()} className="text-2xl cursor-pointer hover:scale-105 transition-all duration-300 hover:rotate-90"><RxCross2 /> </button>
         </div>
 
         <div className="max-w-[1180px] mx-auto mt-4">
