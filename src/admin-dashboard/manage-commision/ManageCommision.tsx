@@ -9,9 +9,9 @@ import CreateCommission from "./CreateCommission";
 
 interface TCommission {
   id?: string;
-  commision_rate: number;
-  minimum_hourly_rate: number;
-  maximum_hourly_rate: number;
+  commision_rate: number | string;
+  minimum_hourly_rate: number | string;
+  maximum_hourly_rate: number | string;
   createdAt?: string;
 }
 

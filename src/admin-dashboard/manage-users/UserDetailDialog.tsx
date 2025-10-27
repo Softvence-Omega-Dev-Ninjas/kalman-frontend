@@ -28,7 +28,7 @@ const UserDetailDialog = ({ user, open, onClose }: UserDetailDialogProps) => {
 
         <div className="flex flex-col gap-6 mt-4">
           {/* Left: Profile Image */}
-          <div className="md:w-1/3 flex justify-center items-start">
+          <div className=" flex justify-center items-start">
             {user.image ? (
               <img
                 src={user.image}
