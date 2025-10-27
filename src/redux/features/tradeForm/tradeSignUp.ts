@@ -3,7 +3,6 @@ import { baseApi } from "@/redux/api/baseApi";
 
 export const tradeSignUpApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    
     // User Login
     tradeSignUp: builder.mutation({
       query: (data) => ({
@@ -11,10 +10,9 @@ export const tradeSignUpApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Tradesman"],
     }),
   }),
 });
 
-export const {
-  useTradeSignUpMutation
-} = tradeSignUpApi;
+export const { useTradeSignUpMutation } = tradeSignUpApi;

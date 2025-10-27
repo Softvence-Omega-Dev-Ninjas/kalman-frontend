@@ -24,11 +24,13 @@ const AllBlog: React.FC<AllBlogsProps> = ({ blog }) => {
         </div>
 
         {/* Button */}
-        <div className="flex justify-center mt-10">
-          <button className="bg-[#FF6B35] text-white px-18 py-3 rounded-md font-medium hover:bg-[#e65a29] transition">
-            See all
-          </button>
-        </div>
+        {blog.length > 0 && (
+          <div className="flex justify-center mt-10">
+            <button className="bg-[#FF6B35] text-white px-18 py-3 rounded-md font-medium hover:bg-[#e65a29] transition">
+              See all
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

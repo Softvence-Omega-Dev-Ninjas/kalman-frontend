@@ -101,12 +101,14 @@ const ServiceDetails = () => {
                   ))}
                 </div>
               )}
-              <Link
-                to="#"
-                className="text-primary text-lg inline-block underline font-medium"
-              >
-                See all reviews
-              </Link>
+              {data?.data?.review.length > 3 && (
+                <Link
+                  to="#"
+                  className="text-primary text-lg inline-block underline font-medium"
+                >
+                  See all reviews
+                </Link>
+              )}
             </div>
             {/* Right column card */}
 
