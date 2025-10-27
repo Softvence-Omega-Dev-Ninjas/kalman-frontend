@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   SidebarInset,
   SidebarProvider,
@@ -8,14 +8,19 @@ import {
   Card,
 
 } from "@/components/ui/card"
-import avatar from "@/assets/dashboard/header/avatar.png";
+// import avatar from "@/assets/dashboard/header/avatar.png";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import useScrollTrigger from "@/hooks/useScrollTrigger";
 import { AppSidebar } from "@/admin-dashboard/shared/Sidebar/AppSidebar";
 import { Outlet } from "react-router-dom";
+import { useAppSelector } from "@/redux/typeHook";
+import AdminProfileDropdown from "./AdminProfileDropdown";
 
 const AdminDashboardLayout = () => {
   const { scrolled } = useScrollTrigger();
+
+  const {admin } = useAppSelector((state)=> state.admin)
+  console.log(admin , "admin here")
   return (
     <div>
       <SidebarProvider>
@@ -28,19 +33,14 @@ const AdminDashboardLayout = () => {
           >
             <div className="flex items-center justify-between gap-2 px-4 w-full">
               <div className="flex items-center gap-2">
-                <SidebarTrigger className="-ml-1 text-black" />
+                <SidebarTrigger className="-ml-1 text-black cursor-pointer" />
                 <h1 className="text-lg xs:text-xl md:text-2xl font-semibold text-[#0D1B2A]">
                   Super Admin Dashboard
                 </h1>
               </div>
               <div className="flex items-center gap-4 mr-2">
                 <MdOutlineNotificationsNone className="text-xl" />
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src={avatar} alt="Sarah Johnson" />
-                  <AvatarFallback className="bg-gray-700 text-white">
-                    SJ
-                  </AvatarFallback>
-                </Avatar>
+              <AdminProfileDropdown />
               </div>
             </div>
           </header>

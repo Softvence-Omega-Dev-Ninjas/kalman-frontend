@@ -15,9 +15,9 @@ const CreateCommission = ({
   onSave,
   editingCommission,
 }: CreateCommissionProps) => {
-  const [commissionRate, setCommissionRate] = useState<number>(0);
-  const [minHourlyRate, setMinHourlyRate] = useState<number>(0);
-  const [maxHourlyRate, setMaxHourlyRate] = useState<number>(0);
+  const [commissionRate, setCommissionRate] = useState<number | string>();
+  const [minHourlyRate, setMinHourlyRate] = useState<number | string>();
+  const [maxHourlyRate, setMaxHourlyRate] = useState<number | string>();
 
   useEffect(() => {
     if (editingCommission) {
@@ -25,9 +25,9 @@ const CreateCommission = ({
       setMinHourlyRate(editingCommission.minimum_hourly_rate || 0);
       setMaxHourlyRate(editingCommission.maximum_hourly_rate || 0);
     } else {
-      setCommissionRate(0);
-      setMinHourlyRate(0);
-      setMaxHourlyRate(0);
+      setCommissionRate("");
+      setMinHourlyRate("");
+      setMaxHourlyRate("");
     }
   }, [editingCommission]);
 

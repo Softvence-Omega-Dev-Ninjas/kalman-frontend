@@ -28,7 +28,7 @@ const JobDetailDialog = ({ job, open, onClose }: JobDetailDialogProps) => {
 
         <div className="flex flex-col  gap-4 md:gap-6 mt-4">
           {/* Left: Images */}
-          <div className="w-full md:w-1/2 flex flex-col gap-2">
+          <div className="w-full flex flex-col gap-2">
             {job.image && job.image.length > 0 ? (
               <div className="flex flex-col gap-2 max-h-64 md:max-h-[400px] overflow-y-auto rounded-md">
                 {job.image.map((img: string, idx: number) => (
