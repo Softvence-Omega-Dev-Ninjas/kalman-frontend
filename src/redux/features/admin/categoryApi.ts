@@ -58,9 +58,17 @@ updateCategory: builder.mutation<any, { id: string; data: any }>({
       providesTags: ["Categories"],
     }),
 
+getSingleCategory: builder.query<any, string>({
+  query: (categoryId) => ({
+    url: `/category/${categoryId}`,
+    method: "GET",
+  }),
+  providesTags: ["Categories"],
+}),
+
   }),
 });
 
 export const { useGetCategoriesQuery, useCreateCategoryMutation   , useUpdateCategoryMutation,
-  useDeleteCategoryMutation, useGetCategoriesHQuery} = categoryApi;
+  useDeleteCategoryMutation, useGetCategoriesHQuery , useGetSingleCategoryQuery} = categoryApi;
 //

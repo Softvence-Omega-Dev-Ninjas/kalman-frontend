@@ -1,10 +1,13 @@
 import { IoLocationOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import tellUsImg from "../../../assets/sample_images/tellusabouturproject.png";
 import { FaArrowRight } from "react-icons/fa";
 
 import type { JobData } from "../PostAJob";
-import { useGetCategoriesHQuery } from "@/redux/features/admin/categoryApi";
+import {
+  useGetCategoriesHQuery,
+  useGetSingleCategoryQuery,
+} from "@/redux/features/admin/categoryApi";
 
 interface PhaseOneProps {
   phase: number;
@@ -26,37 +29,67 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     jobData.categoryId
   );
-  const [location, setLocation] = useState(jobData.location || ""); // new location state
-  const [price , setPrice ] = useState(jobData.price || "")
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string[]>(
+    jobData.subCategory || []
+  );
+  const [location, setLocation] = useState(jobData.location || "");
+  const [price, setPrice] = useState(jobData.price || "");
   const maxChars = 500;
 
-  const { data } = useGetCategoriesHQuery();
+  // All categories
+  const { data  } = useGetCategoriesHQuery();
   const categories: TCategory[] = data?.data?.result || [];
-  console.log(categories);
+
+  // useEffect(()=>{
+  //   refetch()
+  // })
+  // Single category for subCategory display
+  const {
+    data: singleCategoryData,
+    isFetching: isSubLoading,
+  } = useGetSingleCategoryQuery(selectedCategory!, { skip: !selectedCategory });
+
+  const subCategories: string[] =
+    singleCategoryData?.data?.subCategories || [];
+
+  // Toggle subcategory selection
+  const handleSubCategoryClick = (sub: string) => {
+    setSelectedSubCategory((prev) =>
+      prev.includes(sub)
+        ? prev.filter((item) => item !== sub) // remove if already selected
+        : [...prev, sub] // add new one
+    );
+  };
 
   const handleNext = () => {
     setJobData({
       ...jobData,
       title,
-      price, 
+      price,
       description,
       categoryId: selectedCategory,
-      location, // include location
+      subCategory: selectedSubCategory, // now array
+      location,
     });
     setPhase(phase + 1);
   };
 
   return (
     <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-10">
+      {/* Header */}
       <div className="flex flex-col items-center mb-8">
         <div className="w-16 h-16 rounded-full bg-[#0B1B26] flex items-center justify-center mb-4">
           <img src={tellUsImg} alt="" />
         </div>
         <h1 className="text-lg font-semibold">Tell us about your project</h1>
-        <p className="text-sm text-secondary">Provide details about what you need done</p>
+        <p className="text-sm text-secondary">
+          Provide details about what you need done
+        </p>
       </div>
 
+      {/* Form */}
       <div className="space-y-6">
+        {/* Title */}
         <div>
           <label className="block text-sm font-medium mb-2">Job Title</label>
           <input
@@ -67,6 +100,7 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
           />
         </div>
 
+        {/* Category */}
         <div>
           <div className="flex items-center justify-between mb-3">
             <label className="text-sm font-medium">Category</label>
@@ -77,28 +111,66 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
             {categories.slice(0, 6).map((s) => (
               <button
                 key={s.id}
-                onClick={() => setSelectedCategory(s.id)}
-                className={`flex flex-col items-start gap-3 p-4 cursor-pointer rounded-lg border ${
-                  selectedCategory === s.id ? "border-[#FF7346]" : "border-gray-200"
-                } bg-white text-left`}
+                onClick={() => {
+                  setSelectedCategory(s.id);
+                  setSelectedSubCategory([]); // reset subcategory when category changes
+                }}
+                className={`flex flex-col items-start gap-3 p-4 rounded-lg border ${
+                  selectedCategory === s.id
+                    ? "border-[#FF7346]"
+                    : "border-gray-200"
+                } bg-white text-left transition`}
               >
                 <div className="w-10 h-10 rounded-md bg-gray-50 flex items-center justify-center mb-1">
                   <img src={s?.image} alt={s?.name} className="w-6 h-6" />
                 </div>
                 <div className="font-semibold text-sm">{s?.name}</div>
-                <div className="text-xs text-secondary">
-                  {s?.subCategories?.join(", ")}
+                <div className="text-xs text-secondary whitespace-normal break-words w-full">
+                  <p>{s?.subCategories?.slice(0, 2).join(", ")} And more</p>
                 </div>
+
               </button>
             ))}
           </div>
         </div>
 
+        {/* Sub Category (only if category selected) */}
+        {selectedCategory && (
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Sub Category
+            </label>
+            {isSubLoading ? (
+              <p className="text-sm text-gray-400">Loading...</p>
+            ) : subCategories.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {subCategories.map((sub) => (
+                  <button
+                    key={sub}
+                    onClick={() => handleSubCategoryClick(sub)}
+                    className={`p-3 rounded-lg border text-sm transition ${
+                      selectedSubCategory.includes(sub)
+                        ? "border-[#FF7346] bg-orange-50"
+                        : "border-gray-200 bg-white"
+                    }`}
+                  >
+                    {sub}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400">
+                No sub-categories available
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Description */}
         <div>
           <label className="block text-sm font-medium mb-2">Description</label>
           <textarea
             value={description}
-            // placeholder="Describe what needs to be done, including any specific requirements, materials needed. or preferences you have„."
             onChange={(e) => setDescription(e.target.value.slice(0, maxChars))}
             className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 text-sm min-h-[120px] resize-none focus:outline-none"
           />
@@ -107,7 +179,8 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
           </div>
         </div>
 
-           <div>
+        {/* Price */}
+        <div>
           <label className="block text-sm font-medium mb-2">Budget Price</label>
           <div className="flex items-center gap-3 px-3 py-3 border border-gray-200 rounded-md bg-gray-50">
             <IoLocationOutline className="inline text-lg" />
@@ -121,6 +194,7 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
           </div>
         </div>
 
+        {/* Location */}
         <div>
           <label className="block text-sm font-medium mb-2">Location</label>
           <div className="flex items-center gap-3 px-3 py-3 border border-gray-200 rounded-md bg-gray-50">
@@ -135,6 +209,7 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
           </div>
         </div>
 
+        {/* Continue Button */}
         <div className="flex justify-end">
           <button
             type="submit"

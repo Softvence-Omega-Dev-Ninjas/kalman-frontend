@@ -26,11 +26,14 @@ const authSlice = createSlice({
       state.admin = action.payload.admin;
       state.token = action.payload.token;
     },
-
+      adminLogout: (state) => {
+      state.admin = null;
+      state.token = null;
+    },
   },
 });
 
-export const { setAdmin } = authSlice.actions;
+export const { setAdmin , adminLogout} = authSlice.actions;
 export default authSlice.reducer;
 
 // orrect selectors

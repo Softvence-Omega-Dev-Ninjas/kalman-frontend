@@ -2,9 +2,13 @@ import { useState } from "react";
 import PhaseOne from "./PostAJobComponents/PhaseOne";
 import PhaseTwo from "./PostAJobComponents/PhaseTwo";
 import PhaseThree from "./PostAJobComponents/PhaseThree";
-import {useNavigate } from "react-router-dom";
+// import { Cross } from "lucide-react";
+import { RxCross2 } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
 
-/* {"title":"Fix Leaky Roof","categoryId":"","description":"Roof repair on a two-story house.","location":"Suburb X","timeline":"3 days","contact_method":"Email","skills_needed":["Roofing","Waterproofing"],"price":150}*/
+
+
+/* {"title":"Fix Leaky Roof","categoryId":"","description":"Roof repair on a two-story house.","location":"Suburb X","timeline":"3 days","contact_method":"Email","skills_needed":["Roofing","Waterproofing"],"price":150 , "subCategory" : [""]}*/
 
 export interface JobData {
   title: string;
@@ -16,10 +20,12 @@ export interface JobData {
   location: string;
   contact_method: "phone" | "email" | null;
   images: File[];
-  price: string | number;
+  price:string | number;
+  subCategory: string[]
 }
 
 const PostAJob = () => {
+  const navigate = useNavigate()
   const [phase, setPhase] = useState(1);
   const [jobData, setJobData] = useState<JobData>({
     title: "",
@@ -31,7 +37,8 @@ const PostAJob = () => {
     location: "",
     contact_method: null,
     images: [],
-    price: 0,
+    price: 0 ,
+    subCategory: []
   });
 
   const progressPercent = () => {
@@ -40,12 +47,31 @@ const PostAJob = () => {
     return 90;
   };
 
-  const navigate = useNavigate();
+  const HanleCancle = ()=>{
+       if(phase >1 ){
+         setPhase(1) 
+        setJobData({
+          title: "",
+        description: "",
+        categoryId: null,
+        timeline: "",
+        date: "",
+        time: "",
+        location: "",
+        contact_method: null,
+        images: [],
+        price: 0 ,
+        subCategory: []
+        })
+       } else {
+          navigate("/")
+       }
+  }
 
   return (
     <div>
       {/* Header */}
-      <div className="py-5 px-4 fixed top-[12%] left-0 right-0 bg-white shadow-md z-10">
+      <div className="py-5 px-4 fixed top-[14%] left-0 right-0 bg-white shadow-md z-10">
         <div className="max-w-[1180px] mx-auto flex items-center justify-between">
           <div>
             <div className="text-sm font-medium">Budget & Timeline</div>
@@ -53,9 +79,7 @@ const PostAJob = () => {
               Step {phase} of 3 · Add the finishing touches
             </div>
           </div>
-          
-            <button onClick={() => navigate(-1)} className="text-2xl cursor-pointer">✕</button>
-          
+          <button onClick={()=>HanleCancle()} className="text-2xl cursor-pointer hover:scale-105 transition-all duration-300 hover:rotate-90"><RxCross2 /> </button>
         </div>
 
         <div className="max-w-[1180px] mx-auto mt-4">
@@ -72,7 +96,8 @@ const PostAJob = () => {
       </div>
 
       {/* Phases */}
-      <div className="bg-[#eff2f7] min-h-screen pt-[9%] py-10 mt-2">
+      <div className="bg-[#eff2f7] min-h-screen pt-[9%] py-10">
+
         {phase === 1 && (
           <PhaseOne
             phase={phase}

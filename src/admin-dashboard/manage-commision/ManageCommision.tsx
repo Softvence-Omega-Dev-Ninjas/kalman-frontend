@@ -9,9 +9,9 @@ import CreateCommission from "./CreateCommission";
 
 interface TCommission {
   id?: string;
-  commision_rate: number;
-  minimum_hourly_rate: number;
-  maximum_hourly_rate: number;
+  commision_rate: number | string;
+  minimum_hourly_rate: number | string;
+  maximum_hourly_rate: number | string;
   createdAt?: string;
 }
 
@@ -88,7 +88,7 @@ console.log(commissions)
 
         <div className="flex items-center space-x-4 flex-wrap gap-5">
             {
-                !commissions &&  
+                commissions.length === 0 &&  
                 <Button onClick={handleAdd} className="cursor-pointer">
                     Add Commission
                 </Button>
