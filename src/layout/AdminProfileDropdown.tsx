@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { adminLogout, setAdmin } from "@/redux/features/admin/adminSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/typeHook";
 import { useState, useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const AdminProfileDropdown = () => {
@@ -19,6 +20,7 @@ const handleLogout = () => {
   dispatch(adminLogout());
   // Redirect to login
   navigate("/admin/login");
+  toast("Admin logout successfully!")
 };
 
 
