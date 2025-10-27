@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   User,
   Wand2,
   Plus,
 } from "lucide-react";
+import { useUpdateSettingsMutation } from "@/redux/features/settingsapi/settingsApi";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 
 // Form types
 interface FormData {
@@ -12,13 +16,11 @@ interface FormData {
   phone: string;
   profession: string;
   bio: string;
-  streetAddress: string;
+  street: string;
   city: string;
   state: string;
   zipCode: string;
-  subCategories: string[];
-  portfolio: (File | null)[];
-  avatar: File | null;
+  images: (File | null)[];
 }
 
 
@@ -27,23 +29,41 @@ const SettingPage = () => {
   const [portfolioPreviews, setPortfolioPreviews] = useState<(string | null)[]>(
     Array(4).fill(null)
   );
+  const [updateSettings, { isLoading }] = useUpdateSettingsMutation();
+  const user = useSelector(selectCurrentUser);
   
   const [formData, setFormData] = useState<FormData>({
-    fullName: "",
-    email: "",
-    phone: "",
-    profession: "",
-    bio: "",
-    streetAddress: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    subCategories: [""],
-    portfolio: Array(4).fill(null),
-    avatar: null,
+    fullName: user?.name || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
+    profession: user?.profession || "",
+    bio: user?.bio || "",
+    street: user?.street || "",
+    city: user?.city || "",
+    state: user?.state || "",
+    zipCode: user?.zipCode || "",
+    images: Array(4).fill(null),
   });
 
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+
+  // Update form when user data changes
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        fullName: user?.name || "",
+        email: user?.email || "",
+        phone: user?.phone || "",
+        profession: user?.profession || "",
+        bio: user?.bio || "",
+        street: user?.street || "",
+        city: user?.city || "",
+        state: user?.state || "",
+        zipCode: user?.zipCode || "",
+        images: Array(4).fill(null),
+      });
+    }
+  }, [user]);
 
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof FormData, string>> = {};
@@ -58,8 +78,8 @@ const SettingPage = () => {
       newErrors.email = "Invalid email address";
     }
 
-    if (!formData.streetAddress.trim()) {
-      newErrors.streetAddress = "Street Address is required";
+    if (!formData.street.trim()) {
+      newErrors.street = "Street is required";
     }
 
     if (!formData.city.trim()) {
@@ -88,11 +108,43 @@ const SettingPage = () => {
     }
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
       console.log("Form Data:", formData);
-      alert("Form submitted successfully!");
+      
+      try{
+        // Create FormData for multipart/form-data submission
+        const submitData = new FormData();
+        
+        // Add text fields
+        submitData.append("fullName", formData.fullName);
+        submitData.append("email", formData.email);
+        submitData.append("phone", formData.phone);
+        submitData.append("profession", formData.profession);
+        submitData.append("bio", formData.bio);
+        
+        // Add address fields
+        submitData.append("street", formData.street);
+        submitData.append("city", formData.city);
+        submitData.append("state", formData.state);
+        submitData.append("zipCode", formData.zipCode);
+        
+        // Add portfolio images (only if they exist)
+        if (formData.images && Array.isArray(formData.images)) {
+          formData.images.forEach((file) => {
+            if (file) {
+              submitData.append(`images`, file);
+            }
+          });
+        }
+        
+        await updateSettings(submitData).unwrap();
+        toast.success("Settings updated successfully");
+      } catch (error) {
+        console.error("Error updating settings:", error);
+        toast.error("Failed to update settings");
+      }
     }
   };
 
@@ -108,7 +160,7 @@ const SettingPage = () => {
       });
       setFormData(prev => ({
         ...prev,
-        portfolio: prev.portfolio.map((item, i) => (i === index ? file : item))
+        images: prev.images.map((item, i) => (i === index ? file : item))
       }));
     }
   };
@@ -153,10 +205,11 @@ const SettingPage = () => {
                 </label>
                 <input
                   type="email"
-                  placeholder="sarah.johnson@gmail.com"
-                  value={formData.email}
+                  placeholder={`${user?.email || "sarah.johnson@gmail.com"}`}
+                  value={user?.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className="w-full read-only p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  readOnly
                 />
                 {errors.email && (
                   <p className="text-red-500 text-xs mt-1">{errors.email}</p>
@@ -220,12 +273,12 @@ const SettingPage = () => {
                 <input
                   type="text"
                   placeholder="123 Main Street"
-                  value={formData.streetAddress}
-                  onChange={(e) => handleInputChange("streetAddress", e.target.value)}
+                  value={formData.street}
+                  onChange={(e) => handleInputChange("street", e.target.value)}
                   className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
                 />
-                {errors.streetAddress && (
-                  <p className="text-red-500 text-xs mt-1">{errors.streetAddress}</p>
+                {errors.street && (
+                  <p className="text-red-500 text-xs mt-1">{errors.street}</p>
                 )}
               </div>
 
@@ -322,8 +375,13 @@ const SettingPage = () => {
 
         {/* Save Button */}
         <div className="flex justify-end mt-8">
-          <button type="submit" form="main-form" className="py-3 px-8 bg-primary text-white rounded-md">
-            Save Changes
+          <button 
+            type="submit" 
+            form="main-form" 
+            disabled={isLoading}
+            className="py-3 px-8 bg-primary text-white rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+          >
+            {isLoading ? "Saving..." : "Save Changes"}
           </button>
         </div>
       </div>

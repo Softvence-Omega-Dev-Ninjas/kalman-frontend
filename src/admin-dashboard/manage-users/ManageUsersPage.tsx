@@ -1,5 +1,5 @@
 import { Eye, Filter, Search, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomTable, { type Column } from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
 import toast from "react-hot-toast";
@@ -7,7 +7,7 @@ import {
   useDeleteAdminCustomerMutation,
   useGetAllAdminCustomersQuery,
 } from "@/redux/features/admin/adminCustomerApi";
-import UserDetailDialog from "./UserDetailDialog"; // import dialog
+import UserDetailDialog from "./UserDetailDialog";
 
 interface IUserData {
   id: string;
@@ -26,15 +26,28 @@ interface IUserData {
 const ManageUsersPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
-  const pageSize = 4;
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const pageSize = 10;
+// console.log(search)
+  // debounce search
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+      setCurrentPage(1);
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [search]);
 
   // Fetch users
   const { data, isLoading, refetch } = useGetAllAdminCustomersQuery({
     page: currentPage,
     limit: pageSize,
+    search: debouncedSearch,
   });
 
-  const users = data?.data || [];
+  const users = data?.data.users || [];
+  const totalUser = data?.data.totalUser || 0;
 
   // Dialog state
   const [selectedUser, setSelectedUser] = useState<IUserData | null>(null);
@@ -74,15 +87,12 @@ const ManageUsersPage = () => {
             : user.role,
         status: user.verification === "COMPLETE" ? "Active" : "Suspended",
         location: user.city || "-",
-        performance: {
-          jobsPosted: user._count?.jobs || 0,
-        },
+        performance: { jobsPosted: user._count?.jobs || 0 },
         lastActive: new Date(user.updatedAt).toLocaleDateString(),
       }))
     : [];
 
-  const totalItems: number = users?.length || 0;
-  const totalPages = Math.ceil(totalItems / pageSize);
+  const totalPages = Math.ceil(totalUser / pageSize);
 
   // Table columns
   const userColumns: Column<IUserData>[] = [
@@ -101,20 +111,17 @@ const ManageUsersPage = () => {
       header: "File Name",
       cell: (row) => (
         <div className="flex items-center">
-          {row.image ?
+          {row.image ? (
             <div className="flex-shrink-0 w-10 h-10">
               <img
                 className="w-10 h-10 rounded-full object-cover"
                 src={row.image}
                 alt={row.fileName}
-              /> 
-            </div>: 
-              <div className="w-10 h-10 bg-gray-100 flex items-center justify-center rounded-full shadow-lg border-4 border-gray-200">
-                {/* <span className="text-gray-400 font-semibold text-center text-lg">
-                  No Image
-                </span> */}
-              </div>
-          }
+              />
+            </div>
+          ) : (
+            <div className="w-10 h-10 bg-gray-100 flex items-center justify-center rounded-full shadow-lg border-4 border-gray-200" />
+          )}
           <div className="ml-4">
             <div className="text-sm font-medium text-gray-900">{row.fileName}</div>
           </div>
@@ -218,20 +225,24 @@ const ManageUsersPage = () => {
         </div>
       </header>
 
-      <CustomTable columns={userColumns} data={customers} isLoading={isLoading} />
+      <CustomTable
+        columns={userColumns}
+        data={customers}
+        isLoading={isLoading}
+        emptyMessage={"No User Found!"}
+      />
 
       {totalPages > 1 && (
         <CustomPagination
-          totalItems={totalItems}
+          totalItems={totalUser}
           pageSize={pageSize}
           currentPage={currentPage}
           onPageChange={setCurrentPage}
         />
       )}
 
-      {/* User Dialog */}
       <UserDetailDialog
-        user={selectedUser}
+        user={selectedUser as any}
         open={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
       />

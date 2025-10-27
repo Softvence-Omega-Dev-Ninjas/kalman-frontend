@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/redux/api/baseApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -27,6 +28,8 @@ export const baseApi = createApi({
     "Blogs",
     "Contact",
     "Admin",
+    "Chat",
+    "Profile",
     "Tradesman",
     "Commision",
     "Reviews",

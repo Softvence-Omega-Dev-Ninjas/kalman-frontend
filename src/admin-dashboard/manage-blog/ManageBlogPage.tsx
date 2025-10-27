@@ -148,7 +148,7 @@ const ManageBlogPage = () => {
           </Button>
         </div>
       </header>
-      <CustomTable columns={blogColumns} data={data?.data} />
+      <CustomTable columns={blogColumns} data={data?.data}     emptyMessage={"No Blog Found!"}/>
       <CustomPagination
         totalItems={data?.data.length}
         pageSize={pageSize}

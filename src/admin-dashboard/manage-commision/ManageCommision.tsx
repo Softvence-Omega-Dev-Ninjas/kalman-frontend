@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, SquarePen, Trash2 } from "lucide-react";
+import { SquarePen, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 import CustomTable, { type Column } from "../shared/CustomTable/CustomTable";
@@ -106,7 +106,7 @@ console.log(commissions)
 
       {/* Table */}
      {
-        data &&       <CustomTable columns={commissionColumns} data={commissions} isLoading={isLoading} />
+        data &&       <CustomTable columns={commissionColumns} data={commissions} isLoading={isLoading}     emptyMessage={"No Commission Found!"}/>
      }
     </div>
   );

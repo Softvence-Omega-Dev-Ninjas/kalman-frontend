@@ -1,5 +1,5 @@
 import { Eye, Filter, Search, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Column } from "../shared/CustomTable/CustomTable";
 import CustomTable from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
@@ -34,13 +34,24 @@ const ManageJobsPage = () => {
   const [search, setSearch] = useState("");
   const [selectedJob, setSelectedJob] = useState<IJobData | null>(null);
 
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+useEffect(() => {
+  const handler = setTimeout(() => setDebouncedSearch(search), 500);
+  return () => clearTimeout(handler);
+}, [search]);
   // Fetch jobs dynamically
-  const { data, isLoading, isError, refetch } = useGetAllAdminJobsQuery({
-    page: currentPage,
-    limit: pageSize,
-  });
+  const { data, isLoading, isError, refetch } = useGetAllAdminJobsQuery(
+    { page: currentPage, limit: pageSize, search  : debouncedSearch},
+  { refetchOnMountOrArgChange: true }
+  );
+
+
+useEffect(() => {
+  setCurrentPage(1);
+}, [debouncedSearch]);
 
   // Delete job mutation
+  console.log(data)
   const [deleteJob] = useDeleteAdminJobMutation();
 
   const handleDelete = async (id: string) => {
@@ -56,8 +67,9 @@ const ManageJobsPage = () => {
     }
   };
 
-  const jobs: IJobData[] = data?.data || [];
-  const totalJobs = data?.meta?.total || 0;
+  const jobs: IJobData[] = data?.data.jobs || [];
+  const totalJobs = data?.data?.totalJobs || 0;
+  const totalPages = Math.ceil(totalJobs / pageSize);
 
   // Table columns
   const jobColumns: Column<IJobData>[] = [
@@ -164,10 +176,10 @@ const ManageJobsPage = () => {
       </header>
 
       {/* Table */}
-      <CustomTable columns={jobColumns} data={jobs} />
+      <CustomTable columns={jobColumns} data={jobs }     emptyMessage={"No Job Found!"}/>
 
       {/* Pagination */}
-      {data && (
+      {totalPages > 1 && (
         <CustomPagination
           totalItems={totalJobs}
           pageSize={pageSize}

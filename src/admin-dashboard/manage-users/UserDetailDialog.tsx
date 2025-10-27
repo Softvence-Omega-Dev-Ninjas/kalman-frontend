@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import type { IUserData } from "./data/usersData";
+// import type { IUserData } from "./data/usersData";
 
 interface UserDetailDialogProps {
   user: IUserData | null;
