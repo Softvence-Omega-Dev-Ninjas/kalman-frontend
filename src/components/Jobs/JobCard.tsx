@@ -3,26 +3,20 @@ import { CiLocationOn } from "react-icons/ci";
 import { LuCalendarDays } from "react-icons/lu";
 import { WiTime4 } from "react-icons/wi";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-// import ProposalModal from "./ProposalModal"; // Your modal component
-import { SendProposalModal } from "./Proposal";
+
 
 const JobCard = ({ data }: { data: any }) => {
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  
 
   const handleCardClick = () => {
     navigate(`/jobs/${data.id || "1"}`);
   };
 
-  const handleOpenModal = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent the card click
-    setIsModalOpen(true);
+  const handleSendProsalClick = () => {
+    navigate(`/jobs/${data.id || "1"}`);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
 
   return (
     <>
@@ -78,7 +72,7 @@ const JobCard = ({ data }: { data: any }) => {
           <div className="flex items-center gap-4">
             <span className="text-xs text-gray-500">Applicants: 2</span>
             <button
-              onClick={handleOpenModal}
+              onClick={handleSendProsalClick}
               className="bg-[#FF7346] hover:bg-[#ff5722] text-white text-sm px-4 py-2 rounded-md font-medium"
             >
               Send Proposal
@@ -87,8 +81,6 @@ const JobCard = ({ data }: { data: any }) => {
         </div>
       </div>
 
-      {/* Proposal Modal */}
-      {isModalOpen && <SendProposalModal onClose={handleCloseModal} />}
     </>
   );
 };

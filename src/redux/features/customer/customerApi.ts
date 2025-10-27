@@ -8,6 +8,7 @@ export const customerApi = baseApi.injectEndpoints({
         url: "/customer",
         method: "GET",
       }),
+       providesTags: ["Customer"],
     }),
 
     //  Get authenticated customer profile
