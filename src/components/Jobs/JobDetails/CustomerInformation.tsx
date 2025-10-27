@@ -1,15 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { X } from "lucide-react";
 import { useState } from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { IoAlertCircleOutline } from "react-icons/io5";
-import { LuSend } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 
 const CustomerInformation = ({ customer }: { customer: any }) => {
   const [reportModal, setReportModal] = useState(false);
   const [sendProposal, setSendProposal] = useState(false);
+  const [proposalText, setProposalText] = useState("");
 
   const cusInfo = customer;
+
+  const handleSubmit = () => {
+    if (!proposalText.trim()) {
+      alert("Please write your proposal before submitting!");
+      return;
+    }
+
+    console.log("Proposal submitted:", proposalText);
+    // TODO: call API to send proposal
+    setSendProposal(false);
+    setProposalText("");
+  };
+
 
   return (
     <div className="space-y-4">
@@ -193,36 +207,53 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
 
       {/* Send Proposal Modal */}
       {sendProposal && (
-        <div className="fixed inset-0 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Express Interest</h2>
-              <div className="mb-6">
-                <label
-                  htmlFor="proposal-message"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Write your message
-                </label>
-                <textarea
-                  id="proposal-message"
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
-                  placeholder="Write your message..."
-                />
-              </div>
-              <div className="flex gap-3 justify-end">
-                <button
-                  onClick={() => setSendProposal(false)}
-                  className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center gap-2">
-                  <span>Send</span>
-                  <LuSend size={16} />
-                </button>
-              </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          {/* Modal Container */}
+          <div className="relative w-full max-w-2xl rounded-lg bg-white p-8 shadow-lg">
+            {/* Close Button */}
+            <button
+              onClick={() => setSendProposal(false)}
+              className="absolute right-6 top-6 cursor-pointer text-red-500 hover:text-red-600 transition-colors"
+              aria-label="Close modal"
+            >
+              <X size={28} strokeWidth={3} />
+            </button>
+
+            {/* Header */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Send Proposal</h2>
+              <p className="text-gray-600 text-sm">
+                Share additional information with the customer to increase your chances of getting hired.
+              </p>
+            </div>
+
+            {/* Form Section */}
+            <div className="mb-8">
+              <label className="block text-gray-900 font-semibold mb-4">
+                Write your proposal
+              </label>
+              <textarea
+                placeholder="Write your proposal...."
+                value={proposalText}
+                onChange={(e) => setProposalText(e.target.value)}
+                className="w-full h-32 px-4 py-3 bg-gray-100 text-gray-900 placeholder-gray-500 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+              />
+            </div>
+
+            {/* Footer Buttons */}
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setSendProposal(false)}
+                className="px-6 py-2 cursor-pointer text-gray-900 font-medium hover:text-gray-700 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="px-6 py-2.5 cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors"
+              >
+                Submit proposal
+              </button>
             </div>
           </div>
         </div>
