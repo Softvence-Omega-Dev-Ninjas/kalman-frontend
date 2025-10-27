@@ -12,11 +12,13 @@ import {
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import useScrollTrigger from "@/hooks/useScrollTrigger";
 import { AppSidebar } from "@/admin-dashboard/shared/Sidebar/AppSidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/redux/typeHook";
 import AdminProfileDropdown from "./AdminProfileDropdown";
+import { Button } from "@/components/ui/button";
 
 const AdminDashboardLayout = () => {
+  const navigate = useNavigate()
   const { scrolled } = useScrollTrigger();
 
   const {admin } = useAppSelector((state)=> state.admin)
@@ -40,7 +42,13 @@ const AdminDashboardLayout = () => {
               </div>
               <div className="flex items-center gap-4 mr-2">
                 <MdOutlineNotificationsNone className="text-xl" />
-              <AdminProfileDropdown />
+                {
+                  admin ? 
+                        <AdminProfileDropdown />: 
+                        <Button onClick={()=>navigate("/admin/login")} className=" cursor-pointer">
+                               Login
+                        </Button>
+                }
               </div>
             </div>
           </header>
