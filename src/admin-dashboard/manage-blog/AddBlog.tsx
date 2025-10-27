@@ -4,6 +4,7 @@ import {
   useUpdateBlogMutation,
 } from "@/redux/features/blog/blogApi";
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import { toast } from "react-hot-toast";
 
 type AddBlogProps = {
   onCancel: () => void;
@@ -104,8 +105,10 @@ const AddBlog = ({ onCancel, initialData }: AddBlogProps) => {
 
       if (isEditMode && initialData) {
         await updateBlog({ id: initialData.id, data: payload }).unwrap();
+        toast.success("Blog updated successfully!");
       } else {
         await postBlog(payload).unwrap();
+        toast.success("Blog added successfully!");
       }
 
       // Reset form and close modal

@@ -24,7 +24,6 @@ const ServiceDetails = () => {
     console.log("booking", data);
     setOpenContact(false);
   };
-  console.log("tradesman details", data);
   return (
     <div className="bg-[#f3f5f7] min-h-screen py-16 px-16">
       <div className="max-w-[1490px] mx-auto">
@@ -98,7 +97,7 @@ const ServiceDetails = () => {
               <RatingReviews />
               {data?.data?.review.length > 0 && (
                 <div className="mt-8">
-                  {data?.data?.review.map((rev: any) => (
+                  {data?.data?.review.slice(0, 3).map((rev: any) => (
                     <ReviewCard
                       key={rev.id}
                       name={rev.customer?.name}
