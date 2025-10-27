@@ -13,7 +13,7 @@ const JobCard = ({ data }: { data: any }) => {
     navigate(`/jobs/${data.id || "1"}`);
   };
 
-  const handleSendProsalClick = (e: React.MouseEvent) => {
+  const handleSendProsalClick = () => {
     navigate(`/jobs/${data.id || "1"}`);
   };
 
