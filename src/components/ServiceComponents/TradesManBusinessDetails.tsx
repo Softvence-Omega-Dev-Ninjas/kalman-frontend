@@ -46,7 +46,7 @@ const TradesManBusinessDetails: React.FC<TradesManBusinessDetailsProps> = ({
         onClick={() => setOpenContact(true)}
         className="w-full text-sm lg:text-lg  mt-6 bg-primary hover:bg-orange-600 text-white px-4 py-3 rounded-md"
       >
-        Contact for Shortlist
+        Invite to Project
       </button>
     </div>
   );

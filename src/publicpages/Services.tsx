@@ -3,10 +3,19 @@ import { MdDoubleArrow } from "react-icons/md";
 import SideFilterForService from "../components/ServiceComponents/SideFilterForService";
 import AllServices from "../components/ServiceComponents/AllServices";
 import { useTradesman } from "@/redux/features/tradesman/hooks/useTradesman";
+import { useState } from "react";
 
 function Services() {
-  const { tradesmen, isLoading, page, setPage, totalPages, total } =
-    useTradesman();
+  const [filters, setFilters] = useState({
+    search: "",
+    category: "",
+    subCategory: "",
+    location: "",
+    rating: "",
+  });
+
+  const { tradesmen, page, isLoading, setPage, totalPages, total } =
+    useTradesman(filters);
 
   return (
     <div>
@@ -25,7 +34,7 @@ function Services() {
               <IoMdOptions />
               <span className=" font-semibold">Filter By</span>
             </div>
-            <SideFilterForService />
+            <SideFilterForService onFilterChange={setFilters} />
           </div>
           <div className="w-full lg:w-3/4">
             <div className="flex items-center justify-between mb-3">

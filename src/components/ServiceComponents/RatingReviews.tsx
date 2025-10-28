@@ -19,7 +19,7 @@ interface ReviewData {
   tradesManId: string;
 }
 
-const RatingReviews: React.FC<RatingReviewsProps> = ({ initialRating = 0 }) => {
+const RatingReviews: React.FC<RatingReviewsProps> = ({ initialRating = 1 }) => {
   const { id: tradesManId } = useParams<{ id: string }>();
   const [postReview, { isLoading }] = usePostReviewMutation();
 
@@ -28,7 +28,7 @@ const RatingReviews: React.FC<RatingReviewsProps> = ({ initialRating = 0 }) => {
 
   const [comment, setComment] = useState<string>("");
   const [rating, setRating] = useState<number>(initialRating);
-  const [hoverRating, setHoverRating] = useState<number>(0);
+  const [hoverRating, setHoverRating] = useState<number>(1);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

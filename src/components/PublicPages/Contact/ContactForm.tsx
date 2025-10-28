@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { usePostContactMutation } from "@/redux/features/contact/contactApi";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 type ContactPayload = {
   name: string;
@@ -42,8 +43,9 @@ const ContactSection: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await postContact(formData).unwrap();
+      const res = await postContact(formData).unwrap();
       setFormData({ name: "", email: "", message: "", acceptedTerms: false });
+      toast.success(res?.message);
     } catch (error) {
       console.error("Failed to send message:", error);
     }

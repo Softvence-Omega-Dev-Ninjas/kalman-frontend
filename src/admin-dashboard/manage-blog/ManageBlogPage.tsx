@@ -13,6 +13,7 @@ import {
   useGetAllBlogsQuery,
 } from "@/redux/features/blog/blogApi";
 import ViewBlog from "./ViewBlog";
+import { toast } from "react-hot-toast";
 
 const ManageBlogPage = () => {
   const { data } = useGetAllBlogsQuery(undefined);
@@ -107,7 +108,10 @@ const ManageBlogPage = () => {
             <SquarePen size={18} />
           </button>
           <button
-            onClick={() => deleteBlog(row?.id)}
+            onClick={() => {
+              deleteBlog(row?.id);
+              toast.success("Blog deleted successfully!");
+            }}
             className="text-gray-400 hover:text-red-600 focus:outline-none focus:text-red-600 cursor-pointer"
           >
             <Trash2 size={18} />

@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useGetAllTradesmansQuery } from "../tradesmanApi";
 
-export const useTradesman = () => {
+export const useTradesman = (filters = {}) => {
   const [page, setPage] = useState(1);
 
-  const { data, isLoading, isError } = useGetAllTradesmansQuery({
-    page,
-    limit: 10,
-  });
+  const queryParams = useMemo(
+    () => ({
+      page,
+      limit: 10,
+      ...filters, // include search, category, location, etc.
+    }),
+    [page, filters]
+  );
+
+  const { data, isLoading, isError } = useGetAllTradesmansQuery(queryParams);
 
   console.log(data);
   // Normalize data

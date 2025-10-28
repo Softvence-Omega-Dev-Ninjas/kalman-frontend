@@ -7,7 +7,7 @@ import { useState } from "react";
 import BookingModal from "../components/ServiceComponents/BookingModal";
 import RatingReviews from "@/components/ServiceComponents/RatingReviews";
 import ReviewCard from "@/components/ServiceComponents/ReviewCard";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useGetSingleTradesmanQuery } from "@/redux/features/tradesman/tradesmanApi";
 import TradesManBusinessDetails from "@/components/ServiceComponents/TradesManBusinessDetails";
 
@@ -15,16 +15,7 @@ const ServiceDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useGetSingleTradesmanQuery(id);
   const [openContact, setOpenContact] = useState(false);
-  const handleBookingSubmit = (data: {
-    location: string;
-    date: string;
-    duration: string;
-    notes: string;
-  }) => {
-    console.log("booking", data);
-    setOpenContact(false);
-  };
-  console.log("tradesman details", data);
+
   return (
     <div className="bg-[#f3f5f7] min-h-screen py-16 px-16">
       <div className="max-w-[1490px] mx-auto">
@@ -98,7 +89,7 @@ const ServiceDetails = () => {
               <RatingReviews />
               {data?.data?.review.length > 0 && (
                 <div className="mt-8">
-                  {data?.data?.review.map((rev: any) => (
+                  {data?.data?.review.slice(0, 3).map((rev: any) => (
                     <ReviewCard
                       key={rev.id}
                       name={rev.customer?.name}
@@ -109,6 +100,14 @@ const ServiceDetails = () => {
                     />
                   ))}
                 </div>
+              )}
+              {data?.data?.review.length > 3 && (
+                <Link
+                  to="#"
+                  className="text-primary text-lg inline-block underline font-medium"
+                >
+                  See all reviews
+                </Link>
               )}
             </div>
             {/* Right column card */}
@@ -125,7 +124,6 @@ const ServiceDetails = () => {
             <BookingModal
               open={openContact}
               onClose={() => setOpenContact(false)}
-              onSubmit={handleBookingSubmit}
             />
           </div>
         </div>
