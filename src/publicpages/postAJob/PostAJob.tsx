@@ -21,7 +21,7 @@ export interface JobData {
   contact_method: "phone" | "email" | null;
   images: File[];
   price:string | number;
-  subCategory: string[]
+  subCategories: string[]
 }
 
 const PostAJob = () => {
@@ -38,7 +38,7 @@ const PostAJob = () => {
     contact_method: null,
     images: [],
     price: 0 ,
-    subCategory: []
+    subCategories: []
   });
 
   const progressPercent = () => {
@@ -61,7 +61,7 @@ const PostAJob = () => {
         contact_method: null,
         images: [],
         price: 0 ,
-        subCategory: []
+        subCategories: []
         })
        } else {
           navigate("/")

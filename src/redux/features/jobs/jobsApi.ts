@@ -1,4 +1,5 @@
 import { baseApi } from "@/redux/api/baseApi";
+import type { UserJobsResponse } from "@/user-dashboard/UserJobs";
 
 export const jobsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -68,8 +69,15 @@ export const jobsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: (id) => [{ type: "Jobs", id }],
     }),
+   getUserJobs: builder.query<UserJobsResponse, void>({
+      query: () => ({
+        url: `/jobs/user-jobs`,
+        method: "GET",
+      }),
+      providesTags: ["Jobs"],
+    }),
   }),
 });
 
-export const { useGetJobsQuery, usePostAJobMutation, useGetJobByIdQuery } =
+export const { useGetJobsQuery, usePostAJobMutation, useGetJobByIdQuery , useGetUserJobsQuery} =
   jobsApi;

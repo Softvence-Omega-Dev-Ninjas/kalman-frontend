@@ -148,11 +148,11 @@ const UserOverview = () => {
             <div className="flex flex-col space-y-4">
               <Link
                 to="/post-a-job"
-                className="bg-white p-3 rounded-lg border-gray-200 border-1"
+                className="bg-white p-3 rounded-lg border-gray-200 border"
               >
                 Post a Job
               </Link>
-              <Link to="/jobs" className="bg-white p-3 rounded-lg border-gray-200 border-1">
+              <Link to="/services" className="bg-white p-3 rounded-lg border-gray-200 border">
                 Find Tradespeople
               </Link>
             </div>
