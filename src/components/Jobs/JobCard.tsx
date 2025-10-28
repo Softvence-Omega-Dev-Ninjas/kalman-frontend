@@ -16,7 +16,7 @@ const JobCard = ({ data }: { data: any }) => {
   const handleSendProsalClick = () => {
     navigate(`/jobs/${data.id || "1"}`);
   };
-
+console.log(data)
 
   return (
     <>
@@ -62,7 +62,7 @@ const JobCard = ({ data }: { data: any }) => {
                   <LuCalendarDays /> 24/01/2024
                 </span>
                 <span className="flex items-center gap-1">
-                  <WiTime4 /> ASAP
+                  <WiTime4 /> {data.timeline || "N/A"}
                 </span>
               </div>
             </div>
@@ -70,7 +70,7 @@ const JobCard = ({ data }: { data: any }) => {
 
           {/* Right part: Button + applicants */}
           <div className="flex items-center gap-4">
-            <span className="text-xs text-gray-500">Applicants: 2</span>
+            <span className="text-xs text-gray-500">Applicants: {data?.jobActivity?.total_interested}</span>
             <button
               onClick={handleSendProsalClick}
               className="bg-[#FF7346] hover:bg-[#ff5722] text-white text-sm px-4 py-2 rounded-md font-medium"

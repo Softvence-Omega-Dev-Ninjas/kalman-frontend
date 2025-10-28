@@ -73,16 +73,21 @@ const CreateCategory: React.FC<CreateCategoryProps> = ({
     setPreview(URL.createObjectURL(file));
   };
 
-  const handleSubmit = () => {
-    if (!name) return toast.error("Category name is required");
+const handleSubmit = () => {
+  if (!name) return toast.error("Category name is required");
 
-    const formData = new FormData();
-    formData.append("name", name);
-    subCategories.forEach((sub) => formData.append("subCategories[]", sub));
-    if (image) formData.append("image", image);
+  const formData = new FormData();
+  formData.append("name", name);
 
-    onCreate(formData);
-  };
+  if (subCategories.length > 0) {
+    formData.append("subCategories", subCategories.join(","));
+  }
+
+  if (image) formData.append("image", image);
+
+  onCreate(formData);
+};
+
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
