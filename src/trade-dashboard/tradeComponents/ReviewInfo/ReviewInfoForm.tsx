@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "@/redux/typeHook";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import tradePersonSignupFormData from "@/lib/tradeFormData";
-import { useTradeSignUpMutation } from "@/redux/features/tradeForm/tradeSignUp";
 import { resetTradeForm } from "@/redux/features/tradeForm/tradeFormSlice";
+import { useTradeSignUpMutation } from "@/redux/features/tradesman/tradesmanApi";
 
 export default function ReviewInfoForm() {
   const navigate = useNavigate();

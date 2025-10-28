@@ -2,6 +2,14 @@ import { baseApi } from "@/redux/api/baseApi";
 
 export const tradesmanApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    tradeSignUp: builder.mutation({
+      query: (data) => ({
+        url: "/tradesman",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Tradesman"],
+    }),
     //get All Blogs
     getAllTradesmans: builder.query({
       query: ({
@@ -38,8 +46,20 @@ export const tradesmanApi = baseApi.injectEndpoints({
       }),
       providesTags: (id) => [{ type: "Tradesman", id }],
     }),
+
+    getTradesmanProfile: builder.query({
+      query: () => ({
+        url: "/tradesman/profile",
+        method: "GET",
+      }),
+      providesTags: ["Tradesman"],
+    }),
   }),
 });
 
-export const { useGetAllTradesmansQuery, useGetSingleTradesmanQuery } =
-  tradesmanApi;
+export const {
+  useGetAllTradesmansQuery,
+  useGetSingleTradesmanQuery,
+  useGetTradesmanProfileQuery,
+  useTradeSignUpMutation,
+} = tradesmanApi;

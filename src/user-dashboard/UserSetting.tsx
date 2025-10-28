@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { User, Camera, Wand2, X } from "lucide-react";
 import {
-  User,
-  Camera,
-  Wand2,
-  X,
-} from "lucide-react";
-import { useGetMyProfileQuery, useUpdateProfileMutation } from "@/redux/features/customer/customerApi";
+  useGetMyProfileQuery,
+  useUpdateProfileMutation,
+} from "@/redux/features/customer/customerApi";
 import toast from "react-hot-toast";
 // import { useGetMyProfileQuery, useUpdateProfileMutation } from "@/redux/features/api/apiSlice";
 
 // Components
-const Progress: React.FC<{ value: number; className?: string }> = ({ value, className }) => (
+const Progress: React.FC<{ value: number; className?: string }> = ({
+  value,
+  className,
+}) => (
   <div className={`bg-gray-200 rounded-full overflow-hidden ${className}`}>
-    <div 
-      className="bg-cyan-500 h-full transition-all duration-300" 
+    <div
+      className="bg-cyan-500 h-full transition-all duration-300"
       style={{ width: `${value}%` }}
     />
   </div>
@@ -32,7 +33,11 @@ interface ProfileFormData {
 
 const UserSetting: React.FC = () => {
   // RTK Query hooks
-  const { data: profileData, isLoading, error } = useGetMyProfileQuery(undefined);
+  const {
+    data: profileData,
+    isLoading,
+    error,
+  } = useGetMyProfileQuery(undefined);
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
 
   // Local state
@@ -46,7 +51,7 @@ const UserSetting: React.FC = () => {
     state: "",
     zip_code: "",
   });
-  
+
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [email, setEmail] = useState<string>(""); // Separate state for email (read-only)
@@ -54,24 +59,24 @@ const UserSetting: React.FC = () => {
   // Calculate profile completion percentage
   const calculateProfileCompletion = (profile: any): number => {
     if (!profile) return 0;
-    
+
     const fields = [
-      'name',
-      'phone',
-      'profession',
-      'bio',
-      'street_address',
-      'city',
-      'state',
-      'zip_code',
-      'profile_image'
+      "name",
+      "phone",
+      "profession",
+      "bio",
+      "street_address",
+      "city",
+      "state",
+      "zip_code",
+      "profile_image",
     ];
-    
-    const completedFields = fields.filter(field => {
+
+    const completedFields = fields.filter((field) => {
       const value = profile[field];
       return value && value !== "" && value !== "string";
     }).length;
-    
+
     return Math.round((completedFields / fields.length) * 100);
   };
 
@@ -89,20 +94,24 @@ const UserSetting: React.FC = () => {
         state: profile.state || "",
         zip_code: profile.zip_code || "",
       });
-      
+
       setEmail(profile.email || ""); // Set email separately
-      
+
       if (profile.profile_image) {
         setAvatarPreview(profile.profile_image);
       }
     }
   }, [profileData]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -111,16 +120,16 @@ const UserSetting: React.FC = () => {
     if (file) {
       // Validate file size (5MB limit)
       if (file.size > 5 * 1024 * 1024) {
-        alert('File size should be less than 5MB');
+        alert("File size should be less than 5MB");
         return;
       }
-      
+
       // Validate file type
-      if (!file.type.startsWith('image/')) {
-        alert('Please select an image file');
+      if (!file.type.startsWith("image/")) {
+        alert("Please select an image file");
         return;
       }
-      
+
       const preview = URL.createObjectURL(file);
       setAvatarPreview(preview);
       setProfileImage(file);
@@ -137,50 +146,55 @@ const UserSetting: React.FC = () => {
     const sampleBios = [
       "I'm a passionate professional with years of experience in creating beautiful, functional spaces that reflect my clients' unique style and needs.",
       "Dedicated to delivering exceptional results, I combine creativity with technical expertise to transform your vision into reality.",
-      "With a keen eye for detail and commitment to excellence, I specialize in creating environments that enhance both beauty and functionality."
+      "With a keen eye for detail and commitment to excellence, I specialize in creating environments that enhance both beauty and functionality.",
     ];
     const randomBio = sampleBios[Math.floor(Math.random() * sampleBios.length)];
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      bio: randomBio
+      bio: randomBio,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       // Create FormData for file upload
       const submitData = new FormData();
-      
+
       // Append all form fields except email
-      Object.keys(formData).forEach(key => {
+      Object.keys(formData).forEach((key) => {
         const value = formData[key as keyof ProfileFormData];
         if (value) {
           submitData.append(key, value);
         }
       });
-      
+
       // Append profile image if changed
       if (profileImage) {
-        submitData.append('profile_image', profileImage);
+        submitData.append("profile_image", profileImage);
       }
-      
+
       // Update profile
       const result = await updateProfile(submitData).unwrap();
-      console.log('Profile updated successfully:', result);
-      
+      console.log("Profile updated successfully:", result);
+
       // Show success message (you can replace this with a toast notification)
-      toast.success('Profile updated successfully!');
-      
+      toast.success("Profile updated successfully!");
     } catch (error: any) {
-      console.error('Failed to update profile:', error);
-      
+      console.error("Failed to update profile:", error);
+
       // Show error message to user
       if (error.data?.message) {
-        alert(`Error: ${Array.isArray(error.data.message) ? error.data.message.join(', ') : error.data.message}`);
+        alert(
+          `Error: ${
+            Array.isArray(error.data.message)
+              ? error.data.message.join(", ")
+              : error.data.message
+          }`
+        );
       } else {
-        alert('Failed to update profile. Please try again.');
+        alert("Failed to update profile. Please try again.");
       }
     }
   };
@@ -206,7 +220,7 @@ const UserSetting: React.FC = () => {
     );
   }
 
-  const profileCompletion = profileData?.data?.profile 
+  const profileCompletion = profileData?.data?.profile
     ? calculateProfileCompletion(profileData.data.profile)
     : 0;
 
@@ -344,13 +358,16 @@ const UserSetting: React.FC = () => {
 
               <div className="md:col-span-2">
                 <div className="flex justify-between items-center mb-1">
-                  <label className="text-sm font-medium text-gray-600">Bio</label>
+                  <label className="text-sm font-medium text-gray-600">
+                    Bio
+                  </label>
                   <button
                     type="button"
                     onClick={generateAIText}
                     className="text-xs text-cyan-500 cursor-pointer flex items-center hover:text-cyan-600"
                   >
-                    <Wand2 className="w-4 h-4 mr-1" /> Auto Generate Text with AI
+                    <Wand2 className="w-4 h-4 mr-1" /> Auto Generate Text with
+                    AI
                   </button>
                 </div>
                 <textarea
@@ -436,8 +453,8 @@ const UserSetting: React.FC = () => {
 
           {/* Save Button */}
           <div className="flex justify-end mt-8">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={isUpdating}
               className="py-3 px-8 bg-primary text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-dark transition-colors"
             >
