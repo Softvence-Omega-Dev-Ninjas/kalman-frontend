@@ -28,7 +28,6 @@ const TradeOverview: React.FC = () => {
   const { data } = useGetAllInvitationsQuery(undefined);
   const recentJobs: JobItem[] = data?.data ?? [];
 
-  console.log("Recent Jobs Data:", recentJobs);
   return (
     <div className="min-h-screen p-4 md:p-6">
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
