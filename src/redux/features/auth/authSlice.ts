@@ -1,6 +1,6 @@
 // src/redux/features/auth/authSlice.ts
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit"; // ✅ type-only import
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
   id?: number | string;
@@ -46,6 +46,19 @@ const authSlice = createSlice({
       }
     },
 
+    //  ADD THIS NEW REDUCER
+    updateUser: (state, action: PayloadAction<Partial<User>>) => {
+      if (state.user) {
+        // Update the user state with new data
+        state.user = { ...state.user, ...action.payload };
+        
+        //  ALSO UPDATE LOCALSTORAGE to persist changes
+        if (typeof window !== "undefined") {
+          localStorage.setItem("user", JSON.stringify(state.user));
+        }
+      }
+    },
+
     clearUser: (state) => {
       state.user = null;
       state.token = null;
@@ -64,8 +77,10 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, clearUser, getUserFromStorage } = authSlice.actions;
+//  EXPORT THE NEW ACTION
+export const { setUser, updateUser, clearUser, getUserFromStorage } = authSlice.actions;
 export default authSlice.reducer;
 
 export const selectCurrentUser = (state: any) => state.auth.user;
 export const selectToken = (state: any) => state.auth.token;
+

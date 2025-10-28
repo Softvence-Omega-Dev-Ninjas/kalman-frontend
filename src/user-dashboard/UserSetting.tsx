@@ -5,6 +5,8 @@ import {
   useUpdateProfileMutation,
 } from "@/redux/features/customer/customerApi";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { updateUser } from "@/redux/features/auth/authSlice";
 // import { useGetMyProfileQuery, useUpdateProfileMutation } from "@/redux/features/api/apiSlice";
 
 // Components
@@ -39,6 +41,7 @@ const UserSetting: React.FC = () => {
     error,
   } = useGetMyProfileQuery(undefined);
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
+  const dispatch = useDispatch();
 
   // Local state
   const [formData, setFormData] = useState<ProfileFormData>({
@@ -162,7 +165,7 @@ const UserSetting: React.FC = () => {
       // Create FormData for file upload
       const submitData = new FormData();
 
-      // Append all form fields except email
+      // Append all form fields
       Object.keys(formData).forEach((key) => {
         const value = formData[key as keyof ProfileFormData];
         if (value) {
@@ -179,12 +182,20 @@ const UserSetting: React.FC = () => {
       const result = await updateProfile(submitData).unwrap();
       console.log("Profile updated successfully:", result);
 
-      // Show success message (you can replace this with a toast notification)
+      //  FIX: Update Redux auth state so navbar shows updated name immediately
+      dispatch(
+        updateUser({
+          name: formData.name,
+          phone: formData.phone,
+          profession: formData.profession,
+          profile_image: result.data?.profile?.profile_image,
+        })
+      );
+
       toast.success("Profile updated successfully!");
     } catch (error: any) {
       console.error("Failed to update profile:", error);
 
-      // Show error message to user
       if (error.data?.message) {
         alert(
           `Error: ${

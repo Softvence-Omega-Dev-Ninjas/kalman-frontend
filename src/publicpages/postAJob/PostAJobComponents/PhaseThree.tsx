@@ -23,25 +23,30 @@ const PhaseThree = ({ phase, setPhase, jobData }: any) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Handle file upload + preview (fixed first-click issue)
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const selected = Array.from(e.target.files).slice(0, 5);
-      setImages((prev) => [...prev, ...selected]);
-      const urls = selected.map((file) => URL.createObjectURL(file));
-      setPreviewUrls((prev) => [...prev, ...urls]);
-      e.target.value = ""; //  reset input so same file can be re-selected
-    }
-  };
+const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  if (e.target.files && e.target.files.length > 0) {
+    const selected = Array.from(e.target.files).slice(0, 5);
+    setImages((prev) => [...prev, ...selected]);
+    const urls = selected.map((file) => URL.createObjectURL(file));
+    setPreviewUrls((prev) => [...prev, ...urls]);
+  }
+  e.target.value = ""; //important
+};
 
+
+console.log(jobData)
   // Category
   const { data } = useGetCategoriesHQuery();
   const categories: TCategory[] = data?.data?.result || [];
   const category = categories.find((cat) => cat?.id === jobData.categoryId);
 
   // Open file picker
-  const handleChooseClick = () => {
-    fileInputRef.current?.click();
-  };
+const handleChooseClick = (e?: React.MouseEvent) => {
+  e?.stopPropagation(); // prevent bubbling (double trigger fix)
+  if (fileInputRef.current) {
+    fileInputRef.current.click();
+  }
+};
 
   // Drag and drop handlers
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -145,29 +150,44 @@ const PhaseThree = ({ phase, setPhase, jobData }: any) => {
             type="file"
             ref={fileInputRef}
             multiple
-            accept="image/png, image/jpeg, image/webp"
+            accept="image/*"
             onChange={handleFileChange}
             className="hidden"
           />
+
         </div>
 
         {/* Image previews */}
-        {previewUrls.length > 0 && (
-          <div className="grid grid-cols-3 gap-3 mt-4">
-            {previewUrls.map((url, index) => (
-              <div
-                key={index}
-                className="w-full h-24 border border-gray-200 rounded-md overflow-hidden"
-              >
-                <img
-                  src={url}
-                  alt={`Preview ${index + 1}`}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-            ))}
-          </div>
-        )}
+       {previewUrls.length > 0 && (
+  <div className="grid grid-cols-3 gap-3 mt-4">
+    {previewUrls.map((url, index) => (
+      <div
+        key={index}
+        className="relative w-full h-24 border border-gray-200 rounded-md overflow-hidden group"
+      >
+        <img
+          src={url}
+          alt={`Preview ${index + 1}`}
+          className="object-cover w-full h-full"
+        />
+
+        {/* Delete button (visible on hover) */}
+        <button
+          type="button"
+          onClick={() => {
+            setImages((prev) => prev.filter((_, i) => i !== index));
+            setPreviewUrls((prev) => prev.filter((_, i) => i !== index));
+          }}
+          className="absolute top-1 right-1 bg-black/60 text-white text-xs rounded-full py-1 px-2 cursor-pointer opacity-0 group-hover:opacity-100 transition"
+          title="Remove image"
+        >
+          ✕
+        </button>
+      </div>
+    ))}
+  </div>
+)}
+
 
         {/* Contact preference */}
         <div>

@@ -21,11 +21,11 @@ function Services() {
     <div>
       <div className="bg-[#0D1B2A] py-20 flex flex-col items-center justify-center gap-5">
         <h1 className="text-3xl font-semibold text-white">Our Services</h1>
-        <span className="flex items-center gap-3 font-semibold">
+        <div className="flex items-center gap-3 font-semibold">
           <p className="text-white"> Home</p>
           <MdDoubleArrow className="text-xl text-primary" />
           <p className="text-primary inline-block">Services</p>
-        </span>
+        </div>
       </div>
       <div className="max-w-[1550px] mx-auto px-4 md:px-10 py-5">
         <div className="flex items-start gap-5 mt-6">
