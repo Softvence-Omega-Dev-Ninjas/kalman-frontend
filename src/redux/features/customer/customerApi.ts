@@ -3,13 +3,13 @@ import { baseApi } from "@/redux/api/baseApi";
 export const customerApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     //  Get all customers
-    getAllCustomers: builder.query({
-      query: () => ({
-        url: "/customer",
-        method: "GET",
-      }),
-       providesTags: ["Customer"],
-    }),
+   getAllCustomers: builder.query<any, void>({
+  query: () => ({
+    url: "/customer",
+    method: "GET",
+  }),
+  providesTags: ["Customer"],
+}),
 
     //  Get authenticated customer profile
     getMyProfile: builder.query({

@@ -1,5 +1,5 @@
 import { IoLocationOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import tellUsImg from "../../../assets/sample_images/tellusabouturproject.png";
 import { FaArrowRight } from "react-icons/fa";
 
@@ -30,19 +30,19 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
     jobData.categoryId
   );
   const [selectedSubCategory, setSelectedSubCategory] = useState<string[]>(
-    jobData.subCategory || []
+    jobData.subCategories || []
   );
   const [location, setLocation] = useState(jobData.location || "");
   const [price, setPrice] = useState(jobData.price || "");
   const maxChars = 500;
 
   // All categories
-  const { data } = useGetCategoriesHQuery();
+  const { data , refetch } = useGetCategoriesHQuery();
   const categories: TCategory[] = data?.data?.result || [];
 
-  // useEffect(()=>{
-  //   refetch()
-  // })
+  useEffect(()=>{
+    refetch()
+  }, [])
   // Single category for subCategory display
   const { data: singleCategoryData, isFetching: isSubLoading } =
     useGetSingleCategoryQuery(selectedCategory!, { skip: !selectedCategory });
@@ -51,11 +51,10 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
 
   // Toggle subcategory selection
   const handleSubCategoryClick = (sub: string) => {
-    setSelectedSubCategory(
-      (prev) =>
-        prev.includes(sub)
-          ? prev.filter((item) => item !== sub) // remove if already selected
-          : [...prev, sub] // add new one
+    setSelectedSubCategory((prev) =>
+      prev.includes(sub)
+        ? prev.filter((item) => item !== sub) 
+        : [...prev, sub] 
     );
   };
 
@@ -66,7 +65,7 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
       price,
       description,
       categoryId: selectedCategory,
-      subCategory: selectedSubCategory, // now array
+      subCategories: selectedSubCategory, // now array
       location,
     });
     setPhase(phase + 1);

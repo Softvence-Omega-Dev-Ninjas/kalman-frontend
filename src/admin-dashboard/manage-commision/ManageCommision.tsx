@@ -52,9 +52,23 @@ console.log(commissions)
   };
 
   const commissionColumns: Column<TCommission>[] = [
-    { header: "Commission Rate", accessor: "commision_rate" },
-    { header: "Min Hourly Rate", accessor: "minimum_hourly_rate" },
-    { header: "Max Hourly Rate", accessor: "maximum_hourly_rate" },
+{
+  header: "Commission Rate",
+  accessor: "commision_rate",
+  cell: (row: any) => `${row.commision_rate}%`, 
+},
+{
+  header: "Min Hourly Rate",
+  accessor: "minimum_hourly_rate",
+  cell: (row: any) => `$${row.minimum_hourly_rate}`,
+},
+{
+  header: "Max Hourly Rate",
+  accessor: "maximum_hourly_rate",
+  cell: (row: any) => `$${row.maximum_hourly_rate}`,
+},
+
+
     {
       header: "Created",
       cell: (row) => row.createdAt ? new Date(row.createdAt).toLocaleDateString() : "—",
