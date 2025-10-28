@@ -65,28 +65,30 @@ const handleChooseClick = (e?: React.MouseEvent) => {
       setPreviewUrls((prev) => [...prev, ...urls]);
     }
   };
-
+console.log(jobData)
   // Submit Job (fixed console + contact method + image data)
   const submitJob = async () => {
     try {
-      if (
-        !jobData.title ||
-        !jobData.description ||
-        !jobData.categoryId ||
-        !jobData.timeline ||
-        !contactMethod ||
-        !jobData.location ||
-        !jobData.price ||
-        images.length === 0
-      ) {
-        toast("Something is missing!");
-        console.log("Missing fields:", {
-          ...jobData,
-          contactMethod,
-          imagesCount: images.length,
-        });
-        return;
-      }
+      const requiredFields = [
+  { value: jobData.title, name: "Title" },
+  { value: jobData.description, name: "Description" },
+  { value: jobData.categoryId, name: "Category" },
+  { value: jobData.timeline, name: "Timeline" },
+  { value: contactMethod, name: "Contact method" },
+  { value: jobData.location, name: "Location" },
+  { value: jobData.price, name: "Price" },
+  { value: jobData.subCategories?.length, name: "Subcategories" },
+  { value: images?.length, name: "Images" },
+];
+
+const missingField = requiredFields.find(field => !field.value);
+
+if (missingField) {
+  toast(`${missingField.name} is missing!`);
+  console.log(`Missing field: ${missingField.name}`);
+  return;
+}
+
 
       console.log("📸 Images ready to upload:", images);
 
@@ -99,6 +101,7 @@ const handleChooseClick = (e?: React.MouseEvent) => {
         time: jobData.time || "",
         contact_method: contactMethod,
         location: jobData.location ,
+        subCategories: jobData.subCategories ,
         skills_needed: jobData.skills_needed || [],
         price: jobData.price || null,
       };
