@@ -37,7 +37,7 @@ export const reviewApi = baseApi.injectEndpoints({
         method: "PATCH", // or PATCH depending on your backend
         body: data,
       }),
-      invalidatesTags: ["Reviews"],
+      invalidatesTags: ["Reviews", "Tradesman"],
     }),
 
     //delete a review
@@ -46,7 +46,7 @@ export const reviewApi = baseApi.injectEndpoints({
         url: `/review/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Reviews"],
+      invalidatesTags: ["Reviews", "Tradesman"],
     }),
   }),
 });
