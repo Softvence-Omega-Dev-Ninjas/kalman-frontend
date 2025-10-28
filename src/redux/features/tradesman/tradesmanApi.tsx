@@ -54,6 +54,15 @@ export const tradesmanApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Tradesman"],
     }),
+
+    updateSettings: builder.mutation({
+      query: (data) => ({
+        url: "/tradesman/update-tradesman",
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Profile", "Tradesman"],
+    }),
   }),
 });
 
@@ -62,4 +71,5 @@ export const {
   useGetSingleTradesmanQuery,
   useGetTradesmanProfileQuery,
   useTradeSignUpMutation,
+  useUpdateSettingsMutation,
 } = tradesmanApi;

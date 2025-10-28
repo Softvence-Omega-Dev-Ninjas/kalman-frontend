@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { User, Wand2, Plus } from "lucide-react";
-import { useUpdateSettingsMutation } from "@/redux/features/settingsapi/settingsApi";
+
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
-import { useGetTradesmanProfileQuery } from "@/redux/features/tradesman/tradesmanApi";
+import {
+  useGetTradesmanProfileQuery,
+  useUpdateSettingsMutation,
+} from "@/redux/features/tradesman/tradesmanApi";
 
 // Form types
 interface FormData {
