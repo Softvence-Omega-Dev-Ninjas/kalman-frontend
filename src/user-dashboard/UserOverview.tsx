@@ -6,21 +6,25 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { FiCalendar, FiClock, FiMapPin } from "react-icons/fi";
-import { useGetUserJobsQuery } from "@/redux/features/jobs/jobsApi";
-import type { Job, UserJobsResponse } from "./UserJobs";
+
+import { useGetAllCustomersQuery } from "@/redux/features/customer/customerApi";
 
 const UserOverview = () => {
   const [selectedMonth, setSelectedMonth] = useState("Month");
-const [viewAll , setViewAll] = useState(false)
-const { data} = useGetUserJobsQuery();
+  const [viewAll , setViewAll] = useState(false);
 
-  const jobs: Job[] = (data as UserJobsResponse)?.data || [];
+  const { data } = useGetAllCustomersQuery();
 
-const shortlist = viewAll ? jobs : jobs.slice(0, 2)
-  const HandleViewAll = ()=> {
-    setViewAll((prev)=>!prev)
+  const jobs = data?.data?.jobs || [];
+  const totalJobsThisMonth = data?.data?.jobOfThisMonth || 0;
+  const sortListedThisMonth = data?.data?.sortListedThisMonth || 0;
 
-  }
+  const shortlist = viewAll ? jobs : jobs.slice(0, 2);
+
+  const HandleViewAll = () => {
+    setViewAll(prev => !prev);
+  };
+
   return (
     <div className="min-h-screen p-4 md:p-6">
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -35,43 +39,46 @@ const shortlist = viewAll ? jobs : jobs.slice(0, 2)
             </div>
 
             <div className="space-y-4">
-                    {shortlist.map((job) => (
-                      <div
-                        key={job.id}
-                        className="flex flex-col sm:flex-row sm:items-center justify-between border rounded-lg bg-white p-4"
-                      >
-                        <div>
-                          <h3 className="font-semibold text-gray-800">{job.title}</h3>
-                          <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-600">
-                            <div className="flex items-center gap-1">
-                              <FiCalendar /> {job.preferred_date || "N/A"}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <FiMapPin /> {job.location}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <FiClock /> {job.timeline || "N/A"}
-                            </div>
-                          </div>
-                        </div>
-            
-                        <div className="mt-3 sm:mt-0 flex flex-col items-end">
-                          <p className="text-gray-800 font-medium">
-                            ${job.price.toLocaleString()}
-                          </p>
-                          <Link className=" cursor-pointer" to={`/user-dashboard/my-jobs/${job.id}`}>
-                            <button className="mt-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-5 py-2 rounded-md transition cursor-pointer">
-                              View
-                            </button>
-                          </Link>
-                        </div>
+              {shortlist.map((job: any) => (
+                <div
+                  key={job.id}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between border rounded-lg bg-white p-4"
+                >
+                  <div>
+                    <h3 className="font-semibold text-gray-800">{job.title}</h3>
+                    <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <FiCalendar /> {job.preferred_date || "N/A"}
                       </div>
-                    ))}
+                      <div className="flex items-center gap-1">
+                        <FiMapPin /> {job.location}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <FiClock /> {job.timeline || "N/A"}
+                      </div>
+                    </div>
                   </div>
 
+                  <div className="mt-3 sm:mt-0 flex flex-col items-end">
+                    <p className="text-gray-800 font-medium">
+                      ${job.price.toLocaleString()}
+                    </p>
+                    <Link className=" cursor-pointer" to={`/user-dashboard/my-jobs/${job.id}`}>
+                      <button className="mt-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-5 py-2 rounded-md transition cursor-pointer">
+                        View
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+
             <div className="mt-3 text-center">
-              <button onClick={HandleViewAll} className="text-gray-600 cursor-pointer hover:text-gray-800 font-medium text-sm bg-white p-3 rounded-lg border-gray-200 border-1 w-full">
-               {viewAll? "View Less Jobs": "View All Jobs"}  
+              <button 
+                onClick={HandleViewAll} 
+                className="text-gray-600 cursor-pointer hover:text-gray-800 font-medium text-sm bg-white p-3 rounded-lg border-gray-200 border-1 w-full"
+              >
+               {viewAll ? "View Less Jobs" : "View All Jobs"}  
               </button>
             </div>
           </div>
@@ -93,7 +100,7 @@ const shortlist = viewAll ? jobs : jobs.slice(0, 2)
             <div className="mb-4 bg-white p-3 rounded-lg border-gray-200 border-1">
               <div className="flex items-center justify-between mb-2 ">
                 <span className="text-md font-semibold text-gray-600">
-                  This Months
+                  This Month
                 </span>
                 <div className="relative">
                   <select
@@ -112,18 +119,18 @@ const shortlist = viewAll ? jobs : jobs.slice(0, 2)
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">2</div>
+                  <div className="text-2xl font-bold text-gray-900">{totalJobsThisMonth}</div>
                   <div className="text-sm text-gray-600">Completed</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">3</div>
+                  <div className="text-2xl font-bold text-gray-900">{sortListedThisMonth}</div>
                   <div className="text-sm text-gray-600">Shortlisted</div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* MY Shortlist */}
+          {/* Quick Action */}
           <div className=" border-gray-200 p-3 bg-gray-100 rounded-lg shadow-sm border">
             <h2 className="text-lg font-semibold text-gray-900 mb-6">
               Quick Action
