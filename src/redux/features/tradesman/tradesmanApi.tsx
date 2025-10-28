@@ -8,7 +8,7 @@ export const tradesmanApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Tradesman"],
+      invalidatesTags: ["Profile", "Tradesman"],
     }),
     //get All Blogs
     getAllTradesmans: builder.query({
