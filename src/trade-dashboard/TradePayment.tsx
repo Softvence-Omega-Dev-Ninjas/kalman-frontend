@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CreditCard, Plus, Trash2, Lock, FileText, Folder } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import PaymentMethodForm from "./tradeComponents/PaymentMethod/PaymentMethodForm";
 
 interface PaymentMethod {
   id: number;
@@ -46,6 +47,8 @@ export default function TradePayment() {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>(
     initialPaymentMethods
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => setIsModalOpen(true);
 
   const handleSetAsDefault = (id: number) => {
     setPaymentMethods(
@@ -71,10 +74,19 @@ export default function TradePayment() {
                 Payment Methods
               </h2>
             </div>
-            <button className="flex items-center space-x-2 bg-primary text-white font-medium px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors duration-200">
+            <button
+              onClick={handleOpenModal}
+              className="flex items-center space-x-2 bg-primary text-white font-medium px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors duration-200"
+            >
               <Plus size={16} />
               <span className="text-sm">Add Payment Method</span>
             </button>
+          </div>
+          <div className="space-y-4 mt-4">
+            <PaymentMethodForm
+              isModalOpen={isModalOpen}
+              setIsModalOpen={setIsModalOpen}
+            />
           </div>
 
           <div className="space-y-4">
