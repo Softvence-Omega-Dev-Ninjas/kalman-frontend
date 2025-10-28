@@ -1,5 +1,6 @@
 import { usePostInvitationMutation } from "@/redux/features/invitation/invitationApi";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
 type BookingModalProps = {
@@ -11,6 +12,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
   const { id: tradesManId } = useParams<{ id: string }>();
   const [postInvitation, { isLoading }] = usePostInvitationMutation();
   const [location, setLocation] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+  const [duration, setDuration] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   if (!open) return null;
 
@@ -18,8 +22,11 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
     e.preventDefault();
 
     if (!tradesManId) return;
-
+    const isoDate = new Date(date).toISOString();
     const invitationData = {
+      title,
+      date: isoDate,
+      time_slot: duration,
       location,
       message,
       tradesManId,
@@ -27,12 +34,15 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
 
     try {
       await postInvitation(invitationData).unwrap();
-      // Optionally clear form or close modal
+      toast.success("Invitation sent successfully");
       setLocation("");
       setMessage("");
       onClose();
+
+      // Optionally clear form or close modal
     } catch (error) {
       console.error("Failed to post invitation:", error);
+      toast.error("Failed to send invitation");
     }
   };
 
@@ -49,6 +59,18 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           <div>
             <label className="block text-sm font-medium mb-2">
+              Enter your Title
+            </label>
+            <input
+              name="title"
+              placeholder="Enter Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 text-sm focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">
               Enter your Location
             </label>
             <input
@@ -59,10 +81,36 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
               className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 text-sm focus:outline-none"
             />
           </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Start Date
+              </label>
+              <input
+                name="date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 text-sm focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Estimated Duration
+              </label>
+              <input
+                name="duration"
+                placeholder="Enter Duration"
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+                className="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-3 text-sm focus:outline-none"
+              />
+            </div>
+          </div>
 
           <div>
             <label className="block text-sm font-medium mb-2">
-              Special Requirements (Optional)
+              Special Requirements
             </label>
             <textarea
               name="notes"

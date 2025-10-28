@@ -1,5 +1,5 @@
 import { IoLocationOutline } from "react-icons/io5";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import tellUsImg from "../../../assets/sample_images/tellusabouturproject.png";
 import { FaArrowRight } from "react-icons/fa";
 
@@ -37,27 +37,25 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
   const maxChars = 500;
 
   // All categories
-  const { data  } = useGetCategoriesHQuery();
+  const { data } = useGetCategoriesHQuery();
   const categories: TCategory[] = data?.data?.result || [];
 
   // useEffect(()=>{
   //   refetch()
   // })
   // Single category for subCategory display
-  const {
-    data: singleCategoryData,
-    isFetching: isSubLoading,
-  } = useGetSingleCategoryQuery(selectedCategory!, { skip: !selectedCategory });
+  const { data: singleCategoryData, isFetching: isSubLoading } =
+    useGetSingleCategoryQuery(selectedCategory!, { skip: !selectedCategory });
 
-  const subCategories: string[] =
-    singleCategoryData?.data?.subCategories || [];
+  const subCategories: string[] = singleCategoryData?.data?.subCategories || [];
 
   // Toggle subcategory selection
   const handleSubCategoryClick = (sub: string) => {
-    setSelectedSubCategory((prev) =>
-      prev.includes(sub)
-        ? prev.filter((item) => item !== sub) // remove if already selected
-        : [...prev, sub] // add new one
+    setSelectedSubCategory(
+      (prev) =>
+        prev.includes(sub)
+          ? prev.filter((item) => item !== sub) // remove if already selected
+          : [...prev, sub] // add new one
     );
   };
 
@@ -128,7 +126,6 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
                 <div className="text-xs text-secondary whitespace-normal break-words w-full">
                   <p>{s?.subCategories?.slice(0, 2).join(", ")} And more</p>
                 </div>
-
               </button>
             ))}
           </div>
