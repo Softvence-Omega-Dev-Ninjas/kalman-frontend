@@ -1,20 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from '@/redux/typeHook';
-import { savePersonal } from '@/redux/features/tradeForm/tradeFormSlice';
-import type { PersonalInfo } from '@/redux/features/tradeForm/tradeFormSlice';
-import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from "@/redux/typeHook";
+import { savePersonal } from "@/redux/features/tradeForm/tradeFormSlice";
+import type { PersonalInfo } from "@/redux/features/tradeForm/tradeFormSlice";
+import { useEffect } from "react";
 
 const PersonalInfoForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const saved = useAppSelector((s) => s.tradeForm.personal) as PersonalInfo;
-  const { register, handleSubmit, reset, watch } = useForm<PersonalInfo>({ defaultValues: saved ?? {} });
+  const { register, handleSubmit, reset, watch } = useForm<PersonalInfo>({
+    defaultValues: saved ?? {},
+  });
+
+  const userEmail = useAppSelector((state) => state.auth.user?.email);
 
   useEffect(() => {
     if (saved) {
-      console.log('[PersonalInfoForm] Loaded saved defaults:', saved);
-      
+      console.log("[PersonalInfoForm] Loaded saved defaults:", saved);
+
       // Convert ISO date back to YYYY-MM-DD format for the date input
       const formData = { ...saved };
       if (formData.dob) {
@@ -22,14 +26,17 @@ const PersonalInfoForm = () => {
           const date = new Date(formData.dob);
           if (!isNaN(date.getTime())) {
             // Convert to YYYY-MM-DD format for date input
-            formData.dob = date.toISOString().split('T')[0];
-            console.log('[PersonalInfoForm] Converted ISO dob to date input format:', formData.dob);
+            formData.dob = date.toISOString().split("T")[0];
+            console.log(
+              "[PersonalInfoForm] Converted ISO dob to date input format:",
+              formData.dob
+            );
           }
         } catch (err) {
-          console.error('[PersonalInfoForm] Error converting dob:', err);
+          console.error("[PersonalInfoForm] Error converting dob:", err);
         }
       }
-      
+
       reset(formData);
     }
   }, [saved, reset]);
@@ -37,12 +44,15 @@ const PersonalInfoForm = () => {
   // watch form values for debugging; will log on every change
   const watched = watch();
   useEffect(() => {
-    console.log('[PersonalInfoForm] Form values changed:', watched);
+    console.log("[PersonalInfoForm] Form values changed:", watched);
   }, [watched]);
 
   const onSubmit = (data: PersonalInfo) => {
-    console.log('[PersonalInfoForm] Submitting data (before conversion):', data);
-    
+    console.log(
+      "[PersonalInfoForm] Submitting data (before conversion):",
+      data
+    );
+
     // Convert dob to ISO format if present
     const dataToSave = { ...data };
     if (dataToSave.dob) {
@@ -50,37 +60,46 @@ const PersonalInfoForm = () => {
       const dobDate = new Date(dataToSave.dob);
       if (!isNaN(dobDate.getTime())) {
         dataToSave.dob = dobDate.toISOString();
-        console.log('[PersonalInfoForm] Converted dob to ISO:', dataToSave.dob);
+        console.log("[PersonalInfoForm] Converted dob to ISO:", dataToSave.dob);
       }
     }
-    
-    console.log('[PersonalInfoForm] Submitting data (after conversion):', dataToSave);
+
+    console.log(
+      "[PersonalInfoForm] Submitting data (after conversion):",
+      dataToSave
+    );
     dispatch(savePersonal(dataToSave));
-    navigate('/trade-person/professional-info');
+    navigate("/trade-person/professional-info");
   };
 
   return (
     <div className="max-w-3xl mx-auto bg-white rounded-xl px-6 py-8">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6">Personal Information</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+        Personal Information
+      </h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* First + Last Name */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-lg font-semibold text-gray-800 mb-2">First Name</label>
+            <label className="block text-lg font-semibold text-gray-800 mb-2">
+              First Name
+            </label>
             <input
               type="text"
               placeholder="Enter your first name"
-              {...register('firstName')}
+              {...register("firstName")}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
           <div>
-            <label className="block text-lg font-semibold text-gray-800 mb-2">Last Name</label>
+            <label className="block text-lg font-semibold text-gray-800 mb-2">
+              Last Name
+            </label>
             <input
               type="text"
               placeholder="Enter your last name"
-              {...register('lastName')}
+              {...register("lastName")}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
@@ -88,11 +107,15 @@ const PersonalInfoForm = () => {
 
         {/* Email */}
         <div className="mb-4">
-          <label className="block text-lg font-semibold text-gray-800 mb-2">Email Address</label>
+          <label className="block text-lg font-semibold text-gray-800 mb-2">
+            Email Address
+          </label>
           <input
+            value={userEmail}
             type="email"
             placeholder="Enter your email"
-            {...register('email')}
+            {...register("email")}
+            disabled
             className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
         </div>
@@ -100,20 +123,24 @@ const PersonalInfoForm = () => {
         {/* Date of Birth + Phone */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
-            <label className="block text-lg font-semibold text-gray-800 mb-2">Date of Birth</label>
+            <label className="block text-lg font-semibold text-gray-800 mb-2">
+              Date of Birth
+            </label>
             <input
               type="date"
               placeholder="Enter your date of birth"
-              {...register('dob')}
+              {...register("dob")}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
           <div>
-            <label className="block text-lg font-semibold text-gray-800 mb-2">Phone Number</label>
+            <label className="block text-lg font-semibold text-gray-800 mb-2">
+              Phone Number
+            </label>
             <input
               type="text"
               placeholder="Enter your phone number"
-              {...register('phone')}
+              {...register("phone")}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
@@ -126,11 +153,13 @@ const PersonalInfoForm = () => {
 
         {/* Street Address */}
         <div className="mb-4 mt-8">
-          <label className="block text-lg font-semibold text-gray-800 mb-2">Street Address</label>
+          <label className="block text-lg font-semibold text-gray-800 mb-2">
+            Street Address
+          </label>
           <input
             type="text"
             placeholder="Enter your street address"
-            {...register('street')}
+            {...register("street")}
             className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
         </div>
@@ -138,29 +167,35 @@ const PersonalInfoForm = () => {
         {/* City + Postcode */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div>
-            <label className="block text-lg font-semibold text-gray-800 mb-2">City</label>
+            <label className="block text-lg font-semibold text-gray-800 mb-2">
+              City
+            </label>
             <input
               type="text"
               placeholder="Enter your city"
-              {...register('city')}
+              {...register("city")}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
           <div>
-            <label className="block text-lg font-semibold text-gray-800 mb-2">State</label>
+            <label className="block text-lg font-semibold text-gray-800 mb-2">
+              State
+            </label>
             <input
               type="text"
               placeholder="State"
-              {...register('state')}
+              {...register("state")}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
           <div>
-            <label className="block text-lg font-semibold text-gray-800 mb-2">Zip</label>
+            <label className="block text-lg font-semibold text-gray-800 mb-2">
+              Zip
+            </label>
             <input
               type="text"
               placeholder="Postcode"
-              {...register('zip')}
+              {...register("zip")}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
@@ -168,7 +203,10 @@ const PersonalInfoForm = () => {
 
         {/* Buttons */}
         <div className="flex justify-end">
-          <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold py-3 px-6 rounded-md flex items-center space-x-2 transition-all duration-200">
+          <button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold py-3 px-6 rounded-md flex items-center space-x-2 transition-all duration-200"
+          >
             <span>Continue</span>
             <span className="text-xl leading-none">→</span>
           </button>
