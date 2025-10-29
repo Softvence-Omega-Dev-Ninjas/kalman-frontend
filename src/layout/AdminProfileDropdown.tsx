@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { adminLogout, setAdmin } from "@/redux/features/admin/adminSlice";
+import { adminLogout } from "@/redux/features/admin/adminSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/typeHook";
 import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";

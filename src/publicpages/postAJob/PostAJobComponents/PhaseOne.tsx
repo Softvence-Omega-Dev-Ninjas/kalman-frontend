@@ -1,5 +1,5 @@
 import { IoLocationOutline } from "react-icons/io5";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import tellUsImg from "../../../assets/sample_images/tellusabouturproject.png";
 import { FaArrowRight } from "react-icons/fa";
 

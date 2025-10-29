@@ -53,6 +53,7 @@ import BlogDetails from "./publicpages/BlogDetails";
 import TradeSignUpPage from "./trade-dashboard/tradeComponents/TradeSignUp/TradeSignUpPage";
 import TradeSuccessPage from "./trade-dashboard/tradeComponents/TradeSuccessPage";
 import ManageCommision from "./admin-dashboard/manage-commision/ManageCommision";
+
 // import TradeSignUpPage from "./trade-dashboard/tradeComponents/TradeSignUp/TradeSignUpPage";
 
 
