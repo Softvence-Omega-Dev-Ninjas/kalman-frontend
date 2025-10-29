@@ -11,15 +11,17 @@ import { useGetTradesmanOverviewQuery } from "@/redux/features/tradesman/tradesm
 
 type JobItem = {
   id?: string;
-  title?: string;
-  date?: string;
-  location?: string;
-  time_slot?: string;
   time?: string;
   messgae?: string;
   user?: {
     name?: string;
     profile_image?: string;
+  };
+  jobs?: {
+    title?: string;
+    preferred_date?: string;
+    location?: string;
+    preferred_time?: string;
   };
 };
 
@@ -66,7 +68,7 @@ const TradeOverview: React.FC = () => {
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock3 className="w-4 h-4" />
-                      <span>{job.jobs?.preferred_date}</span>
+                      <span>{job.jobs?.preferred_time}</span>
                     </div>
                     <div className="ml-auto">
                       <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
@@ -146,7 +148,7 @@ const TradeOverview: React.FC = () => {
                 >
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="text-base font-medium text-gray-900">
-                      {item.title}
+                      {item.jobs?.title}
                     </h3>
                     <span className="text-xs text-gray-500">{item.time}</span>
                   </div>
