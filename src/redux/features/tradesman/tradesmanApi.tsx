@@ -55,6 +55,14 @@ export const tradesmanApi = baseApi.injectEndpoints({
       providesTags: ["Tradesman"],
     }),
 
+    getTradesmanOverview: builder.query({
+      query: () => ({
+        url: "/tradesman/overview",
+        method: "GET",
+      }),
+      providesTags: ["Tradesman"],
+    }),
+
     updateSettings: builder.mutation({
       query: (data) => ({
         url: "/tradesman/update-tradesman",
@@ -72,4 +80,5 @@ export const {
   useGetTradesmanProfileQuery,
   useTradeSignUpMutation,
   useUpdateSettingsMutation,
+  useGetTradesmanOverviewQuery,
 } = tradesmanApi;

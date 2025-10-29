@@ -7,7 +7,7 @@ import {
   Clock3,
   ChevronDown,
 } from "lucide-react";
-import { useGetAllInvitationsQuery } from "@/redux/features/invitation/invitationApi";
+import { useGetTradesmanOverviewQuery } from "@/redux/features/tradesman/tradesmanApi";
 
 type JobItem = {
   id?: string;
@@ -25,8 +25,9 @@ type JobItem = {
 
 const TradeOverview: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState("Month");
-  const { data } = useGetAllInvitationsQuery(undefined);
-  const recentJobs: JobItem[] = data?.data ?? [];
+  const { data } = useGetTradesmanOverviewQuery(undefined);
+  const recentJobs: JobItem[] = data?.data?.myShortlist ?? [];
+  console.log("Recent Jobs Data:", recentJobs);
 
   return (
     <div className="min-h-screen p-4 md:p-6">
@@ -52,20 +53,20 @@ const TradeOverview: React.FC = () => {
                   } mb-2 bg-white p-3 rounded-lg border-gray-200 border-1`}
                 >
                   <h3 className="text-base font-medium text-gray-900 mb-3">
-                    {job.title}
+                    {job?.jobs?.title}
                   </h3>
                   <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                     <div className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      <span>{job.date?.split("T")[0]}</span>
+                      <span>{job.jobs?.preferred_date?.split("T")[0]}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <MapPin className="w-4 h-4" />
-                      <span>{job.location}</span>
+                      <span>{job?.jobs?.location}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock3 className="w-4 h-4" />
-                      <span>{job.time_slot}</span>
+                      <span>{job.jobs?.preferred_date}</span>
                     </div>
                     <div className="ml-auto">
                       <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
@@ -168,13 +169,13 @@ const TradeOverview: React.FC = () => {
                         <div className="flex items-center gap-1">
                           <MapPin className="w-3 h-3 text-orange-500" />
                           <span className="text-orange-500">
-                            {item.location}
+                            {item?.jobs?.location}
                           </span>
                         </div>
                         <div className="flex items-center gap-1">
                           <Calendar className="w-3 h-3 text-orange-500" />
                           <span className="text-orange-500">
-                            {item?.date?.split("T")[0]}
+                            {item?.jobs?.preferred_date?.split("T")[0]}
                           </span>
                         </div>
                       </div>
