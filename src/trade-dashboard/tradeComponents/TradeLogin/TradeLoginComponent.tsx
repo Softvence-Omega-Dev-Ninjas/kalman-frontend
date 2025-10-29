@@ -195,7 +195,7 @@ const TradeLogInComponent: React.FC = () => {
                 <label className="flex items-center gap-2 text-gray-600">
                   <input type="checkbox" className="w-4 h-4" /> Remember me
                 </label>
-                <Link to="#" className="text-sm text-primary">
+                <Link to="/forgot-password" className="text-sm text-primary">
                   Forgot Password?
                 </Link>
               </div>
