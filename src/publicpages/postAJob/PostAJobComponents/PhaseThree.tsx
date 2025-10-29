@@ -78,6 +78,8 @@ console.log(jobData)
   { value: jobData.location, name: "Location" },
   { value: jobData.price, name: "Price" },
   { value: jobData.subCategories?.length, name: "Subcategories" },
+  { value: jobData.skills_needed?.length, name: "Skills Needed" },
+    { value: jobData.budge_type, name: "Budget Type" },
   { value: images?.length, name: "Images" },
 ];
 
@@ -259,21 +261,21 @@ if (missingField) {
             </div>
             <div className="flex items-center gap-2 flex-wrap mb-2">
               <span className="text-sm">{category?.name || "N/A"}</span>
-              {category?.subCategories && category.subCategories.length > 0 && (
+            
                 <>
                   <MdOutlineKeyboardDoubleArrowRight className="text-lg text-primary" />
                   <span className="text-sm">
-                    {category.subCategories.join(", ")}
+                     {jobData.subCategories.join(", ") || "N/A "}
                   </span>
                 </>
-              )}
+              
             </div>
 
             <div>
-              <strong>Budget</strong>
+              <strong>Budget: {jobData?.price || "N/A"}</strong>
             </div>
             <div className="text-sm px-2 py-1 bg-gray-100 rounded-md max-w-max my-2">
-              Fixed Price
+                {jobData?.budge_type || "N/A"}
             </div>
             <div className="text-xs">Maximum : ${jobData.price || 200}</div>
 
