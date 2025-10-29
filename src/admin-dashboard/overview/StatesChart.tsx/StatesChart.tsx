@@ -1,16 +1,39 @@
-
 import {
-  platformPerformance,
+
   recentActivity,
   systemStatus,
-  topCards,
-  topServices,
+
 } from "../data/overviewData";
-import DashboardCard from "./_components/DashbordCard.tsx/DashboardCard";
+// import DashboardCard from "./_components/DashbordCard.tsx/DashboardCard";
 import DashboardSection from "./_components/DashboardSection/DashboardSection";
 import { Progress } from "@/components/ui/progress";
+import { SlCalender } from "react-icons/sl";
+
+import {
+  useGetDasboardOverviewQuery,
+  useGetPlatformPerformanceQuery,
+  useGetTopCategoryServiceQuery,
+} from "@/redux/features/admin/dashboardApi";
+import { BsPersonCheckFill } from "react-icons/bs";
+import { IoIosStarOutline } from "react-icons/io";
+// import { CiCircleCheck } from "react-icons/ci";
+import { FiCheckCircle } from "react-icons/fi";
+import { LuUserRoundCheck } from "react-icons/lu";
 
 const StatesChart = () => {
+  const { data: platformData, isLoading: platformLoading } = useGetPlatformPerformanceQuery();
+  const { data: topCategoryData, isLoading: topCatLoading } = useGetTopCategoryServiceQuery();
+  const {data: overviews } = useGetDasboardOverviewQuery()
+  const overview = overviews?.data ;
+
+  const performance = platformData?.data || {
+    aplicationRate: "0%",
+    shortListRate: "0%",
+    satisfiedCustomer: "0%",
+  };
+
+  const topCategories = topCategoryData?.data || [];
+
   return (
     <div className="">
       {/* Filters */}
@@ -27,27 +50,69 @@ const StatesChart = () => {
 
       {/* Top Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {topCards.map((card) => (
-          <DashboardCard key={card.id} {...card} />
-        ))}
+        <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 flex-1 min-w-[200px] flex flex-col items-center gap-2">
+    <span className="text-xl text-gray-700"><SlCalender /></span>
+    <h3 className="text-gray-500 text-sm font-medium">{}Total Revenue</h3>
+    <p className="text-2xl font-bold text-gray-800 mt-2">${overview?.totalRevenue}</p>
+  </div>
+   <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 flex-1 min-w-[200px] flex flex-col items-center gap-2">
+    <span className="text-xl text-gray-700"><LuUserRoundCheck className="text-blue-500" /> </span>
+    <h3 className="text-gray-500 text-sm font-medium">{}Verified Providers</h3>
+    <p className="text-2xl font-bold text-gray-800 mt-2">{overview?.totlaVerifiedTradesman}</p>
+  </div>
+   <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 flex-1 min-w-[200px] flex flex-col items-center gap-2">
+    <span className="text-xl text-gray-700"><IoIosStarOutline className="text-primary"/></span>
+    <h3 className="text-gray-500 text-sm font-medium">{}Customer Rating</h3>
+    <p className="text-2xl font-bold text-gray-800 mt-2">{overview?.avg_ratting}/5</p>
+  </div>
+   <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 flex-1 min-w-[200px] flex flex-col items-center gap-2">
+    <span className="text-xl text-gray-700"><FiCheckCircle className="text-green-500" /></span>
+    <h3 className="text-gray-500 text-sm font-medium">{}Job Completion</h3>
+    <p className="text-2xl font-bold text-gray-800 mt-2">{overview?.jobCompilationRatePercentage}</p>
+  </div>
       </div>
 
       {/* Performance & System Status */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         <DashboardSection title="Platform Performance">
-          {platformPerformance.map((item, idx) => (
-            <div key={idx} className="mb-4">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-sm font-medium text-gray-700">
-                  {item.label}
-                </span>
-                <span className="text-sm font-medium text-gray-500">
-                  {item.value}%
-                </span>
+          {platformLoading ? (
+            <p className="text-gray-500 text-sm">Loading...</p>
+          ) : (
+            <>
+              <div className="mb-4">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-sm font-medium text-gray-700">Application Rate</span>
+                  <span className="text-sm font-medium text-gray-500">{performance.aplicationRate}</span>
+                </div>
+                <Progress
+                  value={parseFloat(performance.aplicationRate)}
+                  className="h-2"
+                />
               </div>
-              <Progress value={item.value} className="h-2" />
-            </div>
-          ))}
+
+              <div className="mb-4">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-sm font-medium text-gray-700">Shortlist Rate</span>
+                  <span className="text-sm font-medium text-gray-500">{performance.shortListRate}</span>
+                </div>
+                <Progress
+                  value={parseFloat(performance.shortListRate)}
+                  className="h-2"
+                />
+              </div>
+
+              <div className="mb-4">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-sm font-medium text-gray-700">Satisfied Customers</span>
+                  <span className="text-sm font-medium text-gray-500">{performance.satisfiedCustomer}</span>
+                </div>
+                <Progress
+                  value={parseFloat(performance.satisfiedCustomer)}
+                  className="h-2"
+                />
+              </div>
+            </>
+          )}
         </DashboardSection>
 
         <DashboardSection title="System Status">
@@ -87,19 +152,23 @@ const StatesChart = () => {
         </DashboardSection>
 
         <DashboardSection title="Top Service Categories">
-          {topServices.map((item, idx) => (
-            <div key={idx} className="mb-4">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-sm font-medium text-gray-700">
-                  {item.label}
-                </span>
-                <span className="text-sm font-medium text-gray-500">
-                  {item.value}%
-                </span>
+          {topCatLoading ? (
+            <p className="text-gray-500 text-sm">Loading...</p>
+          ) : (
+            topCategories.map((item, idx) => (
+              <div key={idx} className="mb-4">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-sm font-medium text-gray-700">
+                    {item.catgoreName}
+                  </span>
+                  <span className="text-sm font-medium text-gray-500">
+                    {item.jobPercentage}%
+                  </span>
+                </div>
+                <Progress value={item.jobPercentage} className="h-2" />
               </div>
-              <Progress value={item.value} className="h-2" />
-            </div>
-          ))}
+            ))
+          )}
         </DashboardSection>
       </div>
     </div>

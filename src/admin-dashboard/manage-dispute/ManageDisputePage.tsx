@@ -1,19 +1,37 @@
 import { Eye, Filter, Search, Trash2 } from "lucide-react";
-import { disputeData, type IDisputeData } from "./data/disputeData";
-
 import { useState } from "react";
-import type { Column } from "../shared/CustomTable/CustomTable";
 import CustomTable from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
+import type { Column } from "../shared/CustomTable/CustomTable";
+import { useGetAllPaymentsQuery } from "@/redux/features/admin/adminPaymentApi";
 
-const ManageDisputePage = () => {
-  //Pagination states
+
+const ManagePaymentsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 4;
 
-  //Table config
-  const disputeColumns: Column<IDisputeData>[] = [
-    // Checkbox Column
+  const { data, isLoading } = useGetAllPaymentsQuery();
+
+  // Transform API data
+  const payments = data?.data?.map((item) => ({
+    id: item.id,
+    jobTitle: item.job?.title || "N/A",
+    serviceProvider: `${item.tradesMan?.firstName || ""} ${
+      item.tradesMan?.lastName || ""
+    }`.trim(),
+    location: item.job?.location || "N/A",
+    amount: `$${item.amount || 0}`,
+    rate: `$${item.job?.price || 0}`,
+    status:
+      item.type === "SHORTLISTED_FEE"
+        ? "Shortlisted Fee"
+        : item.type === "PAYMENT"
+        ? "Completed"
+        : "Pending",
+  })) || [];
+
+  // Table Columns
+  const paymentColumns: Column<any>[] = [
     {
       header: "",
       cell: () => (
@@ -26,7 +44,6 @@ const ManageDisputePage = () => {
         </div>
       ),
     },
-    // Job Details Column
     {
       header: "Job Details",
       cell: (row) => (
@@ -40,22 +57,14 @@ const ManageDisputePage = () => {
         </div>
       ),
     },
-    // Customer Column
-    {
-      header: "Customer",
-      accessor: "customer",
-    },
-    // Service Provider Column
     {
       header: "Service Provider",
       accessor: "serviceProvider",
     },
-    // Location Column
     {
       header: "Location",
       accessor: "location",
     },
-    // Status Column
     {
       header: "Status",
       accessor: "status",
@@ -65,16 +74,7 @@ const ManageDisputePage = () => {
           case "Completed":
             colorClass = "bg-green-100 text-green-800";
             break;
-          case "In Progress":
-            colorClass = "bg-yellow-100 text-yellow-800";
-            break;
-          case "Disputed":
-            colorClass = "bg-red-100 text-red-800";
-            break;
-          case "Cancelled":
-            colorClass = "bg-gray-100 text-gray-800";
-            break;
-          case "Payment issue":
+          case "Pending":
             colorClass = "bg-yellow-100 text-yellow-800";
             break;
           default:
@@ -89,17 +89,14 @@ const ManageDisputePage = () => {
         );
       },
     },
-    // Amount Column
     {
       header: "Amount",
       accessor: "amount",
     },
-    // Rate Column
     {
       header: "Rate",
       accessor: "rate",
     },
-    // Action Column
     {
       header: "Action",
       cell: () => (
@@ -115,10 +112,14 @@ const ManageDisputePage = () => {
     },
   ];
 
+  // Pagination logic
+  const startIndex = (currentPage - 1) * pageSize;
+  const paginatedData = payments.slice(startIndex, startIndex + pageSize);
+
   return (
     <div>
       <header className="flex items-center justify-between mb-8 flex-wrap gap-5">
-        <h1 className="text-2xl font-bold text-gray-900">Dispute Management</h1>
+        <h1 className="text-2xl font-bold text-gray-900">All Payments</h1>
         <div className="flex items-center space-x-4 flex-wrap gap-5">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -127,7 +128,7 @@ const ManageDisputePage = () => {
             <input
               type="text"
               className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-purple-500 focus:border-purple-500"
-              placeholder="Search Project..."
+              placeholder="Search Payment..."
             />
           </div>
           <button className="flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
@@ -136,15 +137,26 @@ const ManageDisputePage = () => {
           </button>
         </div>
       </header>
-      <CustomTable columns={disputeColumns} data={disputeData} />
-      <CustomPagination
-        totalItems={disputeData.length}
-        pageSize={pageSize}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
+
+      {isLoading ? (
+        <div className="text-center py-10 text-gray-500">Loading...</div>
+      ) : (
+        <>
+          <CustomTable columns={paymentColumns} data={paginatedData} />
+          
+         {payments.length > pageSize && (
+            <CustomPagination
+              totalItems={payments.length}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+            />
+          )}
+
+        </>
+      )}
     </div>
   );
 };
 
-export default ManageDisputePage;
+export default ManagePaymentsPage;
