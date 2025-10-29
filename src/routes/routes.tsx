@@ -256,15 +256,14 @@ const router = createBrowserRouter([
   },
   {
     path: "/trade-login",
-    element:  <TradeManProtectedRoute >
+    element:  
         <TradeLogin />
-    </TradeManProtectedRoute>, 
+ 
   },
   {
     path: "/trade-signup",
-    element:  <TradeManProtectedRoute >
+    element: 
        <TradeSignUpPage />
-    </TradeManProtectedRoute>, 
   },
   {
     path: "/onboarding-success",
