@@ -11,10 +11,29 @@ export const authApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    // 
+     forgetPassword: builder.mutation({
+      query: (data) => ({
+        url: "/auth/forget-passoword",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Update Password
+    updatePassword: builder.mutation({
+      query: (data) => ({
+        url: "/auth/update-passowrd",
+        method: "POST",
+        body: data,
+      }),
+    }),
 
   }),
 });
 
 export const {
+  useForgetPasswordMutation,
+  useUpdatePasswordMutation,
   useResetPasswordMutation
 } = authApi;
