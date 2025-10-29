@@ -58,6 +58,8 @@ import ForgotPassword from "../components/AuthComponents/forgot-pass/ForgotPassw
 import ForgotpassOtp from "../components/AuthComponents/forgot-pass/ForgotpassOtp";
 import UpdatePass from "../components/AuthComponents/forgot-pass/UpdatePass";
 import AdminProtectedRoute from "./AdminProtectedRoute";
+import TradeManProtectedRoute from "./TradeManProtectedRoute";
+import UserProtectedRoute from "./UserProtectedRoute";
 
 // import TradeSignUpPage from "./trade-dashboard/tradeComponents/TradeSignUp/TradeSignUpPage";
 
@@ -137,7 +139,10 @@ const router = createBrowserRouter([
   //  User Dashboard Route
   {
     path: "user-dashboard",
-    element: <UserDashboardLayout />,
+    element:
+    <UserProtectedRoute >
+      <UserDashboardLayout />
+    </UserProtectedRoute>,
     children: [
       {
         index: true,
@@ -164,7 +169,11 @@ const router = createBrowserRouter([
   // trade person dashboard
   {
     path: "trade-person",
-    element: <TradePersonDashboardLayout />,
+    element:
+
+    <TradeManProtectedRoute >
+     <TradePersonDashboardLayout />
+    </TradeManProtectedRoute>,
     children: [
       {
         index: true,
@@ -196,48 +205,76 @@ const router = createBrowserRouter([
   //without dashboard
   {
     path: "/trade-person/personal-info",
-    element: <PersonalInfo />,
+    element:
+     <TradeManProtectedRoute >
+     <PersonalInfo />
+    </TradeManProtectedRoute>, 
   },
   {
     path: "/trade-person/professional-info",
-    element: <ProfessionalInfo />,
+    element:
+      <TradeManProtectedRoute >
+    <ProfessionalInfo />
+    </TradeManProtectedRoute>,  
   },
   {
     path: "/trade-person/business-info",
-    element: <BusinessInfo />,
+    element:<TradeManProtectedRoute >
+     <BusinessInfo />
+    </TradeManProtectedRoute>,
   },
   {
     path: "/trade-person/service-areas",
-    element: <ServiceAreas />,
+    element: <TradeManProtectedRoute >
+    <ServiceAreas />
+    </TradeManProtectedRoute>,
+
   },
   {
     path: "/trade-person/credentials",
-    element: <Credentials />,
+    element:<TradeManProtectedRoute >
+     <Credentials />
+    </TradeManProtectedRoute>,
   },
   {
     path: "/trade-person/payment-terms",
-    element: <PaymentTerms />,
+    element:<TradeManProtectedRoute >
+     <PaymentTerms />
+    </TradeManProtectedRoute>,
   },
   {
     path: "/trade-person/business-details",
-    element: <BusinessDetails />,
+    element: <TradeManProtectedRoute >
+     <BusinessDetails />
+    </TradeManProtectedRoute>, 
   },
   {
     path: "/trade-person/review-info",
-    element: <ReviewInfo />,
+    element: <TradeManProtectedRoute >
+       <ReviewInfo />
+    </TradeManProtectedRoute>, 
   },
   {
     path: "/trade-login",
-    element: <TradeLogin />,
+    element:  <TradeManProtectedRoute >
+        <TradeLogin />
+    </TradeManProtectedRoute>, 
   },
   {
     path: "/trade-signup",
-    element: <TradeSignUpPage />,
+    element:  <TradeManProtectedRoute >
+       <TradeSignUpPage />
+    </TradeManProtectedRoute>, 
   },
   {
     path: "/onboarding-success",
-    element: <TradeSuccessPage />,
+    element:  <TradeManProtectedRoute >
+       <TradeSuccessPage />
+    </TradeManProtectedRoute>, 
   },
+
+
+
 
   // super admin dashboard
   {
