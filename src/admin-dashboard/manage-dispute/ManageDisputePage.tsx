@@ -1,16 +1,28 @@
-import { Eye, Filter, Search, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { Eye, Filter, Search } from "lucide-react";
+import { useState, useMemo } from "react";
 import CustomTable from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
 import type { Column } from "../shared/CustomTable/CustomTable";
 import { useGetAllPaymentsQuery } from "@/redux/features/admin/adminPaymentApi";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 const ManagePaymentsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 4;
+  const pageSize = 10;
 
   const { data, isLoading } = useGetAllPaymentsQuery();
+
+  // Modal state
+  // const [selectedPayment, setSelectedPayment] = useState<any | null>(null);
 
   // Transform API data
   const payments = data?.data?.map((item) => ({
@@ -30,6 +42,12 @@ const ManagePaymentsPage = () => {
         : "Pending",
   })) || [];
 
+  // Paginated data
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return payments.slice(startIndex, startIndex + pageSize);
+  }, [payments, currentPage]);
+
   // Table Columns
   const paymentColumns: Column<any>[] = [
     {
@@ -37,7 +55,6 @@ const ManagePaymentsPage = () => {
       cell: () => (
         <div className="flex items-center">
           <input
-            id="checkbox-table-2"
             type="checkbox"
             className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
           />
@@ -57,14 +74,8 @@ const ManagePaymentsPage = () => {
         </div>
       ),
     },
-    {
-      header: "Service Provider",
-      accessor: "serviceProvider",
-    },
-    {
-      header: "Location",
-      accessor: "location",
-    },
+    { header: "Service Provider", accessor: "serviceProvider" },
+    { header: "Location", accessor: "location" },
     {
       header: "Status",
       accessor: "status",
@@ -89,32 +100,51 @@ const ManagePaymentsPage = () => {
         );
       },
     },
-    {
-      header: "Amount",
-      accessor: "amount",
-    },
-    {
-      header: "Rate",
-      accessor: "rate",
-    },
+    { header: "Amount", accessor: "amount" },
+    { header: "Rate", accessor: "rate" },
     {
       header: "Action",
-      cell: () => (
-        <div className="flex items-center space-x-2">
-          <button className="text-gray-400 hover:text-primary focus:outline-none focus:text-primary cursor-pointer">
-            <Eye size={18} />
-          </button>
-          <button className="text-gray-400 hover:text-red-600 focus:outline-none focus:text-red-600 cursor-pointer">
-            <Trash2 size={18} />
-          </button>
-        </div>
+      cell: (row) => (
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className="text-gray-400 hover:text-primary focus:outline-none cursor-pointer">
+              <Eye size={18} />
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-3xl w-full max-h-[70vh] overflow-y-auto p-6">
+            <DialogHeader>
+              <DialogTitle>Payment Details</DialogTitle>
+              <DialogClose className=" cursor-pointer" asChild>
+                {/* <button className="absolute top-3 right-3 text-gray-500 hover:text-gray-900">✕</button> */}
+              </DialogClose>
+            </DialogHeader>
+            {row && (
+              <div className="space-y-4 mt-4">
+                <div>
+                  <strong>Job Title:</strong> {row.jobTitle}
+                </div>
+                <div>
+                  <strong>Service Provider:</strong> {row.serviceProvider}
+                </div>
+                <div>
+                  <strong>Location:</strong> {row.location}
+                </div>
+                <div>
+                  <strong>Status:</strong> {row.status}
+                </div>
+                <div>
+                  <strong>Amount:</strong> {row.amount}
+                </div>
+                <div>
+                  <strong>Rate:</strong> {row.rate}
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       ),
     },
   ];
-
-  // Pagination logic
-  const startIndex = (currentPage - 1) * pageSize;
-  const paginatedData = payments.slice(startIndex, startIndex + pageSize);
 
   return (
     <div>
@@ -131,10 +161,10 @@ const ManagePaymentsPage = () => {
               placeholder="Search Payment..."
             />
           </div>
-          <button className="flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
+          <Button variant="outline" className="flex items-center px-4 py-2 text-sm font-medium">
             <Filter size={18} className="mr-2" />
             Filter By
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -143,8 +173,8 @@ const ManagePaymentsPage = () => {
       ) : (
         <>
           <CustomTable columns={paymentColumns} data={paginatedData} />
-          
-         {payments.length > pageSize && (
+
+          {payments.length > pageSize && (
             <CustomPagination
               totalItems={payments.length}
               pageSize={pageSize}
@@ -152,7 +182,6 @@ const ManagePaymentsPage = () => {
               onPageChange={setCurrentPage}
             />
           )}
-
         </>
       )}
     </div>
