@@ -51,7 +51,7 @@ const StatesSection : React.FC<StatesSectionProps> = ({overview}) => {
           <p className="text-2xl font-bold text-gray-800">{overview?.totalCompletedJobs}</p>
           <div className="text-green-500 flex items-center gap-1 mt-1">
             <TrendingUp />
-            <span>+18.2% this month</span>
+            <span>+ {overview?.jobGrowth} this month</span>
           </div>
         </div>
         <div className="bg-[#2E54DA] rounded-full w-14 h-14 flex items-center justify-center p-2">
