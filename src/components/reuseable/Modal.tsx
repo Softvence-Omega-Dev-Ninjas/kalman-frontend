@@ -20,6 +20,16 @@ const Modal: React.FC<ModalProps> = ({
   overflowYClass,
 }) => {
   const [shouldRender, setShouldRender] = useState(isOpen);
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -41,7 +51,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className={`overflow-y-auto absolute inset-0 flex items-start justify-center z-50 transition-opacity duration-500 bg-gray-400/50 ${backdropClasses}`}
+      className={` [&::-webkit-scrollbar]:hidden scrollbar-none overflow-y-auto absolute inset-0 flex items-start justify-center z-50 transition-opacity duration-500 bg-gray-400/50 ${backdropClasses}`}
       onClick={onClose}
     >
       <div

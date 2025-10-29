@@ -16,7 +16,7 @@ export const invitationApi = baseApi.injectEndpoints({
         url: `/invitation/${id}`,
         method: "GET",
       }),
-      providesTags: (id) => [{ type: "Reviews", id }],
+      providesTags: (id) => [{ type: "Invitations", id }],
     }),
 
     // Post a New Invitation

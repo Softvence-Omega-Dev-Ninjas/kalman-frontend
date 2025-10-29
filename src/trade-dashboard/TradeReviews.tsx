@@ -11,6 +11,7 @@ interface Review {
   rating: number;
   text: string;
   avatar: string;
+  createdAt: Date;
   customer: {
     name: string;
     profile_image: string;
@@ -45,11 +46,32 @@ const TradeReviews: React.FC = () => {
 
   const filterOptions: string[] = [
     "Recent Reviews",
-    "Most Helpful",
     "Highest Rated",
     "Lowest Rated",
     "Oldest First",
   ];
+
+  const getFilteredReviews = (): Review[] => {
+    if (!reviews) return [];
+
+    switch (selectedFilter) {
+      case "Highest Rated":
+        return [...reviews].sort((a, b) => b.rating - a.rating);
+      case "Lowest Rated":
+        return [...reviews].sort((a, b) => a.rating - b.rating);
+      case "Oldest First":
+        return [...reviews].sort(
+          (a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+      case "Recent Reviews":
+      default:
+        return [...reviews].sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+    }
+  };
 
   const ratingDistribution: RatingDistribution[] = [5, 4, 3, 2, 1].map(
     (stars) => {
@@ -192,12 +214,12 @@ const TradeReviews: React.FC = () => {
 
       {/* Reviews List */}
       <div className="space-y-6 mb-8">
-        {reviews.length === 0 ? (
+        {getFilteredReviews().length === 0 ? (
           <div className="text-center text-gray-500 py-8 bg-white rounded-md">
             No reviews yet. Be the first to leave one!
           </div>
         ) : (
-          reviews.map((review: Review) => (
+          getFilteredReviews().map((review: Review) => (
             <div
               key={review.id}
               className="flex gap-4 pb-6 border-b border-gray-100 last:border-b-0 bg-white p-2 rounded-md"

@@ -28,7 +28,7 @@ const RatingReviews: React.FC<RatingReviewsProps> = ({ initialRating = 1 }) => {
 
   const [comment, setComment] = useState<string>("");
   const [rating, setRating] = useState<number>(initialRating);
-  const [hoverRating, setHoverRating] = useState<number>(1);
+  const [hoverRating, setHoverRating] = useState<number>(0);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

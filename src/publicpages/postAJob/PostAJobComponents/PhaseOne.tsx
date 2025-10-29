@@ -44,13 +44,10 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
     refetch()
   }, [])
   // Single category for subCategory display
-  const {
-    data: singleCategoryData,
-    isFetching: isSubLoading,
-  } = useGetSingleCategoryQuery(selectedCategory!, { skip: !selectedCategory });
+  const { data: singleCategoryData, isFetching: isSubLoading } =
+    useGetSingleCategoryQuery(selectedCategory!, { skip: !selectedCategory });
 
-  const subCategories: string[] =
-    singleCategoryData?.data?.subCategories || [];
+  const subCategories: string[] = singleCategoryData?.data?.subCategories || [];
 
   // Toggle subcategory selection
   const handleSubCategoryClick = (sub: string) => {
@@ -128,7 +125,6 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
                 <div className="text-xs text-secondary whitespace-normal break-words w-full">
                   <p>{s?.subCategories?.slice(0, 2).join(", ")} And more</p>
                 </div>
-
               </button>
             ))}
           </div>

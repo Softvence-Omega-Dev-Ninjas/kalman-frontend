@@ -8,7 +8,7 @@ export const tradesmanApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Tradesman"],
+      invalidatesTags: ["Profile", "Tradesman"],
     }),
     //get All Blogs
     getAllTradesmans: builder.query({
@@ -54,6 +54,23 @@ export const tradesmanApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Tradesman"],
     }),
+
+    getTradesmanOverview: builder.query({
+      query: () => ({
+        url: "/tradesman/overview",
+        method: "GET",
+      }),
+      providesTags: ["Tradesman"],
+    }),
+
+    updateSettings: builder.mutation({
+      query: (data) => ({
+        url: "/tradesman/update-tradesman",
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Profile", "Tradesman"],
+    }),
   }),
 });
 
@@ -62,4 +79,6 @@ export const {
   useGetSingleTradesmanQuery,
   useGetTradesmanProfileQuery,
   useTradeSignUpMutation,
+  useUpdateSettingsMutation,
+  useGetTradesmanOverviewQuery,
 } = tradesmanApi;
