@@ -13,7 +13,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
   const [sendProposal, setSendProposal] = useState(false);
 
   const user = useSelector(selectCurrentUser);
-  console.log(user.id);
+  // console.log(user.id);
 
   const cusInfo = customer;
   // console.log(cusInfo)

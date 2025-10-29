@@ -141,7 +141,7 @@ export default function PriceRangeSlider({
             if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') setHigh((v) => Math.max(low + step, v - step));
             if (e.key === 'ArrowRight' || e.key === 'ArrowUp') setHigh((v) => Math.min(max, v + step));
           }}
-          className="absolute -top-1 w-6 h-6 rounded-full bg-black flex items-center justify-center text-white shadow-md"
+          className="absolute -top-1 left-8 w-6 h-6 rounded-full bg-black flex items-center justify-center text-white shadow-md"
           style={{ left: `calc(${percent(high)}% - 12px)` }}
         >
           <span className="text-xs">▶︎</span>

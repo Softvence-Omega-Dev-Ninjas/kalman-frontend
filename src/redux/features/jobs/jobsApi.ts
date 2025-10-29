@@ -5,29 +5,25 @@ export const jobsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // getJobs query
     getJobs: builder.query({
-      query: ({
-        search,
-        category,
-        subCategory,
-        location,
-        minPrice,
-        maxPrice,
-        page = 1,
-        limit = 10,
-      }) => {
-        const params = new URLSearchParams();
+      query: (params) => {
+        const queryParams = new URLSearchParams();
 
-        if (search) params.append("search", search);
-        if (category) params.append("category", category);
-        if (subCategory) params.append("subCategory", subCategory);
-        if (location) params.append("location", location);
-        if (minPrice) params.append("minPrice", minPrice.toString());
-        if (maxPrice) params.append("maxPrice", maxPrice.toString());
-        params.append("page", page.toString());
-        params.append("limit", limit.toString());
+        if (params?.search) queryParams.append("search", params.search);
+        if (params?.category?.length) {
+          params.category.forEach((catId: string) =>
+            queryParams.append("category", catId)
+          );
+        }
+        if (params?.subCategory)
+          queryParams.append("subCategory", params.subCategory);
+        if (params?.location) queryParams.append("location", params.location);
+        if (params?.minPrice) queryParams.append("minPrice", params.minPrice);
+        if (params?.maxPrice) queryParams.append("maxPrice", params.maxPrice);
+        if (params?.page) queryParams.append("page", params.page);
+        if (params?.limit) queryParams.append("limit", params.limit);
 
         return {
-          url: `/jobs?${params.toString()}`,
+          url: `/jobs?${queryParams.toString()}`,
           method: "GET",
         };
       },
