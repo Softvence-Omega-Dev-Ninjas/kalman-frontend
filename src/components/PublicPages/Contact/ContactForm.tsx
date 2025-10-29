@@ -1,8 +1,54 @@
-import React, { type FormEvent } from "react";
+import { Button } from "@/components/ui/button";
+import { usePostContactMutation } from "@/redux/features/contact/contactApi";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+
+type ContactPayload = {
+  name: string;
+  email: string;
+  message: string;
+  acceptedTerms: boolean;
+};
 
 const ContactSection: React.FC = () => {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const [postContact, { isLoading }] = usePostContactMutation();
+
+  const [formData, setFormData] = useState<ContactPayload>({
+    name: "",
+    email: "",
+    message: "",
+    acceptedTerms: false,
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const target = e.target;
+
+    if (target instanceof HTMLInputElement) {
+      const { name, type, value, checked } = target;
+      setFormData((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    } else if (target instanceof HTMLTextAreaElement) {
+      const { name, value } = target;
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      const res = await postContact(formData).unwrap();
+      setFormData({ name: "", email: "", message: "", acceptedTerms: false });
+      toast.success(res?.message);
+    } catch (error) {
+      console.error("Failed to send message:", error);
+    }
   };
 
   return (
@@ -20,7 +66,9 @@ const ContactSection: React.FC = () => {
 
         {/* Right Side - Contact Form */}
         <div className="bg-gray-100">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Get in Touch</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Get in Touch
+          </h2>
           <p className="text-gray-600 mb-6">
             Have questions or need help? Contact our team today.
           </p>
@@ -36,7 +84,10 @@ const ContactSection: React.FC = () => {
               </label>
               <input
                 id="name"
+                name="name"
                 type="text"
+                value={formData.name}
+                onChange={handleChange}
                 className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
@@ -51,7 +102,10 @@ const ContactSection: React.FC = () => {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
+                value={formData.email}
+                onChange={handleChange}
                 className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
@@ -66,7 +120,10 @@ const ContactSection: React.FC = () => {
               </label>
               <textarea
                 id="message"
+                name="message"
                 rows={4}
+                value={formData.message}
+                onChange={handleChange}
                 placeholder="Type your message..."
                 className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
               ></textarea>
@@ -76,7 +133,10 @@ const ContactSection: React.FC = () => {
             <div className="flex items-center">
               <input
                 id="terms"
+                name="acceptedTerms"
                 type="checkbox"
+                checked={formData.acceptedTerms}
+                onChange={handleChange}
                 className="h-4 w-4 text-orange-500 border-gray-300 rounded"
               />
               <label htmlFor="terms" className="ml-2 text-sm text-gray-600">
@@ -88,12 +148,13 @@ const ContactSection: React.FC = () => {
             </div>
 
             {/* Button */}
-            <button
+            <Button
               type="submit"
+              disabled={isLoading}
               className="w-36 bg-orange-500 text-white font-semibold py-2 rounded-md hover:bg-orange-600 transition"
             >
-              Submit
-            </button>
+              {isLoading ? "Submitting" : "Submit"}
+            </Button>
           </form>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import React from "react";
+import { RxCross2 } from "react-icons/rx";
 
 
 interface SignInModalProps {
@@ -31,11 +32,11 @@ const SignInModal = ({siginModal ,setsigninModal}: SignInModalProps) => {
 
             <div className='relative mx-auto my-12 max-w-md w-11/12 bg-white rounded-md shadow-md p-6 sm:p-8'>
                 <h1 className='text-2xl font-semibold text-center'>Signin as</h1>
-                <button onClick={() => setsigninModal(false)} className='absolute top-3 right-3 text-xl font-bold'>X</button>
+                <button onClick={() => setsigninModal(false)} className='absolute top-3 cursor-pointer right-3 text-xl font-bold'> <RxCross2  size={24}/></button>
 
                 <div className='mt-6 flex flex-col sm:flex-row items-center justify-center gap-4 text-base'>
-                    <button onClick={()=>handleRoute("/trade-login") } className='w-full sm:w-auto bg-primary text-white font-semibold px-5 py-2 rounded-xl'>Login as Tradeperson</button>
-                    <button onClick={()=>handleRoute("/general-login") } className='w-full sm:w-auto bg-white text-black border border-primary font-semibold px-5 py-2 rounded-xl'>General User</button>
+                    <button onClick={()=>handleRoute("/trade-login") } className='w-full cursor-pointer sm:w-auto bg-primary text-white font-semibold px-5 py-2 rounded-xl'>Login as Tradeperson</button>
+                    <button onClick={()=>handleRoute("/general-login") } className='w-full cursor-pointer sm:w-auto bg-white text-black border border-primary font-semibold px-5 py-2 rounded-xl'>General User</button>
                 </div>
             </div>
         </div>

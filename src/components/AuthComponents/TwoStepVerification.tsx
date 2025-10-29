@@ -1,66 +1,116 @@
-import React from 'react'
-import { MessageSquare, Mail, ChevronRight } from 'lucide-react'
+import React, { useState } from "react";
+import { Mail, ChevronRight, Loader2 } from "lucide-react";
+import toast from "react-hot-toast";
+import { useSendOtpByEmailMutation } from "@/redux/features/auth/register";
 
 const options = [
-    {
-        id: 'sms',
-        title: 'Get verification code at ****-****47',
-        description: 'Write additional text here.',
-        icon: <MessageSquare className="w-5 h-5 text-gray-600" />
-    },
-    {
-        id: 'email',
-        title: 'Get verification code at ****-***l@y@gmail.com',
-        description: 'Write additional text here.',
-        icon: <Mail className="w-5 h-5 text-gray-600" />
+  {
+    id: "email",
+    title: "Get verification code at your email",
+    description: "We will send a 6-digit code to your email",
+    icon: <Mail className="w-5 h-5 text-gray-600" />,
+  },
+];
+
+interface TwoStepVerificationProps {
+  step: number;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+  email: string;
+}
+
+const TwoStepVerification: React.FC<TwoStepVerificationProps> = ({
+  step,
+  setStep,
+  email,
+}) => {
+  const [selectedOption, setSelectedOption] = useState<string>("");
+  const [sendOtp, { isLoading }] = useSendOtpByEmailMutation();
+
+  const handleOptionClick = async (optionId: string) => {
+    if (isLoading) return;
+    setSelectedOption(optionId);
+
+    try {
+      await sendOtp({ email }).unwrap();
+      console.log("OTP sent to:", email);
+      toast.success("OTP sent to your email!");
+      setStep(step + 1);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to send OTP!");
     }
-]
+  };
 
-interface LogInComponentProps {
-    step: number;
-    setStep: React.Dispatch<React.SetStateAction<number>>;
-}
+  return (
+    <div className="h-[60vh] bg-white pt-12 flex justify-center items-center">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          {/* Left column */}
+          <div>
+            <h1 className="text-4xl md:text-5xl font-semibold text-black">
+              2-Step Verification
+            </h1>
+            <p className="text-lg text-gray-500 mt-4 max-w-xl">
+              To keep your account safe, we need to verify it's really you.
+            </p>
+          </div>
 
-const TwoStepVerification: React.FC<LogInComponentProps> = ({step, setStep}) => {
-    return (
-        <div className="min-h-screen bg-white py-12">
-            <div className="max-w-6xl mx-auto px-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                    {/* Left column - title */}
-                    <div>
-                        <h1 className="text-4xl md:text-5xl font-semibold text-black">2-Step Verification</h1>
-                        <p className="text-lg text-gray-500 mt-4 max-w-xl">To help keep your account safe, Theta Analyzer wants to make sure it's really you trying to log in</p>
-                    </div>
-
-                    {/* Right column - options */}
-                    <div>
-                        <h4 className="text-sm font-medium text-gray-700 mb-6">Choose your log in process:</h4>
-
-                        <div className="space-y-4">
-                            {options.map((opt) => (
-                                <label onClick={() => setStep(step + 1)} key={opt.id} className="group block border border-gray-200 rounded-lg p-4 hover:shadow-sm cursor-pointer">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-start gap-4">
-                                            <div className="w-10 h-10 rounded-md bg-white border border-gray-200 flex items-center justify-center mt-1">{opt.icon}</div>
-                                            <div>
-                                                <div className="text-sm font-semibold text-gray-900">{opt.title}</div>
-                                                <div className="text-sm text-gray-400 mt-1">{opt.description}</div>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex items-center gap-4">
-                                            <input type="radio" name="two-step" className="w-4 h-4 text-[#FF7346]" aria-label={opt.title} />
-                                            <ChevronRight className="w-5 h-5 text-gray-300" />
-                                        </div>
-                                    </div>
-                                </label>
-                            ))}
-                        </div>
-                    </div>
+          {/* Right column */}
+          <div>
+            {/* <h4 className="text-sm font-medium text-gray-700 mb-6">
+              Choose your log in process:
+            </h4> */}
+            <div className=" shadow rounded relative">
+              {isLoading && (
+                <div className="absolute inset-0 bg-white/20 backdrop-blur-sm flex justify-center items-center rounded-lg z-10">
+                  <Loader2 className="w-8 h-8 text-[#FF7346] animate-spin" />
                 </div>
-            </div>
-        </div>
-    )
-}
+              )}
 
-export default TwoStepVerification
+              {options.map((opt) => (
+                <label
+                  key={opt.id}
+                  className={`group block border ${
+                    selectedOption === opt.id
+                      ? "border-gray-200"
+                      : "border-gray-200"
+                  } rounded-lg p-4 hover:shadow-sm cursor-pointer transition-all`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-md bg-white border border-gray-200 flex items-center justify-center mt-1">
+                        {opt.icon}
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-gray-900">
+                          {opt.title}
+                        </div>
+                        <div className="text-sm text-gray-400 mt-1">
+                          {opt.description}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      <input
+                        type="radio"
+                        name="two-step"
+                        checked={selectedOption === opt.id}
+                        onChange={() => handleOptionClick(opt.id)}
+                        className="w-4 h-4 text-[#FF7346] bg-[#FF7346] cursor-pointer"
+                        disabled={isLoading}
+                      />
+                      <ChevronRight className="w-5 h-5 text-gray-300" />
+                    </div>
+                  </div>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TwoStepVerification;
