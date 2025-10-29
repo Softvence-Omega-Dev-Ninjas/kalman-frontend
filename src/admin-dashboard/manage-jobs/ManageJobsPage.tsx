@@ -99,7 +99,7 @@ useEffect(() => {
     },
     {
       header: "Customer",
-      cell: (row) => row.customer?.name || "N/A",
+      cell: (row) => row?.customer?.name || row?.customer?.email?.split("@")[0] || "N/A",
     },
     {
       header: "Status",

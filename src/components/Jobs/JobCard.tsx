@@ -27,7 +27,7 @@ const JobCards = ({
   // Format date dynamically
   const formatDate = (dateString?: string) => {
     if (!dateString) return "N/A";
-    
+
     try {
       return new Date(dateString).toLocaleDateString("en-US", {
         year: "numeric",
@@ -62,8 +62,11 @@ const JobCards = ({
   };
 
   const getProfileImage = (job: Job) => {
-    return job?.customer?.profile_image || 
-           "https://i.pravatar.cc/100?img=" + (job.id ? job.id.charCodeAt(0) % 70 : 1);
+    return (
+      job?.customer?.profile_image ||
+      "https://i.pravatar.cc/100?img=" +
+        (job.id ? job.id.charCodeAt(0) % 70 : 1)
+    );
   };
 
   // Safe access to skills array
@@ -127,7 +130,7 @@ const JobCards = ({
                   <p className="text-sm text-gray-600 mt-1 line-clamp-2">
                     {job.description || "No description provided for this job."}
                   </p>
-                  
+
                   {/* Skills/Tags */}
                   {skills.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-3">
@@ -150,7 +153,9 @@ const JobCards = ({
 
                 <div className="text-right min-w-[100px] ml-4">
                   <div className="text-xs text-gray-500">
-                    {job.budget_type === "hourly" ? "Hourly Rate" : "Budget (fixed)"}
+                    {job.budget_type === "hourly"
+                      ? "Hourly Rate"
+                      : "Budget (fixed)"}
                   </div>
                   <div className="text-[#FF7346] font-semibold text-base">
                     {job.budget_type === "hourly" ? (
@@ -185,16 +190,19 @@ const JobCards = ({
                         <CiLocationOn /> {job.location || "Remote"}
                       </span>
                       <span className="flex items-center gap-1">
-                        <LuCalendarDays /> {formatDate(job.createdAt) || getCurrentDate()}
+                        <LuCalendarDays />{" "}
+                        {formatDate(job.createdAt) || getCurrentDate()}
                       </span>
                       <span className="flex items-center gap-1 capitalize">
                         <WiTime4 /> {job.timeline || "Flexible"}
                       </span>
-                      
+
                       {/* Job Type */}
                       {job.job_type && (
                         <span className="px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded-md capitalize">
-                          {typeof job.job_type === 'string' ? job.job_type.replace('_', ' ') : job.job_type}
+                          {typeof job.job_type === "string"
+                            ? job.job_type.replace("_", " ")
+                            : job.job_type}
                         </span>
                       )}
                     </div>
@@ -205,7 +213,8 @@ const JobCards = ({
                 <div className="flex items-center gap-4">
                   {applicantCount > 0 && (
                     <span className="text-xs text-gray-500 whitespace-nowrap">
-                      {applicantCount} Applicant{applicantCount !== 1 ? 's' : ''}
+                      {applicantCount} Applicant
+                      {applicantCount !== 1 ? "s" : ""}
                     </span>
                   )}
                   <button

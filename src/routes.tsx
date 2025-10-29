@@ -46,13 +46,17 @@ import BusinessDetails from "./trade-dashboard/BusinessDetails";
 import ReviewInfo from "./trade-dashboard/ReviewInfo";
 import TradeLogin from "./trade-dashboard/TradeLogin";
 import GeneralAuthFlow from "./components/AuthComponents/GeneralAuthFlow";
-import ResetPassword from "./publicpages/ResetPassword";
 import AdminLogin from "./admin-dashboard/adminLogin/AdminLogin";
 import BlogDetails from "./publicpages/BlogDetails";
 // import TradeSignUp from "./trade-dashboard/TradeSignUp";
 import TradeSignUpPage from "./trade-dashboard/tradeComponents/TradeSignUp/TradeSignUpPage";
 import TradeSuccessPage from "./trade-dashboard/tradeComponents/TradeSuccessPage";
 import ManageCommision from "./admin-dashboard/manage-commision/ManageCommision";
+
+
+import ForgotPassword from "./components/AuthComponents/forgot-pass/ForgotPassword";
+import ForgotpassOtp from "./components/AuthComponents/forgot-pass/ForgotpassOtp";
+import UpdatePass from "./components/AuthComponents/forgot-pass/UpdatePass";
 
 // import TradeSignUpPage from "./trade-dashboard/tradeComponents/TradeSignUp/TradeSignUpPage";
 
@@ -113,7 +117,15 @@ const router = createBrowserRouter([
       },
       {
         path: "forgot-password",
-        element: <ResetPassword />,
+        element: <ForgotPassword />,
+      },
+      {
+   path:  "forgot-password/verify-otp",
+   element: <ForgotpassOtp />
+      },
+      {
+   path:  "forgot-password/update-pass",
+   element: <UpdatePass />
       },
       {
         path: "post-a-job",

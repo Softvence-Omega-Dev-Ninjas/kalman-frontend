@@ -21,8 +21,8 @@ export const proposalApi = baseApi.injectEndpoints({
 
     // 3️ Get a single proposal by ID
     getProposalById: builder.query({
-      query: (id) => ({
-        url: `/proposal/${id}`,
+      query: (jobId) => ({
+        url: `/proposal/jobs/${jobId}`,
         method: "GET",
       }),
     }),
