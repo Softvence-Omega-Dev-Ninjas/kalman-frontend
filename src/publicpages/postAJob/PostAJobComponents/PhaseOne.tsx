@@ -8,6 +8,7 @@ import {
   useGetCategoriesHQuery,
   useGetSingleCategoryQuery,
 } from "@/redux/features/admin/categoryApi";
+import { MdAttachMoney } from "react-icons/md";
 
 interface PhaseOneProps {
   phase: number;
@@ -24,6 +25,7 @@ interface TCategory {
 }
 
 const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
+  const [budgetType, setBudgetType] = useState(jobData.budge_type || "");
   const [title, setTitle] = useState(jobData.title);
   const [description, setDescription] = useState(jobData.description);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
@@ -67,6 +69,7 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
       categoryId: selectedCategory,
       subCategories: selectedSubCategory, // now array
       location,
+budge_type: budgetType,
     });
     setPhase(phase + 1);
   };
@@ -176,19 +179,30 @@ const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
         </div>
 
         {/* Price */}
-        <div>
-          <label className="block text-sm font-medium mb-2">Budget Price</label>
-          <div className="flex items-center gap-3 px-3 py-3 border border-gray-200 rounded-md bg-gray-50">
-            <IoLocationOutline className="inline text-lg" />
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
-              placeholder="Budget in USD"
-              className="w-full bg-gray-50 text-sm focus:outline-none"
-            />
-          </div>
-        </div>
+<div>
+  <label className="block text-sm font-medium mb-2">Budget</label>
+  <div className="flex items-center gap-3 px-3 py-3 border border-gray-200 rounded-md bg-gray-50">
+    <MdAttachMoney className="inline text-lg" />
+    <input
+      type="number"
+      value={price}
+      onChange={(e) => setPrice(Number(e.target.value))}
+      placeholder="Budget amount"
+      className="w-full bg-gray-50 text-sm focus:outline-none"
+    />
+    <select
+  value={budgetType}
+  onChange={(e) => setBudgetType(e.target.value)}
+>
+  <option value="">Select type</option>
+  <option value="FIXED">Fixed</option>
+  <option value="NEGOTIABLE">Negotiable</option>
+</select>
+
+
+  </div>
+</div>
+
 
         {/* Location */}
         <div>
