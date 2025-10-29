@@ -21,7 +21,6 @@ interface RecentShortlistProps {
 }
 
 const RecentShortlist: React.FC<RecentShortlistProps> = ({ recentJobs }) => {
-  console.log("Recent Jobs Data:", recentJobs);
   return (
     <div className=" rounded-lg shadow-sm border border-gray-200 p-3 bg-gray-100">
       <div className="flex items-center gap-2 mb-6">
