@@ -33,7 +33,7 @@ const JobInformation = ({ job }: { job: any }) => {
               <LuCalendarDays />
              <p>{formattedDate}</p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 capitalize">
               <CiLocationOn className="text-lg" />
               <p>{job?.location}</p>
             </div>

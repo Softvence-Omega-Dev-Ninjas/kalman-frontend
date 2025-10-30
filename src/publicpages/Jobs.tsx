@@ -13,8 +13,8 @@ const Jobs = () => {
     location: "",
     minPrice: 0,
     maxPrice: 1000,
-    page: 1,
-    limit: 10,
+    page: 10,
+    limit: 1,
     sortBy: "relevant",
   });
 
@@ -36,7 +36,7 @@ const Jobs = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 mt-8">
+    <div className="min-h-screen bg-[#F2F4F8] py-10 px-4 mt-8">
       <div className="max-w-7xl mx-auto">
         {/* Sorting Header */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
