@@ -71,6 +71,31 @@ export const tradesmanApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Profile", "Tradesman"],
     }),
+
+    addPaymentMethod: builder.mutation({
+      query: (data) => ({
+        url: "/tradesman/add-payment",
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Profile", "Tradesman", "PaymentMethods"],
+    }),
+
+    removePaymentMethod: builder.mutation({
+      query: (id) => ({
+        url: `tradesman/remove-payment/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Profile", "Tradesman", "PaymentMethods"],
+    }),
+
+    setDefaultPaymentMethod: builder.mutation({
+      query: (id) => ({
+        url: `tradesman/set-default-payment/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Profile", "PaymentMethods", "Tradesman"],
+    }),
   }),
 });
 
@@ -81,4 +106,7 @@ export const {
   useTradeSignUpMutation,
   useUpdateSettingsMutation,
   useGetTradesmanOverviewQuery,
+  useAddPaymentMethodMutation,
+  useRemovePaymentMethodMutation,
+  useSetDefaultPaymentMethodMutation,
 } = tradesmanApi;

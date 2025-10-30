@@ -1,7 +1,6 @@
 import { useEffect, type Dispatch, type SetStateAction } from "react";
 import { useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "@/redux/typeHook";
-import { saveProfessional } from "@/redux/features/tradeForm/tradeFormSlice";
+import { useAppSelector } from "@/redux/typeHook";
 import type { ProfessionalInfo } from "@/redux/features/tradeForm/tradeFormSlice";
 import cardimg from "../../../assets/sample_images/card.png";
 import {
@@ -10,6 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useAddPaymentMethodMutation } from "@/redux/features/tradesman/tradesmanApi";
+import toast from "react-hot-toast";
 
 interface PaymentMethodFormProps {
   isModalOpen: boolean;
@@ -20,7 +21,7 @@ export default function PaymentMethodForm({
   isModalOpen,
   setIsModalOpen,
 }: PaymentMethodFormProps) {
-  const dispatch = useAppDispatch();
+  const [addPaymentMethod] = useAddPaymentMethodMutation();
   const saved = useAppSelector(
     (s) => s.tradeForm.professional
   ) as ProfessionalInfo;
@@ -37,7 +38,7 @@ export default function PaymentMethodForm({
     terms?: boolean;
   };
 
-  const { register, handleSubmit, setValue } = useForm<CardFormValues>({
+  const { register, handleSubmit, setValue, reset } = useForm<CardFormValues>({
     defaultValues: {},
   });
 
@@ -55,26 +56,28 @@ export default function PaymentMethodForm({
     }
   }, [saved, setValue]);
 
-  const onSubmit = (data: CardFormValues) => {
-    const last4 = data.cardNumber;
+  const onSubmit = async (data: CardFormValues) => {
     const payload = {
-      paymentMethod: "card" as const,
-      cardInfo: {
-        holderName: data.holderName,
-        last4,
-        expiry: data.expiry,
-        saveCard: !!data.saveCard,
-        cvv: data.cvv,
-        billingAddress: {
-          street: data.billingStreet,
-          city: data.billingCity,
-          postcode: data.billingPostcode,
-        },
-      },
+      methodType: "Credit/Debit Card" as const,
+      cardNumber: data.cardNumber,
+      cardHolderName: data.holderName,
+      expiryDate: data.expiry,
+      saveCard: !!data.saveCard,
+      cvv: data.cvv,
+      streetAddress: data.billingStreet,
+      city: data.billingCity,
+      postCode: data.billingPostcode,
+      agreedToTerms: data.terms,
+      provider: "Visa/Mastercard/Amex",
     };
-    console.log("[BusinessDetailsForm] Saving card payload:", payload);
-
-    dispatch(saveProfessional(payload));
+    try {
+      await addPaymentMethod(payload).unwrap();
+      toast.success("Card saved successfully!");
+      reset();
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -122,8 +125,8 @@ export default function PaymentMethodForm({
                 <input
                   {...register("cardNumber")}
                   type="text"
-                  placeholder="1234 5678 9012 3456"
-                  className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
+                  placeholder="1234 4321 9876 0123"
+                  className="placeholder:text-gray-400 w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
                 />
               </div>
 
@@ -136,7 +139,7 @@ export default function PaymentMethodForm({
                     {...register("expiry")}
                     type="text"
                     placeholder="MM/YY"
-                    className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
+                    className=" placeholder:text-gray-400 w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
                   />
                 </div>
                 <div>
@@ -147,7 +150,7 @@ export default function PaymentMethodForm({
                     {...register("cvv")}
                     type="text"
                     placeholder="123"
-                    className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
+                    className="placeholder:text-gray-400 w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
                   />
                 </div>
               </div>
@@ -174,7 +177,7 @@ export default function PaymentMethodForm({
                 <input
                   {...register("billingStreet")}
                   type="text"
-                  className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
+                  className=" placeholder:text-gray-400 w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
                 />
               </div>
 
@@ -186,7 +189,7 @@ export default function PaymentMethodForm({
                   <input
                     {...register("billingCity")}
                     type="text"
-                    className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
+                    className=" placeholder:text-gray-400 w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
                   />
                 </div>
                 <div>
@@ -196,8 +199,8 @@ export default function PaymentMethodForm({
                   <input
                     {...register("billingPostcode")}
                     type="text"
-                    placeholder="123"
-                    className="w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
+                    placeholder="12345"
+                    className=" placeholder:text-gray-400 w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
                   />
                 </div>
               </div>
