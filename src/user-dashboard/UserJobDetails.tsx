@@ -1,16 +1,25 @@
 import React from "react";
 import { Briefcase, Clock, MapPin, Star, ArrowLeft, Check } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetProposalByIdQuery, useGetProposalsByJobIdQuery, useUpdateProposalMutation } from "@/redux/features/proposal/proposalApi";
+import {
+  useGetProposalsByJobIdQuery,
+  useUpdateProposalMutation,
+} from "@/redux/features/proposal/proposalApi";
 import { useGetJobByIdQuery } from "@/redux/features/jobs/jobsApi";
 import toast from "react-hot-toast";
 
-const ProposalCard: React.FC<{ proposal: any; onStatusChange?: () => void }> = ({ proposal, onStatusChange }) => {
+const ProposalCard: React.FC<{
+  proposal: any;
+  onStatusChange?: () => void;
+}> = ({ proposal, onStatusChange }) => {
   const [updateProposal, { isLoading }] = useUpdateProposalMutation();
 
   const handleAccept = async () => {
     try {
-      await updateProposal({ id: proposal.id, data: { status: "ACCEPTED" } }).unwrap();
+      await updateProposal({
+        id: proposal.id,
+        data: { status: "ACCEPTED" },
+      }).unwrap();
       toast("Proposal accepted!");
       onStatusChange?.(); // parent refetch
     } catch (error) {
@@ -21,7 +30,10 @@ const ProposalCard: React.FC<{ proposal: any; onStatusChange?: () => void }> = (
 
   const handleDecline = async () => {
     try {
-      await updateProposal({ id: proposal.id, data: { status: "REJECTED" } }).unwrap();
+      await updateProposal({
+        id: proposal.id,
+        data: { status: "REJECTED" },
+      }).unwrap();
       toast("Proposal rejected!");
       onStatusChange?.(); // parent refetch
     } catch (error) {
@@ -34,64 +46,63 @@ const ProposalCard: React.FC<{ proposal: any; onStatusChange?: () => void }> = (
     <div className="border rounded-lg p-6 shadow-sm flex flex-col md:flex-row gap-6">
       {/* Left side */}
       <div className="flex-1 space-y-4">
-            <div className="flex justify-between">
-                   <div className="flex sm:flex-row flex-col items-start sm:items-center gap-4">
-          <div className="relative w-16 h-16 shrink-0">
-            <img
-              src={
-                proposal.tradesMan?.images?.[0] ||
-                proposal.tradesMan?.professionalQualifications ||
-                "https://via.placeholder.com/120"
-              }
-              alt={proposal.tradesMan?.firstName || "N/A"}
-              className="w-16 h-16 rounded-full object-cover"
-            />
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800">
-              {proposal.tradesMan
-                ? `${proposal.tradesMan.firstName} ${proposal.tradesMan.lastName}`
-                : "N/A"}
-            </h3>
-            <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
-              <Star size={16} className="text-yellow-400 fill-yellow-400" />
-              <span>5.0 (20 reviews)</span>
-              <span className="h-1 w-1 bg-gray-400 rounded-full mx-1"></span>
-              <MapPin size={16} className="text-gray-500" />
-              <span>{proposal.tradesMan?.city || "N/A"}</span>
+        <div className="flex justify-between">
+          <div className="flex sm:flex-row flex-col items-start sm:items-center gap-4">
+            <div className="relative w-16 h-16 shrink-0">
+              <img
+                src={
+                  proposal.tradesMan?.images?.[0] ||
+                  proposal.tradesMan?.professionalQualifications ||
+                  "https://via.placeholder.com/120"
+                }
+                alt={proposal.tradesMan?.firstName || "N/A"}
+                className="w-16 h-16 rounded-full object-cover"
+              />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-800">
+                {proposal.tradesMan
+                  ? `${proposal.tradesMan.firstName} ${proposal.tradesMan.lastName}`
+                  : "N/A"}
+              </h3>
+              <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                <Star size={16} className="text-yellow-400 fill-yellow-400" />
+                <span>5.0 (20 reviews)</span>
+                <span className="h-1 w-1 bg-gray-400 rounded-full mx-1"></span>
+                <MapPin size={16} className="text-gray-500" />
+                <span>{proposal.tradesMan?.city || "N/A"}</span>
+              </div>
             </div>
           </div>
-        </div>
-
 
           <div className="flex flex-col items-center gap-3">
-        <button
-          onClick={handleAccept}
-          disabled={isLoading}
-          className={`flex cursor-pointer items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-            proposal.status === "ACCEPTED"
-              ? "bg-green-500 text-white"
-              : "bg-green-500 hover:bg-green-400 text-white"
-          }`}
-        >
-          Accept
-          {proposal.status === "ACCEPTED" && <Check size={16} />}
-        </button>
+            <button
+              onClick={handleAccept}
+              disabled={isLoading}
+              className={`flex cursor-pointer items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                proposal.status === "ACCEPTED"
+                  ? "bg-green-500 text-white"
+                  : "bg-green-500 hover:bg-green-400 text-white"
+              }`}
+            >
+              Accept
+              {proposal.status === "ACCEPTED" && <Check size={16} />}
+            </button>
 
-        <button
-          onClick={handleDecline}
-          disabled={isLoading}
-          className={`flex cursor-pointer items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-            proposal.status === "REJECTED"
-              ? "bg-red-500 text-white"
-              : "bg-red-500 hover:bg-red-400 text-white"
-          }`}
-        >
-          Decline
-          {proposal.status === "REJECTED" && <Check size={16} />}
-        </button>
-      </div>
-            </div>
+            <button
+              onClick={handleDecline}
+              disabled={isLoading}
+              className={`flex cursor-pointer items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                proposal.status === "REJECTED"
+                  ? "bg-red-500 text-white"
+                  : "bg-red-500 hover:bg-red-400 text-white"
+              }`}
+            >
+              Decline
+              {proposal.status === "REJECTED" && <Check size={16} />}
+            </button>
+          </div>
+        </div>
 
         {/* Job details */}
         <div className="mt-4">
@@ -107,7 +118,8 @@ const ProposalCard: React.FC<{ proposal: any; onStatusChange?: () => void }> = (
         <div className="flex items-center justify-between  gap-4 text-sm text-gray-500 mt-4">
           <div className="flex items-center gap-2 font-semibold">
             <span className="text-xl text-primary font-bold">
-              ${proposal.jobs?.price ? proposal.jobs.price.toFixed(2) : "N/A"}/hr
+              ${proposal.jobs?.price ? proposal.jobs.price.toFixed(2) : "N/A"}
+              /hr
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -122,7 +134,6 @@ const ProposalCard: React.FC<{ proposal: any; onStatusChange?: () => void }> = (
       </div>
 
       {/* Right side: Actions */}
-    
     </div>
   );
 };
@@ -137,7 +148,7 @@ const UserJobDetails: React.FC = () => {
     isError: proposalError,
     refetch: refetchProposals,
   } = useGetProposalsByJobIdQuery(id!);
-console.log(proposalResponse)
+  console.log(proposalResponse);
   // Fetch job details
   const {
     data: jobResponse,
@@ -148,9 +159,9 @@ console.log(proposalResponse)
   const proposalData = proposalResponse?.data || [];
   const jobData = jobResponse?.data;
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleBack = () => {
-    navigate("/user-dashboard/my-jobs")
+    navigate("/user-dashboard/my-jobs");
   };
 
   if (proposalLoading || jobLoading)
@@ -231,9 +242,7 @@ console.log(proposalResponse)
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <Briefcase size={16} />
                     <span>
-                      {Array.isArray(proposalData)
-                        ? proposalData.length
-                        : 0}{" "}
+                      {Array.isArray(proposalData) ? proposalData.length : 0}{" "}
                       proposals received
                     </span>
                   </div>

@@ -2,7 +2,6 @@ import TradespersonCard from "../reuseable/TradePersonCard";
 import trade1 from "../../assets/sample_images/trade1.png";
 import { Loader2 } from "lucide-react";
 import { PaginationControls } from "../Jobs/common/PaginationControls";
-
 interface AllTradesmanProps {
   tradesman: any[];
   isLoading: boolean;
@@ -18,9 +17,6 @@ const AllServices: React.FC<AllTradesmanProps> = ({
   setPage,
   totalPages,
 }) => {
-  const handleContact = (name: string) => {
-    console.log(`Contacting ${name}`);
-  };
   if (isLoading)
     return (
       <div className="flex justify-center items-center py-20">
@@ -36,12 +32,11 @@ const AllServices: React.FC<AllTradesmanProps> = ({
             key={index}
             image={trade1}
             name={`${person.firstName} ${person.lastName}`}
-            profession={person.businessDetail.businessName}
-            rating={person.businessDetail.yearsOfExperience}
+            profession={person.profession}
+            review={person?.review}
             availability={person.businessDetail.businessType}
             location={person.address}
             hourlyRate={person.businessDetail.hourlyRate}
-            onContact={() => handleContact(person.name)}
           />
         ))}
       </div>
