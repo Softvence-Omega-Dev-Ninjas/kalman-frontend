@@ -5,7 +5,7 @@ import {
   MdOutlineStarBorder,
 } from "react-icons/md";
 import { reviewFilter } from "../../assets/DummyData/DummyData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetCategoriesHQuery } from "@/redux/features/admin/categoryApi";
 
 export interface ServiceFilters {
@@ -68,15 +68,20 @@ const SideFilterForService: React.FC<SideFilterForServiceProps> = ({
     );
   };
 
-  const handleApplyFilter = () => {
-    onFilterChange?.({
-      search: search.trim(),
-      category: selectedCategories.join(","),
-      subCategory,
-      location,
-      rating: selectedRatings.join(","),
-    });
-  };
+  // ✅ Auto-trigger parent filter change on every update
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onFilterChange?.({
+        search: search.trim(),
+        category: selectedCategories.join(","),
+        subCategory,
+        location,
+        rating: selectedRatings.join(","),
+      });
+    }, 300); // small debounce to avoid excessive API calls while typing
+
+    return () => clearTimeout(timer);
+  }, [search, selectedCategories, subCategory, location, selectedRatings]);
 
   return (
     <div className="space-y-6">
@@ -190,14 +195,6 @@ const SideFilterForService: React.FC<SideFilterForServiceProps> = ({
           ))}
         </div>
       </div>
-
-      {/* Filter Button */}
-      <button
-        onClick={handleApplyFilter}
-        className="w-full px-5 py-4 mt-4 text-white bg-primary rounded-md text-lg"
-      >
-        Filter Search
-      </button>
     </div>
   );
 };
