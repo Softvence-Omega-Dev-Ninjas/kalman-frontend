@@ -11,13 +11,14 @@ import { Link, useParams } from "react-router-dom";
 import { useGetSingleTradesmanQuery } from "@/redux/features/tradesman/tradesmanApi";
 import TradesManBusinessDetails from "@/components/ServiceComponents/TradesManBusinessDetails";
 import { useReviewCount } from "@/redux/features/tradesman/hooks/useReviewCount";
+import { useAppSelector } from "@/redux/typeHook";
 
 const ServiceDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useGetSingleTradesmanQuery(id);
   const [openContact, setOpenContact] = useState(false);
   const { totalReviews, averageRating } = useReviewCount(data?.data?.review);
-
+  const userState = useAppSelector((state) => state.auth.user);
   return (
     <div className="bg-[#f3f5f7] min-h-screen py-16 px-16">
       <div className="max-w-[1490px] mx-auto">
@@ -88,7 +89,7 @@ const ServiceDetails = () => {
                   setOpenContact={setOpenContact}
                 />
               </div>
-              <RatingReviews />
+              {userState?.role !== "TRADESMAN" && <RatingReviews />}
               {data?.data?.review.length > 0 && (
                 <div className="mt-8">
                   {data?.data?.review.slice(0, 3).map((rev: any) => (

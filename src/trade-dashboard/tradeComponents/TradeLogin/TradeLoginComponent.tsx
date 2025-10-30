@@ -68,7 +68,11 @@ const TradeLogInComponent: React.FC = () => {
         console.log("Received Token:", token);
         const decodedToken = decodeJWT(token);
         console.log("Decoded Token:", decodedToken);
-
+        
+if(decodedToken.role !== "TRADEMAN"){
+  toast.error("Only Trade Person are allow for login from here!")
+  return
+}
         if (decodedToken) {
           const userData = {
             id: decodedToken.id,

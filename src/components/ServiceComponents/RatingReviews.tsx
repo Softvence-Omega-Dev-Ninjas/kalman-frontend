@@ -34,6 +34,11 @@ const RatingReviews: React.FC<RatingReviewsProps> = ({ initialRating = 1 }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!customerId || !tradesManId) {
+      toast.error("Please Login");
+      return;
+    }
+    if (!comment) {
+      toast.error("Please Enter Your Review");
       return;
     }
 

@@ -68,7 +68,7 @@ useEffect(()=>{
    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 flex-1 min-w-[200px] flex flex-col items-center gap-2">
     <span className="text-xl text-gray-700"><IoIosStarOutline className="text-primary"/></span>
     <h3 className="text-gray-500 text-sm font-medium">{}Customer Rating</h3>
-    <p className="text-2xl font-bold text-gray-800 mt-2">{overview?.avg_ratting || 0}/5</p>
+    <p className="text-2xl font-bold text-gray-800 mt-2">{overview?.avg_ratting?.toFixed(2) || 0}/5</p>
   </div>
    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 flex-1 min-w-[200px] flex flex-col items-center gap-2">
     <span className="text-xl text-gray-700"><FiCheckCircle className="text-green-500" /></span>
@@ -76,7 +76,7 @@ useEffect(()=>{
     <p className="text-2xl font-bold text-gray-800 mt-2">{overview?.jobCompilationRatePercentage}</p>
   </div>
       </div>
-
+    
       {/* Performance & System Status */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         <DashboardSection title="Platform Performance">
