@@ -28,7 +28,8 @@ interface Tradesman {
 const PopularTradesperson = () => {
   const { tradesmen } = useTradesman() as { tradesmen: Tradesman[] };
 
-  // Pure function to calculate review stats
+  const handleContact = (name: string) => {
+    console.log(`Contacting ${name}`);
   const getReviewStats = (reviews: Review[] = []) => {
     const totalReviews = reviews.length;
     if (totalReviews === 0) return { totalReviews: 0, averageRating: 0 };
