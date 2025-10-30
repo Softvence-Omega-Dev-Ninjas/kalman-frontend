@@ -47,6 +47,7 @@ useEffect(() => {
 
 
 useEffect(() => {
+  refetch()
   setCurrentPage(1);
 }, [debouncedSearch]);
 

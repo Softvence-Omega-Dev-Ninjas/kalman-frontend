@@ -39,7 +39,7 @@ const ForgotPassword: React.FC = () => {
           onChange={(e) => setEmail(e.target.value)}
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none"
         />
-        <Button type="submit" disabled={isLoading} className={`w-full ${isLoading ? "bg-primary/70 cursor-not-allowed" : "bg-primary hover:bg-primary/90"} text-white`}>
+        <Button type="submit" disabled={isLoading} className={`w-full cursor-pointer ${isLoading ? "bg-primary/70 cursor-not-allowed" : "bg-primary hover:bg-primary/90"} text-white`}>
           {isLoading ? "Sending..." : "Send OTP"}
         </Button>
 
