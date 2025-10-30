@@ -32,7 +32,7 @@ const HireAsTradeperson: React.FC = () => {
                 </div>
 
                 <div className="flex justify-center mt-8">
-                    <Link to="/post-a-job" className="bg-primary text-white px-6 py-2 rounded-md shadow-md">Post a Job</Link>
+                    <Link to="/post-a-job" className="bg-primary cursor-pointer hover:bg-primary/80 text-white px-6 py-2 rounded-md shadow-md">Post a Job</Link>
                 </div>
             </div>
         </section>
