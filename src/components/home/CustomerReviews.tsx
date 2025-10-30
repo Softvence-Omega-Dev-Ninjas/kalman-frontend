@@ -1,4 +1,5 @@
 
+import { Link } from "react-router-dom";
 import reviewBgImg from "../../assets/sample_images/reviewBgImg.png"
 import ReviewCard from '../reuseable/ReviewCard';
 import TrustpilotBadge from "../reuseable/TrustPlot";
@@ -54,9 +55,10 @@ const CustomerReviews = () => {
                 Reviews on Staybar are written by customers like you
               </p>
               
-              <button className="bg-primary w-full text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
+            <Link to={"/post-a-job"}>  <button className="bg-primary hover:bg-primary/80 w-full cursor-pointer text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
                 Post your Job
               </button>
+              </Link>
             </div>
 
             {/* Review Cards */}

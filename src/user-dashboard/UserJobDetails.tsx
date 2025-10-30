@@ -1,7 +1,7 @@
 import React from "react";
 import { Briefcase, Clock, MapPin, Star, ArrowLeft, Check } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetProposalByIdQuery, useUpdateProposalMutation } from "@/redux/features/proposal/proposalApi";
+import { useGetProposalByIdQuery, useGetProposalsByJobIdQuery, useUpdateProposalMutation } from "@/redux/features/proposal/proposalApi";
 import { useGetJobByIdQuery } from "@/redux/features/jobs/jobsApi";
 import toast from "react-hot-toast";
 
@@ -136,8 +136,8 @@ const UserJobDetails: React.FC = () => {
     isLoading: proposalLoading,
     isError: proposalError,
     refetch: refetchProposals,
-  } = useGetProposalByIdQuery(id!);
-
+  } = useGetProposalsByJobIdQuery(id!);
+console.log(proposalResponse)
   // Fetch job details
   const {
     data: jobResponse,
