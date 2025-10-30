@@ -1,3 +1,4 @@
+
 import TradespersonCard from "../reuseable/TradePersonCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import trade1 from "../../assets/sample_images/trade1.png";
@@ -28,8 +29,7 @@ interface Tradesman {
 const PopularTradesperson = () => {
   const { tradesmen } = useTradesman() as { tradesmen: Tradesman[] };
 
-  const handleContact = (name: string) => {
-    console.log(`Contacting ${name}`);
+  // Pure function to calculate review stats
   const getReviewStats = (reviews: Review[] = []) => {
     const totalReviews = reviews.length;
     if (totalReviews === 0) return { totalReviews: 0, averageRating: 0 };
@@ -102,3 +102,4 @@ const PopularTradesperson = () => {
 };
 
 export default PopularTradesperson;
+
