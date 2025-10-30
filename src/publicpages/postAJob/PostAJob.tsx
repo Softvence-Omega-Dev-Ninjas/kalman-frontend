@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
-/* {"title":"Fix Leaky Roof","categoryId":"","description":"Roof repair on a two-story house.","location":"Suburb X","timeline":"3 days","contact_method":"Email","skills_needed":["Roofing","Waterproofing"],"price":150 , "subCategory" : [""]}*/
+/* // {"title":"Fix Leaky Roof","categoryId":"","description":"Roof repair on a two-story house.","location":"Suburb X","timeline":"3 days","contact_method":"Email","skills_needed":["Roofing","Waterproofing"],"price":150,"budge_type":"FIXED","subCategories":["roofing","waterproofing"]}*/
 
 export interface JobData {
   title: string;
@@ -21,7 +21,9 @@ export interface JobData {
   contact_method: "phone" | "email" | null;
   images: File[];
   price:string | number;
-  subCategories: string[]
+  subCategories: string[];
+  budge_type : string;
+  skills_needed: string[];
 }
 
 const PostAJob = () => {
@@ -38,12 +40,14 @@ const PostAJob = () => {
     contact_method: null,
     images: [],
     price: 0 ,
-    subCategories: []
+    subCategories: [] ,
+    budge_type: "" ,
+    skills_needed : []
   });
 
   const progressPercent = () => {
-    if (phase === 1) return 20;
-    if (phase === 2) return 60;
+    if (phase === 1) return 40;
+    if (phase === 2) return 80;
     return 90;
   };
 
@@ -61,7 +65,9 @@ const PostAJob = () => {
         contact_method: null,
         images: [],
         price: 0 ,
-        subCategories: []
+        subCategories: [] ,
+        budge_type: "" ,
+        skills_needed : []
         })
        } else {
           navigate("/")

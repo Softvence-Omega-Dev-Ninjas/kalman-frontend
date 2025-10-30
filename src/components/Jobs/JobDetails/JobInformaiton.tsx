@@ -6,7 +6,16 @@ import { WiTime4 } from "react-icons/wi";
 import { CiLocationOn } from "react-icons/ci";
 
 const JobInformation = ({ job }: { job: any }) => {
-  console.log(job);
+
+  
+  const formattedDate = job?.updatedAt
+  ? new Date(job.updatedAt).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  : "N/A";
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-6 mb-5 bg-white p-5 rounded-md shadow-md">
@@ -22,7 +31,7 @@ const JobInformation = ({ job }: { job: any }) => {
           <div className="flex items-center gap-3 text-secondary">
             <div className="flex items-center gap-2">
               <LuCalendarDays />
-              <p>{job?.updatedAt}</p>
+             <p>{formattedDate}</p>
             </div>
             <div className="flex items-center gap-2">
               <CiLocationOn className="text-lg" />
@@ -30,7 +39,7 @@ const JobInformation = ({ job }: { job: any }) => {
             </div>
             <div className="flex items-center gap-2">
               <WiTime4 className="text-lg" />
-              <p>{job?.timeline}</p>
+              <p className="capitalize">{job?.timeline}</p>
             </div>
           </div>
         </div>

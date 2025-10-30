@@ -6,8 +6,8 @@ interface Props {
   children: React.ReactNode;
 }
 
-const AdminProtectedRoute = ({ children }: Props) => {
-  const { admin, token } = useAppSelector((state) => state.admin);
+const TradeManProtectedRoute = ({ children }: Props) => {
+  const { user, token } = useAppSelector((state) => state.auth);
 
   if (!token) {
     toast.error("Please login to continue!");
@@ -20,16 +20,21 @@ const AdminProtectedRoute = ({ children }: Props) => {
     const decoded = JSON.parse(window.atob(base64));
     const exp = decoded?.exp ? decoded.exp * 1000 : 0;
 
-    if (Date.now() > exp || !admin) {
+    if (Date.now() > exp) {
       toast.error("Session expired! Please login again.");
-      return <Navigate to="/admin/login" replace />;
+      return <Navigate to="/trade-login" replace />;
     }
-
-    return <>{children}</>;
   } catch {
     toast.error("Invalid token! Please login again.");
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/trade-login" replace />;
   }
+
+  if (user?.role !== "TRADESMAN") {
+    toast.error("Access denied! Only tradesmen can access this page.");
+    return <Navigate to="/trade-login" replace />;
+  }
+
+  return <>{children}</>;
 };
 
-export default AdminProtectedRoute;
+export default TradeManProtectedRoute;

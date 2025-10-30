@@ -16,6 +16,7 @@ const ProposalModal = ({ jobId, tradesManId, onClose }: ProposalModalProps) => {
   const [proposalText, setProposalText] = useState("");
   const [createProposal, { isLoading }] = useCreateProposalMutation();
 
+
   const handleSubmit = async () => {
     if (!proposalText.trim()) {
       toast.error("Please write your proposal before submitting!");
@@ -31,20 +32,59 @@ const ProposalModal = ({ jobId, tradesManId, onClose }: ProposalModalProps) => {
 
       const response = await createProposal(payload).unwrap();
       if (response.data) {
-        toast.success(response.data.message);
+        toast.success(response.data.message || response?.message);
+      } else {
+        toast.success("Proposal submitted successfully!");
       }
-      toast.success("Proposal submitted successfully!");
-      console.log("✅ Response:", response);
+
+      console.log(" Response:", response);
 
       onClose();
       setProposalText("");
     } catch (error: any) {
-      console.error("❌ Proposal submit error:", error);
-      toast.error(
+      console.error(" Proposal submit error:", error);
+
+      const onboardingUrl = error?.data?.onboardingUrl;
+
+      if (onboardingUrl) {
+        toast.custom(
+          (t) => (
+            <div
+              className={`max-w-md w-full bg-white shadow-lg rounded-lg border-l-4 border-red-500 p-4 flex justify-between items-start space-x-3 ${
+                t.visible ? "animate-enter" : "animate-leave"
+              }`}
+            >
+              <div
+                onClick={() => {
+                  window.open(onboardingUrl, "_blank");
+                  toast.dismiss(t.id);
+                }}
+                className="flex-1 cursor-pointer"
+              >
+                <p className="font-semibold text-gray-900">
+                  Complete onboarding
+                </p>
+                <p className="text-sm text-blue-600 underline">
+                  Click here to open link
+                </p>
+              </div>
+
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="cursor-pointer text-gray-400 hover:text-gray-600"
+              >
+                <X size={18} />
+              </button>
+            </div>
+          ),
+          { duration: Infinity }
+        );
+      } else {
+        toast.error(
         error?.data?.message ||
-          error?.data?.description ||
           "Failed to submit proposal."
       );
+      }
     }
   };
 

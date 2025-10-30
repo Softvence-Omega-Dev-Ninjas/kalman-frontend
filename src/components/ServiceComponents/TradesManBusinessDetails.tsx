@@ -1,3 +1,5 @@
+import { useAppSelector } from "@/redux/typeHook";
+
 interface BusinessDetail {
   businessDetail: any;
   businessName: string;
@@ -14,6 +16,8 @@ const TradesManBusinessDetails: React.FC<TradesManBusinessDetailsProps> = ({
   data,
   setOpenContact,
 }) => {
+  const userState = useAppSelector((state) => state.auth.user);
+  console.log("User State in TradesManBusinessDetails:", userState?.role);
   return (
     <div className="bg-white rounded-lg p-6 shadow-md">
       <div className="flex items-start justify-between">
@@ -41,13 +45,14 @@ const TradesManBusinessDetails: React.FC<TradesManBusinessDetailsProps> = ({
           </span>
         ))}
       </div>
-
-      <button
-        onClick={() => setOpenContact(true)}
-        className="w-full text-sm lg:text-lg  mt-6 bg-primary hover:bg-orange-600 text-white px-4 py-3 rounded-md"
-      >
-        Invite to Project
-      </button>
+      {userState?.role !== "TRADESMAN" && (
+        <button
+          onClick={() => setOpenContact(true)}
+          className="w-full text-sm lg:text-lg  mt-6 bg-primary hover:bg-orange-600 text-white px-4 py-3 rounded-md"
+        >
+          Invite to Project
+        </button>
+      )}
     </div>
   );
 };
