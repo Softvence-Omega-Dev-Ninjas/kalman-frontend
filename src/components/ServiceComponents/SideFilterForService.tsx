@@ -22,6 +22,7 @@ interface SideFilterForServiceProps {
 
 interface Category {
   name: string;
+  id: string;
   subCategories: string[];
 }
 
@@ -39,14 +40,14 @@ const SideFilterForService: React.FC<SideFilterForServiceProps> = ({
   const categories: Category[] = data?.data?.result || [];
 
   // --- Combine subcategories based on selected categories ---
-  const allCategoryNames = categories.map((cat) => cat.name);
+  const allCategoryNames = categories.map((cat) => cat.id);
 
   const filteredSubCategories: string[] =
     selectedCategories.length === 0 ||
     selectedCategories.length === allCategoryNames.length
       ? categories.flatMap((cat) => cat.subCategories)
       : categories
-          .filter((cat) => selectedCategories.includes(cat.name))
+          .filter((cat) => selectedCategories.includes(cat.id))
           .flatMap((cat) => cat.subCategories);
 
   // --- Handlers ---
@@ -102,8 +103,8 @@ const SideFilterForService: React.FC<SideFilterForServiceProps> = ({
             >
               <input
                 type="checkbox"
-                checked={selectedCategories.includes(cat.name)}
-                onChange={() => handleCategoryToggle(cat.name)}
+                checked={selectedCategories.includes(cat.id)}
+                onChange={() => handleCategoryToggle(cat.id)}
                 className="w-4 h-4 cursor-pointer accent-blue-500"
               />
               <span className="text-sm">{cat.name}</span>
