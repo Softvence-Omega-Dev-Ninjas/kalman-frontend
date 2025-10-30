@@ -26,8 +26,7 @@ export const invitationApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-
-      invalidatesTags: ["Invitations"],
+      invalidatesTags: ["Invitations", "Tradesman"],
     }),
 
     //update invitation

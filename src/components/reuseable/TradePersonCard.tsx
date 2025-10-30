@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { useReviewCount } from "@/redux/features/tradesman/hooks/useReviewCount";
 import { Star, MapPin, Clock } from "lucide-react";
 import { MdArrowOutward } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -8,24 +9,25 @@ interface TradespersonCardProps {
   image: any;
   name: string;
   profession: string;
-  rating: string;
   availability: string;
   location: string;
   hourlyRate: string;
   id: string;
-  onContact: () => void;
+  review: any[];
 }
 const TradespersonCard = ({
   image,
   name,
   profession,
-  rating,
+  review,
   availability,
   location,
   hourlyRate,
   id,
 }: TradespersonCardProps) => {
   const navigate = useNavigate();
+  const { averageRating } = useReviewCount(review);
+
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
       <div className="h-[200px] overflow-hidden">
@@ -49,7 +51,9 @@ const TradespersonCard = ({
           </span>
           <div className="flex items-center">
             <Star className="w-4 h-4 fill-orange-400 text-orange-400 mr-1" />
-            <span className="text-sm font-medium text-gray-700">{rating}</span>
+            <span className="text-sm font-medium text-gray-700">
+              {averageRating}
+            </span>
           </div>
         </div>
 

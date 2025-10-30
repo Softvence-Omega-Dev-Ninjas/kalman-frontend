@@ -6,6 +6,7 @@ import { usePostReviewMutation } from "@/redux/features/review/reviewApi";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import toast from "react-hot-toast";
 
 interface RatingReviewsProps {
   initialRating?: number;
@@ -33,6 +34,11 @@ const RatingReviews: React.FC<RatingReviewsProps> = ({ initialRating = 1 }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!customerId || !tradesManId) {
+      toast.error("Please Login");
+      return;
+    }
+    if (!comment) {
+      toast.error("Please Enter Your Review");
       return;
     }
 
@@ -44,6 +50,7 @@ const RatingReviews: React.FC<RatingReviewsProps> = ({ initialRating = 1 }) => {
     };
     try {
       await postReview(reviewData).unwrap();
+      toast.success("Review submitted successfully!");
       setComment("");
       setRating(initialRating);
     } catch (error) {

@@ -35,35 +35,34 @@ console.log(proposal)
     <div className="border rounded-lg p-6 shadow-sm flex flex-col md:flex-row gap-6">
       {/* Left side */}
       <div className="flex-1 space-y-4">
-            <div className="flex justify-between">
-                   <div className="flex sm:flex-row flex-col items-start sm:items-center gap-4">
-          <div className="relative w-16 h-16 shrink-0">
-            <img
-              src={
-                proposal.tradesMan?.images?.[0] ||
-                proposal.tradesMan?.professionalQualifications ||
-                "https://via.placeholder.com/120"
-              }
-              alt={proposal.tradesMan?.firstName || "N/A"}
-              className="w-16 h-16 rounded-full object-cover"
-            />
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800">
-              {proposal.tradesMan
-                ? `${proposal.tradesMan.firstName} ${proposal.tradesMan.lastName}`
-                : "N/A"}
-            </h3>
-            <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
-              <Star size={16} className="text-yellow-400 fill-yellow-400" />
-              <span>5.0 (20 reviews)</span>
-              <span className="h-1 w-1 bg-gray-400 rounded-full mx-1"></span>
-              <MapPin size={16} className="text-gray-500" />
-              <span>{proposal.tradesMan?.city || "N/A"}</span>
+        <div className="flex justify-between">
+          <div className="flex sm:flex-row flex-col items-start sm:items-center gap-4">
+            <div className="relative w-16 h-16 shrink-0">
+              <img
+                src={
+                  proposal.tradesMan?.images?.[0] ||
+                  proposal.tradesMan?.professionalQualifications ||
+                  "https://via.placeholder.com/120"
+                }
+                alt={proposal.tradesMan?.firstName || "N/A"}
+                className="w-16 h-16 rounded-full object-cover"
+              />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-800">
+                {proposal.tradesMan
+                  ? `${proposal.tradesMan.firstName} ${proposal.tradesMan.lastName}`
+                  : "N/A"}
+              </h3>
+              <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                <Star size={16} className="text-yellow-400 fill-yellow-400" />
+                <span>5.0 (20 reviews)</span>
+                <span className="h-1 w-1 bg-gray-400 rounded-full mx-1"></span>
+                <MapPin size={16} className="text-gray-500" />
+                <span>{proposal.tradesMan?.city || "N/A"}</span>
+              </div>
             </div>
           </div>
-        </div>
-
 
           <div className="flex flex-col items-center gap-3">
                 <button
@@ -108,7 +107,8 @@ console.log(proposal)
         <div className="flex items-center justify-between  gap-4 text-sm text-gray-500 mt-4">
           <div className="flex items-center gap-2 font-semibold">
             <span className="text-xl text-primary font-bold">
-              ${proposal.jobs?.price ? proposal.jobs.price.toFixed(2) : "N/A"}/hr
+              ${proposal.jobs?.price ? proposal.jobs.price.toFixed(2) : "N/A"}
+              /hr
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -123,7 +123,6 @@ console.log(proposal)
       </div>
 
       {/* Right side: Actions */}
-    
     </div>
   );
 };
@@ -138,7 +137,7 @@ const UserJobDetails: React.FC = () => {
     isError: proposalError,
     refetch: refetchProposals,
   } = useGetProposalsByJobIdQuery(id!);
-console.log(proposalResponse)
+  console.log(proposalResponse);
   // Fetch job details
   const {
     data: jobResponse,
@@ -149,9 +148,9 @@ console.log(proposalResponse)
   const proposalData = proposalResponse?.data || [];
   const jobData = jobResponse?.data;
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleBack = () => {
-    navigate("/user-dashboard/my-jobs")
+    navigate("/user-dashboard/my-jobs");
   };
 
   if (proposalLoading || jobLoading)
@@ -232,9 +231,7 @@ console.log(proposalResponse)
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <Briefcase size={16} />
                     <span>
-                      {Array.isArray(proposalData)
-                        ? proposalData.length
-                        : 0}{" "}
+                      {Array.isArray(proposalData) ? proposalData.length : 0}{" "}
                       proposals received
                     </span>
                   </div>

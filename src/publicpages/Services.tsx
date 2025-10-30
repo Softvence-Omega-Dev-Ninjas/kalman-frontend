@@ -3,7 +3,7 @@ import { MdDoubleArrow } from "react-icons/md";
 import SideFilterForService from "../components/ServiceComponents/SideFilterForService";
 import AllServices from "../components/ServiceComponents/AllServices";
 import { useTradesman } from "@/redux/features/tradesman/hooks/useTradesman";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 function Services() {
   const [filters, setFilters] = useState({
@@ -13,9 +13,47 @@ function Services() {
     location: "",
     rating: "",
   });
-
+  const [sortOption, setSortOption] = useState("relevance");
   const { tradesmen, page, isLoading, setPage, totalPages, total } =
     useTradesman(filters);
+
+  const sortedTradesmen = useMemo(() => {
+    if (!Array.isArray(tradesmen)) return [];
+
+    const sorted = [...tradesmen];
+
+    switch (sortOption) {
+      case "date":
+        sorted.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        break;
+
+      case "rate-asc":
+        sorted.sort(
+          (a, b) =>
+            Number(a.businessDetail.hourlyRate || 0) -
+            Number(b.businessDetail.hourlyRate || 0)
+        );
+        break;
+
+      case "rate-desc":
+        sorted.sort(
+          (a, b) =>
+            Number(b.businessDetail.hourlyRate || 0) -
+            Number(a.businessDetail.hourlyRate || 0)
+        );
+        break;
+
+      default:
+        break;
+    }
+
+    return sorted;
+  }, [tradesmen, sortOption]);
+
+  console.log("tradesmen", tradesmen);
 
   return (
     <div>
@@ -41,18 +79,19 @@ function Services() {
               <h1 className="text-lg text-primary-txt font-semibold">
                 Available Tradespeople ({total})
               </h1>
-              <select className="border border-secondary rounded-md px-3 py-2 focus:outline-none">
-                <option value="relevance">
-                  <span className="font-semibold">Sort by:</span> My Most
-                  Relevant
-                </option>
-                <option value="date">Sort by </option>
-                <option value="rate-asc">Sort by </option>
-                <option value="rate-desc">Sort by </option>
+              <select
+                className="border border-secondary rounded-md px-3 py-2 focus:outline-none"
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+              >
+                <option value="relevance">Sort by: Most Relevant</option>
+                <option value="date">Sort by: Date</option>
+                <option value="rate-asc">Sort by: Low Price</option>
+                <option value="rate-desc">Sort by: High Price</option>
               </select>
             </div>
             <AllServices
-              tradesman={tradesmen}
+              tradesman={sortedTradesmen}
               isLoading={isLoading}
               page={page}
               setPage={setPage}
