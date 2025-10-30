@@ -53,14 +53,14 @@ const TradeCount: React.FC<Props> = ({
             >
               {/* Left Accent Bar */}
               <div
-                style={{ width: 4, height: 48, backgroundColor: accent }}
+                style={{ width: 4, height: 86, backgroundColor: accent }}
                 className="hidden md:block rounded"
               />
 
               {/* Text */}
-              <div className="text-center ">
+              <div className=" ">
                 <div
-                  className="text-2xl md:text-3xl font-bold"
+                  className="text-2xl md:text-4xl font-bold"
                   style={{ color: accent }}
                 >
                   {s.value}

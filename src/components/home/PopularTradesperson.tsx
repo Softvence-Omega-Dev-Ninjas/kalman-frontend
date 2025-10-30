@@ -48,6 +48,8 @@ const PopularTradesperson = () => {
     },
   ];
 
+// const {data} = useserv
+
   const handleContact = (name: string) => {
     console.log(`Contacting ${name}`);
   };

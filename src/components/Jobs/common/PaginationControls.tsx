@@ -50,7 +50,7 @@ export function PaginationControls({
             <PaginationPrevious
               href="#"
               onClick={() => onPageChange(Math.max(1, page - 1))}
-              className={`rounded-full px-3 py-2 text-sm transition ${
+              className={`rounded-md !p-2 text-sm transition cursor-pointer bg-primary !text-white !opacity-90 ${
                 page === 1 ? "pointer-events-none opacity-50" : "hover:bg-muted"
               }`}
             />
@@ -74,7 +74,7 @@ export function PaginationControls({
                   className={`w-9 h-9 flex items-center  justify-center rounded-md text-sm font-medium transition ${
                     p === page
                       ? "bg-primary text-white shadow-sm"
-                      : "hover:bg-muted hover:text-primary"
+                      : "hover:bg-muted  hover:text-primary"
                   }`}
                 >
                   {p}
@@ -88,7 +88,7 @@ export function PaginationControls({
             <PaginationNext
               href="#"
               onClick={() => onPageChange(Math.min(totalPages, page + 1))}
-              className={`rounded-full px-3 py-2 text-sm transition ${
+              className={`rounded-md  !p-2 text-sm transition cursor-pointer bg-primary !text-white !opacity-90 ${
                 page === totalPages
                   ? "pointer-events-none opacity-50"
                   : "hover:bg-muted"
