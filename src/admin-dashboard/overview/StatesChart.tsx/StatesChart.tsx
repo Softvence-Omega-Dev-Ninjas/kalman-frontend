@@ -1,6 +1,6 @@
 import {
 
-  recentActivity,
+  // recentActivity,
   systemStatus,
 
 } from "../data/overviewData";
@@ -42,7 +42,7 @@ useEffect(()=>{
   return (
     <div className="">
       {/* Filters */}
-      <div className="flex justify-between items-center mb-6 flex-wrap bg-white py-3 mt-5 px-5 rounded-lg">
+      {/* <div className="flex justify-between items-center mb-6 flex-wrap bg-white py-3 mt-5 px-5 rounded-lg">
         <div className="flex items-center space-x-2">
           <span className="text-gray-500 text-sm">Filters:</span>
           <select className="bg-white border border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -51,7 +51,7 @@ useEffect(()=>{
             <option>This Month</option>
           </select>
         </div>
-      </div>
+      </div> */}
 
       {/* Top Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -120,42 +120,6 @@ useEffect(()=>{
           )}
         </DashboardSection>
 
-        <DashboardSection title="System Status">
-          {systemStatus.map((item, idx) => (
-            <div
-              key={idx}
-              className="flex justify-between py-2 border-b last:border-b-0"
-            >
-              <span className="text-sm text-gray-500">{item.label}</span>
-              <span className="text-sm font-medium text-gray-700">
-                {item.value}
-              </span>
-            </div>
-          ))}
-        </DashboardSection>
-      </div>
-
-      {/* Recent Activity & Top Services */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <DashboardSection title="Recent Activity">
-          {recentActivity.map((activity) => (
-            <div
-              key={activity?.id}
-              className="flex items-start space-x-3 py-2 border-b last:border-b-0"
-            >
-              <span className="flex-shrink-0 text-gray-600">
-                {activity?.icon}
-              </span>
-              <div>
-                <p className="text-sm font-medium text-gray-700">
-                  {activity?.text}
-                </p>
-                <p className="text-xs text-gray-400">{activity?.time}</p>
-              </div>
-            </div>
-          ))}
-        </DashboardSection>
-
         <DashboardSection title="Top Service Categories">
           {topCatLoading ? (
             <p className="text-gray-500 text-sm">Loading...</p>
@@ -174,6 +138,44 @@ useEffect(()=>{
               </div>
             ))
           )}
+        </DashboardSection>
+
+      
+      </div>
+
+      {/* Recent Activity & Top Services */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* <DashboardSection title="Recent Activity">
+          {recentActivity.map((activity) => (
+            <div
+              key={activity?.id}
+              className="flex items-start space-x-3 py-2 border-b last:border-b-0"
+            >
+              <span className="flex-shrink-0 text-gray-600">
+                {activity?.icon}
+              </span>
+              <div>
+                <p className="text-sm font-medium text-gray-700">
+                  {activity?.text}
+                </p>
+                <p className="text-xs text-gray-400">{activity?.time}</p>
+              </div>
+            </div>
+          ))}
+        </DashboardSection> */}
+
+          <DashboardSection title="System Status">
+          {systemStatus.map((item, idx) => (
+            <div
+              key={idx}
+              className="flex justify-between py-2 border-b last:border-b-0"
+            >
+              <span className="text-sm text-gray-500">{item.label}</span>
+              <span className="text-sm font-medium text-gray-700">
+                {item.value}
+              </span>
+            </div>
+          ))}
         </DashboardSection>
       </div>
     </div>
