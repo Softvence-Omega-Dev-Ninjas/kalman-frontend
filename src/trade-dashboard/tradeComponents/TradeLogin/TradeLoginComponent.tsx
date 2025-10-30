@@ -215,7 +215,7 @@ const TradeLogInComponent: React.FC = () => {
             </Link>
           </div>
 
-          {/* <button
+          <button
             type="submit"
             disabled={isLoading}
             style={{ backgroundColor: "#FF7346" }}
@@ -224,7 +224,7 @@ const TradeLogInComponent: React.FC = () => {
             {isLoading ? "Signing in..." : "Sign In"}
           </button>
 
-          <div className="flex items-center my-4 font-semibold">
+          {/* <div className="flex items-center my-4 font-semibold">
             <div className="flex-1 h-px bg-gray-200" />
             <div className="px-4 text-sm text-gray-400">Or Continue with</div>
             <div className="flex-1 h-px bg-gray-200" />
