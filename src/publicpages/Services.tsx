@@ -53,8 +53,6 @@ function Services() {
     return sorted;
   }, [tradesmen, sortOption]);
 
-  console.log("tradesmen", tradesmen);
-
   return (
     <div>
       <div className="bg-[#0D1B2A] py-20 flex flex-col items-center justify-center gap-5">
