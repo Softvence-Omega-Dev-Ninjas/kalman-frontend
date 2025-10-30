@@ -1,7 +1,7 @@
 import React from "react";
 import { Briefcase, Clock, MapPin, Star, ArrowLeft, Check } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetProposalByIdQuery, useGetProposalsByJobIdQuery, useUpdateProposalMutation } from "@/redux/features/proposal/proposalApi";
+import {useGetProposalsByJobIdQuery, useUpdateProposalMutation } from "@/redux/features/proposal/proposalApi";
 import { useGetJobByIdQuery } from "@/redux/features/jobs/jobsApi";
 import toast from "react-hot-toast";
 
