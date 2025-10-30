@@ -46,8 +46,8 @@ const PostAJob = () => {
   });
 
   const progressPercent = () => {
-    if (phase === 1) return 20;
-    if (phase === 2) return 60;
+    if (phase === 1) return 40;
+    if (phase === 2) return 80;
     return 90;
   };
 
