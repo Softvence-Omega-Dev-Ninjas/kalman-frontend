@@ -196,7 +196,7 @@ budge_type: budgetType,
 >
   <option value="">Select type</option>
   <option value="FIXED">Fixed</option>
-  <option value="NEGOTIABLE">Negotiable</option>
+  <option value="HOURLY">Hourly</option>
 </select>
 
 
