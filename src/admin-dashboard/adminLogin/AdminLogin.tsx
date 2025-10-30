@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AiOutlineEyeInvisible, AiOutlineEye, AiOutlineMail } from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
+// import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
@@ -50,9 +50,14 @@ const AdminLogin: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+
     if (!formData.email || !formData.password) {
       toast.error("Please fill in all fields");
       return;
+    }
+    if(formData.rememberMe !== true){
+      toast.error("You must agree to the terms before continuing!")
+      return
     }
 
     try {
@@ -65,6 +70,10 @@ const AdminLogin: React.FC = () => {
         const token = res.data;
         const decoded = decodeJWT(token);
     //  console.log(res)
+    if(decoded.role !== "ADMIN"){
+      toast.error("Only Admin can login from here!")
+      return
+    }
         if (decoded) {
           const admin = {
             id: decoded.id,
@@ -93,9 +102,9 @@ const AdminLogin: React.FC = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    toast("Google login coming soon!");
-  };
+  // const handleGoogleLogin = () => {
+  //   toast("Google login coming soon!");
+  // };
 
   return (
     <div className="min-h-screen bg-white flex items-start">
@@ -184,27 +193,27 @@ const AdminLogin: React.FC = () => {
                 type="submit"
                 disabled={isLoading}
                 style={{ backgroundColor: "#FF7346" }}
-                className="w-full text-white py-3 rounded-md font-semibold mt-2 hover:bg-opacity-90 transition-colors disabled:bg-gray-400"
+                className="w-full text-white py-3 cursor-pointer rounded-md font-semibold mt-2 hover:bg-opacity-90 transition-colors disabled:bg-gray-400"
               >
                 {isLoading ? "Signing In..." : "Sign In"}
               </button>
 
               {/* Divider */}
-              <div className="flex items-center my-4 font-semibold">
+              {/* <div className="flex items-center my-4 font-semibold">
                 <div className="flex-1 h-px bg-gray-200" />
                 <div className="px-4 text-sm text-gray-400">Or Continue with</div>
                 <div className="flex-1 h-px bg-gray-200" />
-              </div>
+              </div> */}
 
               {/* Google */}
-              <button
+              {/* <button
                 type="button"
                 onClick={handleGoogleLogin}
                 className="w-full border border-gray-200 rounded-md py-2.5 flex items-center justify-center gap-3 hover:bg-gray-50"
               >
                 <FcGoogle size={20} />
                 <span className="text-sm font-medium">Google</span>
-              </button>
+              </button> */}
             </form>
           </div>
         </div>

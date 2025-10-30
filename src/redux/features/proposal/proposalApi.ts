@@ -1,8 +1,9 @@
+// src/redux/features/proposal/proposalApi.ts
 import { baseApi } from "@/redux/api/baseApi";
 
 export const proposalApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // 1️ Create a new proposal
+    // Create Proposal
     createProposal: builder.mutation({
       query: (data) => ({
         url: "/proposal",
@@ -11,7 +12,7 @@ export const proposalApi = baseApi.injectEndpoints({
       }),
     }),
 
-    // 2️ Get all proposals
+    // Get All Proposals
     getAllProposals: builder.query({
       query: () => ({
         url: "/proposal",
@@ -19,24 +20,40 @@ export const proposalApi = baseApi.injectEndpoints({
       }),
     }),
 
-    // 3️ Get a single proposal by ID
-    getProposalById: builder.query({
+    // Get My Proposal by Job ID
+    getMyProposalByJobId: builder.query({
+      query: (jobId) => ({
+        url: `/proposal/my-proposal/${jobId}`,
+        method: "GET",
+      }),
+    }),
+
+    // Get All Proposals by Job ID
+    getProposalsByJobId: builder.query({
       query: (jobId) => ({
         url: `/proposal/jobs/${jobId}`,
         method: "GET",
       }),
     }),
 
-    // 4️ Update a proposal
-    updateProposal: builder.mutation({
-      query: ({ id, data }) => ({
+    // Get Proposal by ID
+    getProposalById: builder.query({
+      query: (id) => ({
         url: `/proposal/${id}`,
-        method: "PATCH",
-        body: data,
+        method: "GET",
       }),
     }),
 
-    // 5️ Delete a proposal
+    // Update Proposal by ID
+    updateProposal: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/proposal/${id}`,
+        method: "PATCH",
+        body,
+      }),
+    }),
+
+    // Delete Proposal by ID
     deleteProposal: builder.mutation({
       query: (id) => ({
         url: `/proposal/${id}`,
@@ -49,6 +66,8 @@ export const proposalApi = baseApi.injectEndpoints({
 export const {
   useCreateProposalMutation,
   useGetAllProposalsQuery,
+  useGetMyProposalByJobIdQuery,
+  useGetProposalsByJobIdQuery,
   useGetProposalByIdQuery,
   useUpdateProposalMutation,
   useDeleteProposalMutation,

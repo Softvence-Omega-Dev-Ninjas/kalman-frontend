@@ -1,50 +1,83 @@
-
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useState } from "react";
-import { IoAlertCircleOutline } from "react-icons/io5";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { useSelector } from "react-redux";
 import ProposalModal from "./ProposalModal";
-import ReportModal from "./ReportModal";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+// import { useGetMyProposalByJobIdQuery } from "@/redux/features/proposal/proposalApi";
+import { ArrowRight } from "lucide-react";
 import LocationMap from "./LocationMap";
+import ChatWidget from "@/components/chat/ChatWidget";
+import ChatMinimized from "@/components/chat/ChatMinimized";
+import { useGetMyProposalByJobIdQuery } from "@/redux/features/proposal/proposalApi";
+
 
 const CustomerInformation = ({ customer }: { customer: any }) => {
-  const [reportModal, setReportModal] = useState(false);
   const [sendProposal, setSendProposal] = useState(false);
-
+  const [chatState, setChatState] = useState<'closed' | 'minimized' | 'open'>('closed');
   const user = useSelector(selectCurrentUser);
-  // console.log(user.id);
+  const navigate = useNavigate();
+  const jobCusInfo = customer;
+  const jobId = jobCusInfo?.id;
 
-  const cusInfo = customer;
-  // console.log(cusInfo)
+console.log('jobCusInfo',jobCusInfo)
+  const { data: proposalResponse, isLoading } = useGetMyProposalByJobIdQuery(jobId);
+  console.log(isLoading)
+  console.log('proposalResponse',proposalResponse);
 
- 
+  const proposal = proposalResponse || null;
+  console.log('proposal',proposal);
 
-  console.log("jobId", cusInfo);
+  const handleSendMessage = () => {
+    if (!user?.id) {
+      toast.error("Please log in to send a message.");
+      navigate("/general-login");
+      return;
+    }
+
+    // Open the chat widget
+    setChatState('open');
+  };
+
+  const handleSendProposal = () => {
+    if (!user?.id) {
+      toast.error("Please log in to send a proposal.");
+      navigate("/general-login");
+    } else {
+      setSendProposal(true);
+    }
+  };
+
+  const handleCloseChat = () => {
+    setChatState('closed');
+  };
+
+  const handleMinimizeChat = () => {
+    setChatState('minimized');
+  };
+
+  const handleOpenChat = () => {
+    setChatState('open');
+  };
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="space-y-4">
-      {/* Customer Information Card */}
+      {/* Customer Info Card */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-4 border-b border-gray-100">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-medium text-gray-900">
-              Customer Information
-            </h2>
-            <button
-              onClick={() => setReportModal(true)}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              <IoAlertCircleOutline size={20} />
-            </button>
-          </div>
+          <h2 className="text-lg font-medium text-gray-900">
+            Customer Information
+          </h2>
         </div>
 
         <div className="p-4">
           <div className="flex items-center gap-3 mb-4">
             <img
               src={
-                cusInfo?.customer?.profile_image ||
+                jobCusInfo?.customer?.profile_image ||
                 "https://randomuser.me/api/portraits/men/60.jpg"
               }
               alt=""
@@ -53,16 +86,12 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-medium text-gray-900">
-                  {cusInfo.customer?.name || "Customer Name"}
+                  {jobCusInfo.customer?.name || "Customer Name"}
                 </h3>
-                {/* {cusInfo.isVerified && (
-                  <IoCheckmarkCircle className="text-blue-500" size={16} />
-                )} */}
               </div>
               <div className="flex items-center gap-1 text-green-500">
                 <p className="text-sm ">
-                  {" "}
-                  {cusInfo?.customer?.verification && "Verified"}
+                  {jobCusInfo?.customer?.verification && "Verified"}
                 </p>
                 <MdOutlineVerifiedUser />
               </div>
@@ -72,77 +101,157 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
           <div className="flex justify-between items-center">
             <span className="text-sm text-gray-600">Member since</span>
             <span className="font-medium text-gray-900">
-              {cusInfo.customer?.createdAt
-                ? new Date(cusInfo.customer.createdAt).getFullYear()
+              {jobCusInfo.customer?.createdAt
+                ? new Date(jobCusInfo.customer.createdAt).getFullYear()
                 : "1990"}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Shortlist Fee Card */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100">
-        <div className="p-4">
-          <h3 className="font-medium text-gray-900 mb-2">Shortlist fee</h3>
-          <p className="text-2xl font-semibold text-orange-500 mb-3">
-            {cusInfo?.shortlist_fee || "$20.00 + VAT"}
+      {/* Conditional Rendering */}
+      {proposal ? (
+        <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-sm mb-6">
+          {/* Header Section */}
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-foreground mb-2">
+              Shortlist fee
+            </h1>
+            <p className="text-3xl font-bold text-orange-500">
+              {proposal.shortlist_fee || "$20.00 + VAT"}
+            </p>
+          </div>
+
+          {/* Info Box */}
+          <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <h2 className="text-lg font-semibold text-foreground mb-2">
+              Interested in this lead?
+            </h2>
+            <p className="text-sm text-gray-600 mb-4">
+              The shortlist fee will be charged automatically once the customer
+              provides their contact details.
+            </p>
+            <button 
+              // onClick={handleSendProposal}
+              className="w-full cursor-pointer py-3 px-4 bg-white border border-gray-300 rounded-lg font-medium text-foreground hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+            >
+              Share a proposal
+              <ArrowRight size={18} />
+            </button>
+          </div>
+
+          {/* Status Section */}
+          <div className="mb-6 flex items-center justify-between text-sm text-gray-600">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-foreground">
+                {proposal.shortlisted_count || "01"}
+              </span>
+              <span>Shortlisted</span>
+            </div>
+            <span className="text-gray-400">|</span>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-foreground">
+                {proposal.another_count || "01"}
+              </span>
+              <span>Shortlisted</span>
+            </div>
+          </div>
+
+          {/* Message Section */}
+          <div className="mb-6">
+            <p className="text-base font-semibold text-foreground">
+              {proposal.customer_message ||
+                "The customer invited you to discuss their lead."}
+            </p>
+          </div>
+
+          {/* CTA Button */}
+          <button 
+            onClick={handleSendMessage}
+            className="w-full py-3 cursor-pointer px-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors"
+          >
+            Send a message
+          </button>
+        </div>
+      ) : (
+        <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-sm">
+          <h1 className="text-2xl font-bold text-foreground mb-2">
+            Shortlist fee
+          </h1>
+          <p className="text-3xl font-bold text-orange-500">
+            {jobCusInfo?.shortlist_fee || "$20.00 + VAT"}
           </p>
 
-          <div className="p-3 rounded-md bg-gray-100">
-            <p className="text-sm font-medium text-gray-900 mb-1">
+          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200 mt-4 mb-6">
+            <h2 className="text-lg font-semibold text-foreground mb-2">
               No charge to express interest
-            </p>
-            <p className="text-xs text-gray-600 mb-4">
+            </h2>
+            <p className="text-sm text-gray-600">
               You're only charged if the customer shortlists you
             </p>
           </div>
 
-          <div className="flex items-center justify-center gap-8 mb-4 py-3">
-            <div className="flex items-center gap-2 text-center">
-              <p className="text-2xl font-bold text-gray-900">
-                {cusInfo.shortlist_fee || "01"}
-              </p>
-              <p className="text-sm text-gray-600">Shortlisted</p>
+          <div className="mb-6 flex items-center justify-between text-sm text-gray-600">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-foreground">
+                {jobCusInfo.shortlisted_count || "01"}
+              </span>
+              <span>Shortlisted</span>
             </div>
-            <div className="flex items-center gap-2 text-center border-l border-gray-300 pl-8">
-              <p className="text-2xl font-bold text-gray-900">
-                {cusInfo.shortlistedCount || "01"}
-              </p>
-              <p className="text-sm text-gray-600">Shortlisted</p>
+            <span className="text-gray-400">|</span>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-foreground">
+                {jobCusInfo.another_count || "01"}
+              </span>
+              <span>Shortlisted</span>
             </div>
           </div>
 
-          <p className="text-sm text-gray-700 mb-4">
-            {/* {actualCustomer.invitationMessage ||
-              "The customer invited you to discuss their lead."} */}
-          </p>
-
-          <div className="flex gap-3">
-            <button
-              onClick={() => setSendProposal(true)}
-              className="flex-1 bg-primary text-white py-3 px-4 rounded-lg font-medium hover:bg-orange-600 transition-colors"
-            >
-              Express interest
-            </button>
-            <button className="px-6 py-3 border border-primary text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors">
-              Decline
-            </button>
+          {/* Message Section */}
+          <div className="mb-6">
+            <p className="text-base font-semibold text-foreground">
+              {jobCusInfo.customer_message ||
+                "The customer invited you to discuss their lead."}
+            </p>
           </div>
+          <button
+            onClick={handleSendProposal}
+            className="w-full py-3 px-4 cursor-pointer bg-primary hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors"
+          >
+            Express interest
+          </button>
         </div>
-      </div>
+      )}
 
-      {/* Map Card */}
-      <LocationMap cusInfo={cusInfo} />
-
-      {/* Report Modal */}
-      {reportModal && <ReportModal />}
-
-      {/* Send Proposal Modal */}
+      <LocationMap jobCusInfo={jobCusInfo} />
+      
+      {/* Proposal Modal */}
       {sendProposal && (
         <ProposalModal
-          jobId={cusInfo.id} // ← your job ID
-          tradesManId={user.id} // ← current user ID
-          onClose={() => setSendProposal(false)} // ← close modal
+          jobId={jobCusInfo.id}
+          tradesManId={user?.id}
+          onClose={() => setSendProposal(false)}
+        />
+      )}
+
+      {/* Chat Widget */}
+      {chatState === 'open' && (
+        <ChatWidget
+          recipientId={jobCusInfo.customer?.id}
+          recipientName={jobCusInfo.customer?.name}
+          recipientImage={jobCusInfo.customer?.profile_image}
+          onClose={handleCloseChat}
+          onMinimize={handleMinimizeChat}
+        />
+      )}
+
+      {/* Minimized Chat */}
+      {chatState === 'minimized' && (
+        <ChatMinimized
+          recipientName={jobCusInfo.customer?.name}
+          recipientImage={jobCusInfo.customer?.profile_image}
+          onOpen={handleOpenChat}
+          onClose={handleCloseChat}
         />
       )}
     </div>

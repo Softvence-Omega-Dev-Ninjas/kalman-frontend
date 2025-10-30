@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, SquarePen, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import {
@@ -32,7 +32,9 @@ const ManageCategoryPage = () => {
     page: currentPage,
     limit: pageSize,
   });
-
+useEffect(()=>{
+  refetch()
+}, [])
   const categories: TCategory[] = data?.data?.result ?? [];
   const totalItems = data?.data?.metadata?.totalItem ?? 0;
   const totalPages = Math.ceil(totalItems / pageSize);

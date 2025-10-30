@@ -1,5 +1,6 @@
 
 import { MapPin, Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface ServiceCardProps {
   image: string;
@@ -55,9 +56,11 @@ const ServiceCard = ({
           </div>
         </div>
         
-        <button className="w-full bg-primary text-white font-medium py-3 px-4 rounded-md transition-colors duration-200">
-          {buttonText}
-        </button>
+        <Link to={"/services"}>
+          <button className="w-full bg-primary cursor-pointer hover:bg-primary/80 text-white font-medium py-3 px-4 rounded-md transition-colors duration-200">
+            {buttonText}
+          </button>
+        </Link>
       </div>
     </div>
   );

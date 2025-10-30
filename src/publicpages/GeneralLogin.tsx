@@ -72,7 +72,10 @@ const GeneralLogin: React.FC = () => {
 
       if (result.success && result.data) {
         const { token, user } = result.data;
-
+if(user.role !== "CUSTOMER"){
+  toast.error("Only Customer are allow for login from here!")
+  return
+}
         const userData = {
           id: user.id,
           name: user.name,
@@ -88,6 +91,7 @@ const GeneralLogin: React.FC = () => {
             token,
           })
         );
+        
 
         // Store in localStorage for persistence
         localStorage.setItem("token", token);

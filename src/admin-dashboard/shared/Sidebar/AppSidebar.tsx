@@ -55,12 +55,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       show: true,
     },
     // Commision
-     {
-      title: "Commision",
-      url: "/dashboard/admin/Commision",
-      Icon: RiDiscountPercentLine,
-      show: true,
-    },
+    //  {
+    //   title: "Commision",
+    //   url: "/dashboard/admin/Commision",
+    //   Icon: RiDiscountPercentLine,
+    //   show: true,
+    // },
     {
       title: "Blog Management",
       url: "/dashboard/admin/manage-blog",

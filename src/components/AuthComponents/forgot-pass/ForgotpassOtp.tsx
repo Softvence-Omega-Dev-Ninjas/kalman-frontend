@@ -64,11 +64,11 @@ console.log(setEmail, "-")
         </InputOTP>
         <div className="text-sm text-gray-600 mb-4">
           Didn’t get the code?{" "}
-          <button type="button" onClick={handleResend} disabled={isResending} className="text-primary hover:underline disabled:text-gray-400">
+          <button type="button" onClick={handleResend} disabled={isResending} className="text-primary cursor-pointer hover:underline disabled:text-gray-400">
             {isResending ? "Resending..." : "Resend"}
           </button>
         </div>
-        <Button type="submit" disabled={isLoading || otp.length !== 6} className="w-full">{isLoading ? "Verifying..." : "Confirm"}</Button>
+        <Button type="submit" disabled={isLoading || otp.length !== 6} className="w-full cursor-pointer">{isLoading ? "Verifying..." : "Confirm"}</Button>
       </form>
     </div>
   );

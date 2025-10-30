@@ -1,12 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-
 import { LuCalendarDays } from "react-icons/lu";
 import { WiTime4 } from "react-icons/wi";
 import { CiLocationOn } from "react-icons/ci";
 
 const JobInformation = ({ job }: { job: any }) => {
-  console.log(job);
+  const formattedDate = job?.updatedAt
+    ? new Date(job.updatedAt).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "N/A";
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-6 mb-5 bg-white p-5 rounded-md shadow-md">
@@ -22,21 +28,21 @@ const JobInformation = ({ job }: { job: any }) => {
           <div className="flex items-center gap-3 text-secondary">
             <div className="flex items-center gap-2">
               <LuCalendarDays />
-              <p>{job?.updatedAt}</p>
+              <p>{formattedDate}</p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 capitalize">
               <CiLocationOn className="text-lg" />
               <p>{job?.location}</p>
             </div>
             <div className="flex items-center gap-2">
               <WiTime4 className="text-lg" />
-              <p>{job?.timeline}</p>
+              <p className="capitalize">{job?.timeline}</p>
             </div>
           </div>
         </div>
         <div className="text-secondary space-y-3">
-          <h1 className="text-2xl font-semibold">{job?.rate}</h1>
-          <p className="text-lg">Hourly Budget</p>
+          <h1 className="text-2xl font-semibold">{job?.budge_type}</h1>
+          {/* <p className="text-lg">Hourly Budget</p> */}
         </div>
       </div>
       <div className="bg-white space-y-10 p-5 rounded-md shadow-md">
