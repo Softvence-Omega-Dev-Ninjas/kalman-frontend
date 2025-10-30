@@ -1,56 +1,54 @@
 import TradespersonCard from "../reuseable/TradePersonCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import trade1 from "../../assets/sample_images/trade1.png";
-import trade2 from "../../assets/sample_images/trade2.png";
-import trade3 from "../../assets/sample_images/trade3.png";
-import trade4 from "../../assets/sample_images/trade4.png";
-const PopularTradesperson = () => {
-  const tradespeople = [
-    {
-      id: "1",
-      image: trade1,
-      name: "Ronald Higgins",
-      profession: "Plumber",
-      rating: "5.0",
-      availability: "Full Time",
-      location: "At near your location",
-      hourlyRate: "20.00",
-    },
-    {
-      id: "2",
-      image: trade2,
-      name: "Wade Warren",
-      profession: "Handyman",
-      rating: "5.0",
-      availability: "Part Time",
-      location: "At near your location",
-      hourlyRate: "30.00",
-    },
-    {
-      id: "3",
-      image: trade3,
-      name: "Ronald Higgins",
-      profession: "Electrician",
-      rating: "5.0",
-      availability: "Full Time",
-      location: "At near your location",
-      hourlyRate: "40.00",
-    },
-    {
-      id: "4",
-      image: trade4,
-      name: "Jacob Jones",
-      profession: "Interior Designer",
-      rating: "5.0",
-      availability: "Part Time",
-      location: "At near your location",
-      hourlyRate: "50.00",
-    },
-  ];
+import { useTradesman } from "@/redux/features/tradesman/hooks/useTradesman";
+import { useMemo } from "react";
 
-  const handleContact = (name: string) => {
-    console.log(`Contacting ${name}`);
+interface Review {
+  rating: number;
+  text?: string;
+  [key: string]: any;
+}
+
+interface Tradesman {
+  id: string;
+  firstName: string;
+  lastName: string;
+  profession: string;
+  address: string;
+  images?: string[];
+  review: Review[];
+  businessDetail: {
+    businessType: string;
+    hourlyRate: string;
   };
+  [key: string]: any;
+}
+
+const PopularTradesperson = () => {
+  const { tradesmen } = useTradesman() as { tradesmen: Tradesman[] };
+
+  // Pure function to calculate review stats
+  const getReviewStats = (reviews: Review[] = []) => {
+    const totalReviews = reviews.length;
+    if (totalReviews === 0) return { totalReviews: 0, averageRating: 0 };
+
+    const totalStars = reviews.reduce((sum, r) => sum + (r.rating || 0), 0);
+    const averageRating = parseFloat((totalStars / totalReviews).toFixed(1));
+
+    return { totalReviews, averageRating };
+  };
+
+  // Sort tradesmen by average rating
+  const sortedTradesmen = useMemo(() => {
+    if (!tradesmen) return [];
+
+    return [...tradesmen].sort((a, b) => {
+      const avgA = getReviewStats(a.review).averageRating;
+      const avgB = getReviewStats(b.review).averageRating;
+      return avgB - avgA;
+    });
+  }, [tradesmen]);
 
   return (
     <div className="bg-gray-50 py-16 px-4">
@@ -83,18 +81,17 @@ const PopularTradesperson = () => {
 
         {/* Tradesperson Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {tradespeople.map((person, index) => (
+          {sortedTradesmen?.map((person, index) => (
             <TradespersonCard
               id={person.id}
               key={index}
-              image={person.image}
-              name={person.name}
+              image={trade1}
+              name={`${person.firstName} ${person.lastName}`}
               profession={person.profession}
-              rating={person.rating}
-              availability={person.availability}
-              location={person.location}
-              hourlyRate={person.hourlyRate}
-              onContact={() => handleContact(person.name)}
+              review={person?.review}
+              availability={person.businessDetail.businessType}
+              location={person.address}
+              hourlyRate={person.businessDetail.hourlyRate}
             />
           ))}
         </div>

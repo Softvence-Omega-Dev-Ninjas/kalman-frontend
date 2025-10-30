@@ -10,11 +10,13 @@ import ReviewCard from "@/components/ServiceComponents/ReviewCard";
 import { Link, useParams } from "react-router-dom";
 import { useGetSingleTradesmanQuery } from "@/redux/features/tradesman/tradesmanApi";
 import TradesManBusinessDetails from "@/components/ServiceComponents/TradesManBusinessDetails";
+import { useReviewCount } from "@/redux/features/tradesman/hooks/useReviewCount";
 
 const ServiceDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useGetSingleTradesmanQuery(id);
   const [openContact, setOpenContact] = useState(false);
+  const { totalReviews, averageRating } = useReviewCount(data?.data?.review);
 
   return (
     <div className="bg-[#f3f5f7] min-h-screen py-16 px-16">
@@ -67,7 +69,7 @@ const ServiceDetails = () => {
                       <span>{data?.data?.address}</span>
                     </div>
                     <div className="text-sm text-primary font-semibold mt-1">
-                      ★ 4.8 (170 Reviews)
+                      ★ {averageRating} ({totalReviews} reviews)
                     </div>
                   </div>
                 </div>
