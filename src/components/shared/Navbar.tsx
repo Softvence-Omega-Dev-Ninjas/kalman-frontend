@@ -412,7 +412,7 @@ const Navbar = () => {
                           to={
                             userState.role === "CUSTOMER"
                               ? "/user-dashboard"
-                              : "/trade-person-dashboard"
+                              : "/trade-person"
                           }
                           onClick={handleNavLinkClick}
                           className="flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors"
@@ -426,7 +426,7 @@ const Navbar = () => {
                           to={
                             userState.role === "CUSTOMER"
                               ? "/user-dashboard/settings"
-                              : "/trade-person-dashboard/settings"
+                              : "/trade-person/settings"
                           }
                           onClick={handleNavLinkClick}
                           className="flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors"

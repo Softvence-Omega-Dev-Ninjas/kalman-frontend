@@ -70,6 +70,10 @@ const AdminLogin: React.FC = () => {
         const token = res.data;
         const decoded = decodeJWT(token);
     //  console.log(res)
+    if(decoded.role !== "ADMIN"){
+      toast.error("Only Admin can login from here!")
+      return
+    }
         if (decoded) {
           const admin = {
             id: decoded.id,

@@ -1,3 +1,4 @@
+
 import TradespersonCard from "../reuseable/TradePersonCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import trade1 from "../../assets/sample_images/trade1.png";
@@ -101,3 +102,4 @@ const PopularTradesperson = () => {
 };
 
 export default PopularTradesperson;
+
