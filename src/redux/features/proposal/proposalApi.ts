@@ -46,10 +46,10 @@ export const proposalApi = baseApi.injectEndpoints({
 
     // Update Proposal by ID
     updateProposal: builder.mutation({
-      query: ({ id, ...data }) => ({
+      query: ({ id, ...body }) => ({
         url: `/proposal/${id}`,
         method: "PATCH",
-        body: data,
+        body,
       }),
     }),
 

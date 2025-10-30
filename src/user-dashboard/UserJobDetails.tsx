@@ -1,16 +1,16 @@
 import React from "react";
 import { Briefcase, Clock, MapPin, Star, ArrowLeft, Check } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetProposalByIdQuery, useGetProposalsByJobIdQuery, useUpdateProposalMutation } from "@/redux/features/proposal/proposalApi";
+import { useGetProposalsByJobIdQuery, useUpdateProposalMutation } from "@/redux/features/proposal/proposalApi";
 import { useGetJobByIdQuery } from "@/redux/features/jobs/jobsApi";
 import toast from "react-hot-toast";
 
 const ProposalCard: React.FC<{ proposal: any; onStatusChange?: () => void }> = ({ proposal, onStatusChange }) => {
-  const [updateProposal, { isLoading }] = useUpdateProposalMutation();
-
+  const [updateProposal, { isLoading }] =   useUpdateProposalMutation();
+console.log(proposal)
   const handleAccept = async () => {
     try {
-      await updateProposal({ id: proposal.id, data: { status: "ACCEPTED" } }).unwrap();
+      await updateProposal({ id: proposal.id,  status: "ACCEPTED"  }).unwrap();
       toast("Proposal accepted!");
       onStatusChange?.(); // parent refetch
     } catch (error) {
@@ -21,7 +21,7 @@ const ProposalCard: React.FC<{ proposal: any; onStatusChange?: () => void }> = (
 
   const handleDecline = async () => {
     try {
-      await updateProposal({ id: proposal.id, data: { status: "REJECTED" } }).unwrap();
+      await updateProposal({ id: proposal.id, status: "REJECTED"  }).unwrap();
       toast("Proposal rejected!");
       onStatusChange?.(); // parent refetch
     } catch (error) {
@@ -65,32 +65,32 @@ const ProposalCard: React.FC<{ proposal: any; onStatusChange?: () => void }> = (
 
 
           <div className="flex flex-col items-center gap-3">
-        <button
-          onClick={handleAccept}
-          disabled={isLoading}
-          className={`flex cursor-pointer items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-            proposal.status === "ACCEPTED"
-              ? "bg-green-500 text-white"
-              : "bg-green-500 hover:bg-green-400 text-white"
-          }`}
-        >
-          Accept
-          {proposal.status === "ACCEPTED" && <Check size={16} />}
-        </button>
+                <button
+                  onClick={handleAccept}
+                  disabled={isLoading || proposal.status === "ACCEPTED"}
+                  className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    proposal.status === "ACCEPTED" || isLoading
+                      ? "bg-green-500 text-white cursor-not-allowed opacity-50"
+                      : "bg-green-500 hover:bg-green-400 text-white cursor-pointer"
+                  }`}
+                >
+                  Accept
+                  {proposal.status === "ACCEPTED" && <Check size={16} />}
+                </button>
 
-        <button
-          onClick={handleDecline}
-          disabled={isLoading}
-          className={`flex cursor-pointer items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-            proposal.status === "REJECTED"
-              ? "bg-red-500 text-white"
-              : "bg-red-500 hover:bg-red-400 text-white"
-          }`}
-        >
-          Decline
-          {proposal.status === "REJECTED" && <Check size={16} />}
-        </button>
-      </div>
+                <button
+                  onClick={handleDecline}
+                  disabled={isLoading || proposal.status === "REJECTED"}
+                  className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    proposal.status === "REJECTED" || isLoading
+                      ? "bg-red-500 text-white cursor-not-allowed opacity-50"
+                      : "bg-red-500 hover:bg-red-400 text-white cursor-pointer"
+                  }`}
+                >
+                  Decline
+                  {proposal.status === "REJECTED" && <Check size={16} />}
+                </button>
+          </div>
             </div>
 
         {/* Job details */}
@@ -112,7 +112,7 @@ const ProposalCard: React.FC<{ proposal: any; onStatusChange?: () => void }> = (
           </div>
           <div className="flex items-center gap-2">
             <Briefcase size={16} />
-            <span>Job complete (N/A)</span>
+            <span>Job complete: {proposal?.jobs?.isComplete? "Yes" : "No"}</span>
           </div>
           <div className="flex items-center gap-2">
             <Clock size={16} />

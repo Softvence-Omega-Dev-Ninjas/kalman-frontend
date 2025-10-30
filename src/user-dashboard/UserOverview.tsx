@@ -14,12 +14,12 @@ const UserOverview = () => {
   const [viewAll , setViewAll] = useState(false);
 
   const { data } = useGetAllCustomersQuery();
-
+const viewCount= 4
   const jobs = data?.data?.jobs || [];
   const totalJobsThisMonth = data?.data?.jobOfThisMonth || 0;
   const sortListedThisMonth = data?.data?.sortListedThisMonth || 0;
 
-  const shortlist = viewAll ? jobs : jobs.slice(0, 2);
+  const shortlist = viewAll ? jobs : jobs.slice(0, viewCount);
 
   const HandleViewAll = () => {
     setViewAll(prev => !prev);
@@ -74,12 +74,15 @@ const UserOverview = () => {
             </div>
 
             <div className="mt-3 text-center">
-              <button 
+              {
+                (jobs?.length > viewCount) &&  <button 
                 onClick={HandleViewAll} 
                 className="text-gray-600 cursor-pointer hover:text-gray-800 font-medium text-sm bg-white p-3 rounded-lg border-gray-200 border-1 w-full"
               >
                {viewAll ? "View Less Jobs" : "View All Jobs"}  
               </button>
+              }
+             
             </div>
           </div>
         </div>

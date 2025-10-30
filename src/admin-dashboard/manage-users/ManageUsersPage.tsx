@@ -46,6 +46,10 @@ const ManageUsersPage = () => {
     search: debouncedSearch,
   });
 
+  useEffect(()=>{
+  refetch()
+}, [])
+
   const users = data?.data.users || [];
   const totalUser = data?.data.totalUser || 0;
 

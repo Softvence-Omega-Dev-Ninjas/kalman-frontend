@@ -63,7 +63,7 @@ console.log(setEmail, "-")
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-primary text-white hover:bg-primary/90"
+          className="w-full cursor-pointer bg-primary text-white hover:bg-primary/90"
         >
           {isLoading ? "Updating..." : "Update Password"}
         </Button>

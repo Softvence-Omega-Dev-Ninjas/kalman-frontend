@@ -1,5 +1,5 @@
 import { Eye, Filter, Search } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import CustomTable from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
 import type { Column } from "../shared/CustomTable/CustomTable";
@@ -19,7 +19,11 @@ const ManagePaymentsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
 
-  const { data, isLoading } = useGetAllPaymentsQuery();
+  const { data, isLoading ,refetch } = useGetAllPaymentsQuery();
+
+  useEffect(()=>{
+    refetch()
+  }, [])
 
   // Modal state
   // const [selectedPayment, setSelectedPayment] = useState<any | null>(null);
