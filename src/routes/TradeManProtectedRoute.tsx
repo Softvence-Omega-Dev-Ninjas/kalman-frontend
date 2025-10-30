@@ -11,7 +11,7 @@ const TradeManProtectedRoute = ({ children }: Props) => {
 
   if (!token) {
     toast.error("Please login to continue!");
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/trade-login" replace />;
   }
 
   try {

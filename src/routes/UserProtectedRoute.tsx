@@ -11,7 +11,7 @@ const UserProtectedRoute = ({ children }: Props) => {
 
   if (!token) {
     toast.error("Please login to continue!");
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/general-login" replace />;
   }
 
   try {
@@ -31,7 +31,7 @@ const UserProtectedRoute = ({ children }: Props) => {
 
   if (user?.role !== "CUSTOMER") {
     toast.error("Access denied! Only customers can access this page.");
-    return <Navigate to="/admin/general-login" replace />;
+    return <Navigate to="/general-login" replace />;
   }
 
   return <>{children}</>;

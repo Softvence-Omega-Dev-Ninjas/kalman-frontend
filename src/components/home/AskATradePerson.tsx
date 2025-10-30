@@ -84,7 +84,7 @@ const AskATradePerson: React.FC<Props> = ({
 
                 <div className="text-center mt-8">
                     <div className="text-sm font-semibold text-black mb-4">Need expert advice?</div>
-                    <button className="bg-primary text-white px-5 py-2.5 rounded-md shadow-md font-semibold">{ctaText}</button>
+                    <button className="bg-primary cursor-pointer hover:bg-primary/80 text-white px-5 py-2.5 rounded-md shadow-md font-semibold">{ctaText}</button>
                 </div>
             </div>
         </section>

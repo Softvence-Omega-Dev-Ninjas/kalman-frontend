@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ReadyToHireTradeperson: React.FC = () => {
   return (
@@ -20,9 +21,11 @@ const ReadyToHireTradeperson: React.FC = () => {
         </div>
 
         <div className="mt-8">
-          <button className="bg-primary text-white px-5 py-2.5 rounded-md shadow-sm">
+         <Link to={"/post-a-job"} >
+          <button className="bg-primary cursor-pointer hover:bg-primary/80 text-white px-5 py-2.5 rounded-md shadow-sm cursor-pointer">
             Post your job
           </button>
+          </Link>
         </div>
       </div>
     </section>
