@@ -224,7 +224,7 @@ const TradeLogInComponent: React.FC = () => {
             {isLoading ? "Signing in..." : "Sign In"}
           </button>
 
-          <div className="flex items-center my-4 font-semibold">
+          {/* <div className="flex items-center my-4 font-semibold">
             <div className="flex-1 h-px bg-gray-200" />
             <div className="px-4 text-sm text-gray-400">Or Continue with</div>
             <div className="flex-1 h-px bg-gray-200" />
@@ -236,7 +236,7 @@ const TradeLogInComponent: React.FC = () => {
           >
             <FcGoogle />
             <span className="text-sm">Google</span>
-          </button>
+          </button> */}
 
           <div className="text-center text-sm text-gray-600 mt-4 font-semibold">
             Don't have an account?{" "}

@@ -1,5 +1,5 @@
 // components/Jobs/Jobs.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SideFilterBar from "@/components/Jobs/SideFilterBar";
 import JobResults from "@/components/Jobs/JobCard";
 import { useGetJobsQuery } from "@/redux/features/jobs/jobsApi";
@@ -18,25 +18,29 @@ const Jobs = () => {
     sortBy: "relevant",
   });
 
-  const { data: jobData, isLoading } = useGetJobsQuery(filters);
+  const { data: jobData, isLoading, refetch } = useGetJobsQuery(filters);
   const jobs = jobData?.data?.data || [];
   const totalPages = jobData?.data?.meta?.totalPages || 1;
   const totalJobs = jobData?.data?.meta?.total || 0;
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const handlePageChange = (page: number) => {
     setFilters((prev) => ({ ...prev, page }));
   };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilters(prev => ({ 
-      ...prev, 
-      sortBy: e.target.value as any, 
-      page: 1 
+    setFilters((prev) => ({
+      ...prev,
+      sortBy: e.target.value as any,
+      page: 1,
     }));
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 mt-8">
+    <div className="min-h-screen bg-[#F2F4F8] py-10 px-4 mt-8">
       <div className="max-w-7xl mx-auto">
         {/* Sorting Header */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">

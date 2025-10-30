@@ -29,7 +29,7 @@ const LocationMap = ({ jobCusInfo }: { jobCusInfo: any }) => {
         <div className="p-3">
           <div className="flex items-center gap-2 mb-2">
             <CiLocationOn className="text-gray-500" size={18} />
-            <span className="text-lg font-medium text-gray-700">
+            <span className="text-lg font-medium text-gray-700 capitalize">
               Location: {jobCusInfo?.location || "Unknown"}
             </span>
           </div>
