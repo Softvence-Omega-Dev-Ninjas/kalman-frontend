@@ -215,7 +215,7 @@ const TradeLogInComponent: React.FC = () => {
             </Link>
           </div>
 
-          <button
+          {/* <button
             type="submit"
             disabled={isLoading}
             style={{ backgroundColor: "#FF7346" }}
@@ -236,7 +236,7 @@ const TradeLogInComponent: React.FC = () => {
           >
             <FcGoogle />
             <span className="text-sm">Google</span>
-          </button>
+          </button> */}
 
           <div className="text-center text-sm text-gray-600 mt-4 font-semibold">
             Don't have an account?{" "}

@@ -5,11 +5,12 @@ import { useSelector } from "react-redux";
 import ProposalModal from "./ProposalModal";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useGetMyProposalByJobIdQuery } from "@/redux/features/proposal/proposalApi";
+// import { useGetMyProposalByJobIdQuery } from "@/redux/features/proposal/proposalApi";
 import { ArrowRight } from "lucide-react";
 import LocationMap from "./LocationMap";
 import ChatWidget from "@/components/chat/ChatWidget";
 import ChatMinimized from "@/components/chat/ChatMinimized";
+import { useGetMyProposalByJobIdQuery } from "@/redux/features/proposal/proposalApi";
 
 
 const CustomerInformation = ({ customer }: { customer: any }) => {
@@ -18,13 +19,15 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
   const user = useSelector(selectCurrentUser);
   const navigate = useNavigate();
   const jobCusInfo = customer;
+  const jobId = jobCusInfo?.id;
 
 console.log('jobCusInfo',jobCusInfo)
-  const { data: proposalResponse, isLoading } = useGetMyProposalByJobIdQuery(
-    jobCusInfo?.id
-  );
+  const { data: proposalResponse, isLoading } = useGetMyProposalByJobIdQuery(jobId);
+  console.log(isLoading)
+  console.log('proposalResponse',proposalResponse);
 
-  const proposal = proposalResponse?.data || null;
+  const proposal = proposalResponse || null;
+  console.log('proposal',proposal);
 
   const handleSendMessage = () => {
     if (!user?.id) {

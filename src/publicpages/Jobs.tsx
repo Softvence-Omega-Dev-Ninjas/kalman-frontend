@@ -1,5 +1,5 @@
 // components/Jobs/Jobs.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SideFilterBar from "@/components/Jobs/SideFilterBar";
 import JobResults from "@/components/Jobs/JobCard";
 import { useGetJobsQuery } from "@/redux/features/jobs/jobsApi";
@@ -13,25 +13,29 @@ const Jobs = () => {
     location: "",
     minPrice: 0,
     maxPrice: 1000,
-    page: 10,
-    limit: 1,
+    page: 1,
+    limit: 10,
     sortBy: "relevant",
   });
 
-  const { data: jobData, isLoading } = useGetJobsQuery(filters);
+  const { data: jobData, isLoading, refetch } = useGetJobsQuery(filters);
   const jobs = jobData?.data?.data || [];
   const totalPages = jobData?.data?.meta?.totalPages || 1;
   const totalJobs = jobData?.data?.meta?.total || 0;
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const handlePageChange = (page: number) => {
     setFilters((prev) => ({ ...prev, page }));
   };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilters(prev => ({ 
-      ...prev, 
-      sortBy: e.target.value as any, 
-      page: 1 
+    setFilters((prev) => ({
+      ...prev,
+      sortBy: e.target.value as any,
+      page: 1,
     }));
   };
 
