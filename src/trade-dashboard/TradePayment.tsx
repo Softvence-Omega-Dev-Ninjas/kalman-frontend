@@ -2,10 +2,15 @@ import { useState } from "react";
 import { CreditCard, Plus, Trash2, Lock, FileText, Folder } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PaymentMethodForm from "./tradeComponents/PaymentMethod/PaymentMethodForm";
+import {
+  useGetTradesmanProfileQuery,
+  useRemovePaymentMethodMutation,
+  useSetDefaultPaymentMethodMutation,
+} from "@/redux/features/tradesman/tradesmanApi";
 
 interface PaymentMethod {
   id: number;
-  lastFour: string;
+  cardNumber: string;
   isDefault: boolean;
   expiryDate: string;
 }
@@ -13,56 +18,24 @@ interface PaymentMethod {
 interface PaymentHistoryItem {
   id: number;
   title: string;
-  status: "Shortlisted" | "Received";
-  date: string;
+  type: "SHORTLISTED_FEE" | "RECEIVED_FEE";
+  createdAt: string;
   visaLastFour: string;
   amount: number;
+  job: { title: string };
 }
 
-const initialPaymentMethods: PaymentMethod[] = [
-  { id: 1, lastFour: "4242", isDefault: true, expiryDate: "15/01/2024" },
-  { id: 2, lastFour: "4255", isDefault: false, expiryDate: "15/02/2024" },
-];
-
-const initialPaymentHistory: PaymentHistoryItem[] = [
-  {
-    id: 1,
-    title: "Kitchen Cabinet Installation",
-    status: "Shortlisted",
-    date: "15/02/2024",
-    visaLastFour: "4255",
-    amount: 20.0,
-  },
-  {
-    id: 2,
-    title: "Wedding Photography",
-    status: "Received",
-    date: "15/02/2024",
-    visaLastFour: "8255",
-    amount: 110.0,
-  },
-];
-
 export default function TradePayment() {
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>(
-    initialPaymentMethods
-  );
+  const { data } = useGetTradesmanProfileQuery(undefined);
+  const [removePaymentMethod] = useRemovePaymentMethodMutation();
+  const [setDefaultPaymentMethod] = useSetDefaultPaymentMethodMutation();
+
+  const paymentMethods: PaymentMethod[] = data?.data?.paymentMethod || [];
+  const initialPaymentHistory: PaymentHistoryItem[] =
+    data?.data?.payments || [];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => setIsModalOpen(true);
-
-  const handleSetAsDefault = (id: number) => {
-    setPaymentMethods(
-      paymentMethods.map((method) => ({
-        ...method,
-        isDefault: method.id === id,
-      }))
-    );
-  };
-
-  const handleDelete = (id: number) => {
-    setPaymentMethods(paymentMethods.filter((method) => method.id !== id));
-  };
-
+  console.log(data);
   return (
     <div className="pt-8 pb-28 max-w-5xl mx-auto">
       {/* Payment Methods Section */}
@@ -99,7 +72,7 @@ export default function TradePayment() {
                   <CreditCard className="text-gray-500" size={24} />
                   <div>
                     <p className="font-medium text-gray-700">
-                      Visa ********{method.lastFour}
+                      Visa *****{method.cardNumber?.slice(-4)}
                     </p>
                     <p className="text-sm text-gray-500">
                       Expire date : {method.expiryDate}
@@ -113,18 +86,20 @@ export default function TradePayment() {
                     </span>
                   ) : (
                     <Button
-                      onClick={() => handleSetAsDefault(method.id)}
+                      onClick={() => setDefaultPaymentMethod(method?.id)}
                       className=""
                     >
                       Set as Default
                     </Button>
                   )}
-                  <button
-                    onClick={() => handleDelete(method.id)}
-                    className="text-gray-600 hover:text-red-500 transition-colors duration-200"
-                  >
-                    <Trash2 size={20} />
-                  </button>
+                  {!method.isDefault && (
+                    <button
+                      onClick={() => removePaymentMethod(method?.id)}
+                      className="text-gray-600 hover:text-red-500 transition-colors duration-200"
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -172,19 +147,18 @@ export default function TradePayment() {
               >
                 <div className="flex-1 mb-2 sm:mb-0">
                   <p className="font-medium text-gray-700 flex items-center space-x-2">
-                    <span>{item.title}</span>
+                    <span>{item?.job?.title}</span>
                     <span
-                      className={`text-xs font-semibold px-5 py-2 rounded-md text-white ${
-                        item.status === "Shortlisted"
-                          ? "bg-green-500 text-green-700"
-                          : "bg-primary text-white"
-                      }`}
+                      className={`bg-primary text-white text-xs font-semibold px-5 py-2 rounded-md text-white`}
                     >
-                      {item.status}
+                      {item.type === "SHORTLISTED_FEE"
+                        ? "Shortlisted"
+                        : "Pending"}
                     </span>
                   </p>
                   <p className="text-sm text-gray-500 mt-1">
-                    Date : {item.date} &nbsp; Visa ********{item.visaLastFour}
+                    Date : {item.createdAt.split("T")[0]} &nbsp; Visa ********
+                    {item.visaLastFour}
                   </p>
                 </div>
                 <div className="flex items-center space-x-4">

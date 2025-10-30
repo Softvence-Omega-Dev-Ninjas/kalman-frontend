@@ -141,7 +141,7 @@ const TradeReviews: React.FC = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-[#F8F9FA] rounded-md mb-5">
+    <div className="max-w-5xl mx-auto p-6 bg-[#F8F9FA] rounded-md mb-28">
       {/* Header Section */}
       <div className="mb-8">
         <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-8">
@@ -272,15 +272,17 @@ const TradeReviews: React.FC = () => {
       </div>
 
       {/* View All Reviews Button */}
-      <div className="text-center bg-white p-2 rounded-md">
-        <button
-          onClick={handleViewAllReviews}
-          className="text-orange-500 font-medium hover:text-orange-600 transition-colors"
-          type="button"
-        >
-          View All Reviews
-        </button>
-      </div>
+      {getFilteredReviews().length > 0 && (
+        <div className="text-center bg-white p-2 rounded-md">
+          <button
+            onClick={handleViewAllReviews}
+            className="text-orange-500 font-medium hover:text-orange-600 transition-colors"
+            type="button"
+          >
+            View All Reviews
+          </button>
+        </div>
+      )}
     </div>
   );
 };
