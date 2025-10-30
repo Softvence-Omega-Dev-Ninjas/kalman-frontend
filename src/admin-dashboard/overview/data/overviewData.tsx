@@ -60,9 +60,9 @@ export const platformPerformance: PerformanceItem[] = [
 
 export const systemStatus: StatusItem[] = [
   { label: "Server Uptime", value: "99.98%" },
-  { label: "Active Users", value: "11847" },
+  // { label: "Active Users", value: "11847" },
   { label: "API Response", value: "120ms" },
-  { label: "Cache Hit Rate", value: "96.05%" },
+  // { label: "Cache Hit Rate", value: "96.05%" },
 ];
 
 export const recentActivity: ActivityItem[] = [

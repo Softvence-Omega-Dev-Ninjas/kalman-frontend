@@ -20,7 +20,7 @@ import {
   Users,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { RiDiscountPercentLine } from "react-icons/ri";
+
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const navMain = [
@@ -55,12 +55,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       show: true,
     },
     // Commision
-     {
-      title: "Commision",
-      url: "/dashboard/admin/Commision",
-      Icon: RiDiscountPercentLine,
-      show: true,
-    },
+    //  {
+    //   title: "Commision",
+    //   url: "/dashboard/admin/Commision",
+    //   Icon: RiDiscountPercentLine,
+    //   show: true,
+    // },
     {
       title: "Blog Management",
       url: "/dashboard/admin/manage-blog",

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef, useEffect } from 'react';
 import type { ChangeEvent } from 'react';
-import { Search, MoreHorizontal, Paperclip, Send, ArrowLeft, X, User, Briefcase } from 'lucide-react';
+import { Search, MoreHorizontal, Paperclip, Send, X, User, Briefcase } from 'lucide-react';
 import { useChat } from '../hooks/useChat';
 import { useGetChatListQuery } from '@/redux/features/message/messageApi';
 import { useSelector } from 'react-redux';
@@ -14,8 +14,9 @@ const TradePersonMessage = () => {
   const TRADESPERSON_ID = user.id;
   const [selectedRecipientId, setSelectedRecipientId] = useState("");
   const [message, setMessage] = useState('');
-  const [selectedContact, setSelectedContact] = useState('');
-  const [showChat, setShowChat] = useState(false);
+  const [, setSelectedContact] = useState('');
+  const [, setShowChat] = useState(false);
+    // console.log(selectedContact)
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'all' | 'customers' | 'leads'>('all');
   
@@ -67,9 +68,9 @@ const TradePersonMessage = () => {
     setShowChat(true);
   };
 
-  const handleBackToContacts = () => {
-    setShowChat(false);
-  };
+  // const handleBackToContacts = () => {
+  //   setShowChat(false);
+  // };
 
   const handleSendMessage = async () => {
     if (!message.trim() && !selectedFile) return;
