@@ -26,39 +26,19 @@ jobs:
 
       - name: Setup SSH key
         run: |
-          cat <<EOF > /tmp/vps_key.pem
-          ${{ secrets.VPS_SSH_PRIVATE_KEY }}
-          EOF
-          chmod 600 /tmp/vps_key.pem
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_PRIVATE_KEY }}" > ~/.ssh/vps_key.pem
+          chmod 600 ~/.ssh/vps_key.pem
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
 
       - name: Test SSH connection
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ubuntu
-          key_path: /tmp/vps_key.pem
-          port: 22
-          script: |
-            echo "✅ SSH login successful!"
+        run: |
+          ssh -i ~/.ssh/vps_key.pem -o StrictHostKeyChecking=yes ubuntu@${{ secrets.VPS_HOST }} "echo '✅ SSH login successful'"
 
-      - name: Clean old files
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: root
-          key_path: /tmp/vps_key.pem
-          port: 22
-          script: |
-            cd /var/www/dist || mkdir -p /var/www/dist
-            rm -rf *
+      - name: Clean old files on VPS
+        run: |
+          ssh -i ~/.ssh/vps_key.pem -o StrictHostKeyChecking=yes ubuntu@${{ secrets.VPS_HOST }} "rm -rf /var/www/dist/*"
 
-      - name: Upload new build
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: root
-          key_path: /tmp/vps_key.pem
-          port: 22
-          source: "dist/*"
-          target: "/var/www/dist"
-          overwrite: true
+      - name: Upload new build to VPS
+        run: |
+          scp -i ~/.ssh/vps_key.pem -o StrictHostKeyChecking=yes -r dist/* ubuntu@${{ secrets.VPS_HOST }}:/var/www/dist/
