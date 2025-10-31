@@ -92,7 +92,7 @@ if (missingField) {
 }
 
 
-      console.log("📸 Images ready to upload:", images);
+      console.log("Images ready to upload:", images);
 
       const data = {
         title: jobData.title,
@@ -105,6 +105,7 @@ if (missingField) {
         location: jobData.location ,
         subCategories: jobData.subCategories ,
         skills_needed: jobData.skills_needed || [],
+        budget_type : jobData.budge_type ,
         price: jobData.price || null,
       };
 

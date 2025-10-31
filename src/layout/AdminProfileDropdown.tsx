@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { baseApi } from "@/redux/api/baseApi";
 import { adminLogout } from "@/redux/features/admin/adminSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/typeHook";
 import { useState, useEffect, useRef } from "react";
@@ -9,20 +10,20 @@ import { useNavigate } from "react-router-dom";
 const AdminProfileDropdown = () => {
   const { admin } = useAppSelector((state) => state.admin);
   const navigate = useNavigate();
- const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   // Derived info
   const displayName = admin?.name || admin?.email?.split("@")[0] || "User";
   const email = admin?.email || "N/A";
   const role = admin?.role || "N/A";
 
-const handleLogout = () => {
-  // Clear Redux state
-  dispatch(adminLogout());
-  // Redirect to login
-  navigate("/admin/login");
-  toast("Admin logout successfully!")
-};
-
+  const handleLogout = () => {
+    // Clear Redux state
+    dispatch(adminLogout());
+    dispatch(baseApi.util.resetApiState());
+    // Redirect to login
+    navigate("/admin/login");
+    toast("Admin logout successfully!");
+  };
 
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -30,7 +31,10 @@ const handleLogout = () => {
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setOpen(false);
       }
     };
@@ -48,7 +52,9 @@ const handleLogout = () => {
           {admin?.image ? (
             <AvatarImage src={admin.image} alt={displayName} />
           ) : (
-            <AvatarFallback className="bg-gray-700 text-white">{displayName[0]}</AvatarFallback>
+            <AvatarFallback className="bg-gray-700 text-white">
+              {displayName[0]}
+            </AvatarFallback>
           )}
         </Avatar>
       </div>

@@ -4,6 +4,8 @@ import {
   AiOutlineMail,
   AiOutlineEye,
 } from "react-icons/ai";
+// import { FcGoogle } from "react-icons/fc";
+
 import { Link, useNavigate } from "react-router-dom";
 import loginImg from "../../../assets/sample_images/LoginImg.png";
 import { useLoginMutation } from "@/redux/features/auth/login";
