@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineEyeInvisible, AiOutlineEye, AiOutlineMail } from "react-icons/ai";
 // import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,6 +10,12 @@ import { setAdmin } from "@/redux/features/admin/adminSlice";
 
 
 const AdminLogin: React.FC = () => {
+
+
+         useEffect(()=>{
+                document.title = `Admin Login | Stavbar`
+              }, [])
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [login, { isLoading }] = useAdminLoginMutation();

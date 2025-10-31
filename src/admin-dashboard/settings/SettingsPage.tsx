@@ -9,6 +9,12 @@ import { useGetCommisionQuery, useSetCommisionMutation } from "@/redux/features/
 import { useGetSystemActivityQuery, useSetSystemActivityMutation } from "@/redux/features/admin/dashboardApi";
 
 const SettingsPage: React.FC = () => {
+
+
+       useEffect(()=>{
+              document.title = `Setting | Admin Dashboard | Stavbar`
+            }, [])
+
   // --- Commission ---
   const { data: commissionData, isLoading: commissionLoading, refetch } = useGetCommisionQuery();
   const [setCommission, { isLoading: savingCommission }] = useSetCommisionMutation();
