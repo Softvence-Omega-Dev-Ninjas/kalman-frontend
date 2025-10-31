@@ -53,7 +53,7 @@ jobs:
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
-          username: ubuntu
+          username: root
           key_path: /github/home/vps_key.pem
           port: 22
           script: |
