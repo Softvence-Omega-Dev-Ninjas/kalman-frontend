@@ -47,7 +47,7 @@ const AdminDashboardLayout = () => {
                 </h1>
               </div>
               <div className="flex items-center gap-4 mr-2">
-                <MdOutlineNotificationsNone className="text-xl" />
+                {/* <MdOutlineNotificationsNone className="text-xl" /> */}
                 {
                   admin ? 
                         <AdminProfileDropdown />: 
