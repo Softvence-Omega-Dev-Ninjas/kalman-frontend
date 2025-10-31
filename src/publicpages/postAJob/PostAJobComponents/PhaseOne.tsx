@@ -179,9 +179,26 @@ budge_type: budgetType,
         </div>
 
         {/* Price */}
+<div className="grid grid-cols-2 gap-3">
+
+  <div>
+     <label className="block text-sm font-medium mb-2">Budget Type</label>
+     <select
+  value={budgetType}
+  onChange={(e) => setBudgetType(e.target.value)}
+  className="border border-gray-300 rounded-lg px-2 py-3 w-full"
+>
+  <option value="">Select type</option>
+  <option value="FIXED">Fixed</option>
+  <option value="HOURLY">Hourly</option>
+</select>
+  </div>
+  
+   
 <div>
-  <label className="block text-sm font-medium mb-2">Budget</label>
+  <label className="block text-sm font-medium mb-2">Budget Price</label>
   <div className="flex items-center gap-3 px-3 py-3 border border-gray-200 rounded-md bg-gray-50">
+    
     <MdAttachMoney className="inline text-lg" />
     <input
       type="number"
@@ -190,15 +207,7 @@ budge_type: budgetType,
       placeholder="Budget amount"
       className="w-full bg-gray-50 text-sm focus:outline-none"
     />
-    <select
-  value={budgetType}
-  onChange={(e) => setBudgetType(e.target.value)}
->
-  <option value="">Select type</option>
-  <option value="FIXED">Fixed</option>
-  <option value="HOURLY">Hourly</option>
-</select>
-
+</div>
 
   </div>
 </div>
