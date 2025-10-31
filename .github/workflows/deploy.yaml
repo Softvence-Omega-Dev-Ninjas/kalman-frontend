@@ -1,4 +1,4 @@
-name: Deploy React App to VPS
+name: Deploy React App to AWS EC2
 
 on:
   push:
@@ -8,45 +8,53 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
+      # 1️⃣ Checkout code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
+      # 2️⃣ Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "20"
 
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm install
 
-      - name: Build the app
+      # 4️⃣ Build React app
+      - name: Build app
         run: npm run build
 
+      # 5️⃣ Create PEM key on runner
       - name: Setup SSH key
         run: |
           echo "${{ secrets.VPS_SSH_PRIVATE_KEY }}" > /github/home/vps_key.pem
           chmod 600 /github/home/vps_key.pem
-          ls -la /github/home/vps_key.pem  # verify the file
+          ls -la /github/home/vps_key.pem  # optional check
 
+      # 6️⃣ Test SSH connection
       - name: Test SSH connection
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
-          username: root
-          key_path: /github/home/vps_key.pem # absolute path
+          username: ubuntu # for EC2 use 'ubuntu' or 'ec2-user' depending on AMI
+          key_path: /github/home/vps_key.pem
           port: 22
           script: |
             echo "✅ SSH login successful!"
             whoami
             pwd
 
-      - name: Clean old build files
+      # 7️⃣ Clean old build files
+      - name: Clean old files
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
-          username: root
-          key_path: ~/vps_key.pem
+          username: ubuntu
+          key_path: /github/home/vps_key.pem
           port: 22
           script: |
             echo "🧹 Cleaning old build files..."
@@ -54,12 +62,13 @@ jobs:
             rm -rf *
             echo "✅ Clean complete"
 
+      # 8️⃣ Upload new build
       - name: Upload new build
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
-          username: root
-          key_path: ~/vps_key.pem
+          username: ubuntu
+          key_path: /github/home/vps_key.pem
           port: 22
           source: "dist/*"
           target: "/var/www/dist"
