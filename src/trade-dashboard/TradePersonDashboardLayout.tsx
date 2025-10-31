@@ -2,8 +2,13 @@ import { Outlet } from "react-router-dom";
 import NavigationBar from "./tradeComponents/NavigationBar";
 import ProfileCard from "./tradeComponents/ProfileCard";
 import Navbar from "@/components/shared/Navbar";
+import { useEffect } from "react";
 
 function TradePersonDashboardLayout() {
+  useEffect(() => {
+    document.title = `Trade Dashboard | Stavbar`;
+  }, []);
+
   return (
     <div className="mt-34">
       <Navbar />

@@ -54,7 +54,7 @@ useEffect(()=>{
       </div> */}
 
       {/* Top Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-8 gap-4 mb-6">
         <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 flex-1 min-w-[200px] flex flex-col items-center gap-2">
     <span className="text-xl text-gray-700"><SlCalender /></span>
     <h3 className="text-gray-500 text-sm font-medium">{}Total Revenue</h3>

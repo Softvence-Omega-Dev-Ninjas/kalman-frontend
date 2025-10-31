@@ -3,8 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import CustomerInformation from "../components/Jobs/JobDetails/CustomerInformation";
 import { useGetJobByIdQuery } from "@/redux/features/jobs/jobsApi";
 import JobInformation from "@/components/Jobs/JobDetails/JobInformaiton";
+import { useEffect } from "react";
 
 const JobDetails = () => {
+      useEffect(()=>{
+        document.title = `Job Details | Stavbar`
+      }, [])
+    
   const { id: jobid } = useParams();
   const navigate = useNavigate();
 

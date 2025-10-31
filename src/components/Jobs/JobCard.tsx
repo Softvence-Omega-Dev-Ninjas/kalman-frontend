@@ -153,17 +153,18 @@ const JobCards = ({
 
                 <div className="text-right min-w-[100px] ml-4">
                   <div className="text-xs text-gray-500">
-                    {job.budget_type === "hourly"
+                    {job.budge_type === "HOURLY"
                       ? "Hourly Rate"
-                      : "Budget (fixed)"}
+                      : "Budget (Fixed)"}
                   </div>
                   <div className="text-[#FF7346] font-semibold text-base">
-                    {job.budget_type === "hourly" ? (
+                    {job.budge_type === "HOURLY" ? (
                       <>${job.price || 0}/hr</>
                     ) : (
                       <>${job.price || 0}</>
                     )}
                   </div>
+
                   {job.experience_level && (
                     <div className="text-xs text-gray-500 mt-1 capitalize">
                       {job.experience_level}

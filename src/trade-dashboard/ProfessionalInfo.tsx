@@ -1,7 +1,13 @@
+import { useEffect } from "react";
 import ProfessionalInfoForm from "./tradeComponents/ProfessionalInfo/ProfessionalInfoForm";
 import StepProgressBar from "./tradeComponents/resuable/StepProgressBar";
 
 const ProfessionalInfo = () => {
+
+      useEffect(()=>{
+                document.title = `Professional Info | Stavbar`
+              }, [])
+
   return (
     <div>
       <StepProgressBar

@@ -11,7 +11,7 @@ export default function ProfileCard() {
   const { data: profile } = useGetTradesmanProfileQuery(undefined);
   const { data: overView } = useGetTradesmanOverviewQuery(undefined);
   const { averageRating } = useReviewCount(profile?.data?.review);
-  console.log(profile?.data);
+  console.log("profiel", profile?.data);
 
   return (
     <div className="max-w-5xl mx-auto mt-8">

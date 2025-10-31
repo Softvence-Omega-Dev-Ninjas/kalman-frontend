@@ -1,8 +1,14 @@
+import { useEffect } from "react"
 import BusinessDetailsForm from "./tradeComponents/BusinessDetails/BusinessDetailsForm"
 import StepProgressBar from "./tradeComponents/resuable/StepProgressBar"
 
 
 const BusinessDetails = () => {
+
+      useEffect(()=>{
+                document.title = `Business Details | Stavbar`
+              }, [])
+
   return (
     <div>
         <StepProgressBar

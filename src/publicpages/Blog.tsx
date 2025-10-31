@@ -1,8 +1,14 @@
 import { useGetAllBlogsQuery } from "@/redux/features/blog/blogApi";
 import PageHeader from "../components/reuseable/PageHeader";
 import AllBlog from "@/components/PublicPages/Blog/AllBlog";
+import { useEffect } from "react";
 
 function Blog() {
+      useEffect(()=>{
+        document.title = `Blogs | Stavbar`
+      }, [])
+    
+
   const { data, isLoading } = useGetAllBlogsQuery(undefined);
 
   return (

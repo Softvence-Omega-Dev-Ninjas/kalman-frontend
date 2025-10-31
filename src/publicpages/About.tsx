@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import CustomerTestimonials from "../components/PublicPages/About/CustomerTestimonials"
 import LearnMoreSection from "../components/PublicPages/About/LearnMoreSection"
 import QualityServiceSection from "../components/PublicPages/About/QualityServiceSection"
@@ -6,6 +7,12 @@ import PageHeader from "../components/reuseable/PageHeader"
 
 
 function About() {
+
+      useEffect(()=>{
+        document.title = `About | Stavbar`
+      }, [])
+    
+
   return (
    <div>
       <PageHeader

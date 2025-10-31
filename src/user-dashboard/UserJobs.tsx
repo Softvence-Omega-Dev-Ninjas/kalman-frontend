@@ -1,5 +1,6 @@
 import { useGetUserJobsQuery } from "@/redux/features/jobs/jobsApi";
 import { BriefcaseBusiness } from "lucide-react";
+import { useEffect } from "react";
 import { FiMapPin, FiClock, FiEdit, FiCalendar } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
@@ -36,6 +37,11 @@ export interface UserJobsResponse {
 
 
 const UserJobs = () => {
+
+        useEffect(()=>{
+            document.title = `My Jobs | User Dashboard | Stavbar`
+          }, [])
+
   const { data, isLoading, isError } = useGetUserJobsQuery();
 
   const jobs: Job[] = (data as UserJobsResponse)?.data || [];

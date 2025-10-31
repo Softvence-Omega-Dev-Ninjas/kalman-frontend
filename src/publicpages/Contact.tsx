@@ -1,7 +1,14 @@
+import { useEffect } from "react"
 import ContactForm from "../components/PublicPages/Contact/ContactForm"
 import PageHeader from "../components/reuseable/PageHeader"
 
 function Contact() {
+
+      useEffect(()=>{
+        document.title = `Contact | Stavbar`
+      }, [])
+    
+
   return (
     <div>
       <PageHeader

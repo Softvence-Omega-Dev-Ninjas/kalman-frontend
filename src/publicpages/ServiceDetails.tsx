@@ -3,7 +3,7 @@ import image1 from "../assets/sample_images/image.png";
 import image2 from "../assets/sample_images/image2.png";
 import image3 from "../assets/sample_images/image3.png";
 import { MdOutlineReport } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BookingModal from "../components/ServiceComponents/BookingModal";
 import RatingReviews from "@/components/ServiceComponents/RatingReviews";
 import ReviewCard from "@/components/ServiceComponents/ReviewCard";
@@ -14,6 +14,10 @@ import { useReviewCount } from "@/redux/features/tradesman/hooks/useReviewCount"
 import { useAppSelector } from "@/redux/typeHook";
 
 const ServiceDetails = () => {
+    useEffect(()=>{
+      document.title = `Service Details | Stavbar`
+    }, [])
+  
   const { id } = useParams<{ id: string }>();
   const { data } = useGetSingleTradesmanQuery(id);
   const [openContact, setOpenContact] = useState(false);

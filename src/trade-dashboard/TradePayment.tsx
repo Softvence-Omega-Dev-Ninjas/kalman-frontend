@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CreditCard, Plus, Trash2, Lock, FileText, Folder } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PaymentMethodForm from "./tradeComponents/PaymentMethod/PaymentMethodForm";
@@ -26,6 +26,11 @@ interface PaymentHistoryItem {
 }
 
 export default function TradePayment() {
+
+      useEffect(()=>{
+                document.title = `Payment | Trade Dashboard | Stavbar`
+              }, [])
+
   const { data } = useGetTradesmanProfileQuery(undefined);
   const [removePaymentMethod] = useRemovePaymentMethodMutation();
   const [setDefaultPaymentMethod] = useSetDefaultPaymentMethodMutation();

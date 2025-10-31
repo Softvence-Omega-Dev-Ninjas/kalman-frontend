@@ -27,6 +27,10 @@ export interface DashboardApiResponse {
 
 
 const OverviewPage = () => {
+
+      useEffect(()=>{
+              document.title = `Overview | Admin Dashboard | Stavbar`
+            }, [])
   //  Type hint added for full response
   const { data , isError , refetch, error} = useGetDasboardOverviewQuery();
   console.log("data" , data , "error" , error)

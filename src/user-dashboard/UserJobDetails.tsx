@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Briefcase, Clock, MapPin, Star, ArrowLeft, Check } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -128,6 +128,11 @@ console.log(proposal)
 };
 
 const UserJobDetails: React.FC = () => {
+
+        useEffect(()=>{
+            document.title = `Job Details | User Dashboard | Stavbar`
+          }, [])
+
   const { id } = useParams();
 
   // Fetch proposals

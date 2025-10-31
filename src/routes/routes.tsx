@@ -132,7 +132,10 @@ const router = createBrowserRouter([
       },
       {
         path: "post-a-job",
-        element: <PostAJob />,
+        element:
+         <UserProtectedRoute >
+                  <PostAJob />
+         </UserProtectedRoute>,
       },
     ],
   },
@@ -166,6 +169,8 @@ const router = createBrowserRouter([
       },
     ],
   },
+
+  // dynami titile ->
   // trade person dashboard
   {
     path: "trade-person",
