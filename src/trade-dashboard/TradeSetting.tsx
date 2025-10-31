@@ -25,6 +25,11 @@ interface FormData {
 }
 
 const SettingPage = () => {
+
+      useEffect(()=>{
+              document.title = `Setting | Trade Dashboard | Stavbar`
+            }, [])
+
   const [portfolioPreviews, setPortfolioPreviews] = useState<(string | null)[]>(
     Array(4).fill(null)
   );

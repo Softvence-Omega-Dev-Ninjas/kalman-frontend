@@ -1,4 +1,4 @@
-import { useState, type JSX } from "react";
+import { useEffect, useState, type JSX } from "react";
 import { MapContainer, TileLayer, Marker, Circle, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L, { type LatLngExpression } from "leaflet";
@@ -17,6 +17,11 @@ const markerIcon = new L.Icon({
 });
 
 export default function ServiceAreas(): JSX.Element {
+
+      useEffect(()=>{
+                document.title = `Service Areas | Stavbar`
+              }, [])
+
   const [distance, setDistance] = useState<number | null>(null);
   const dispatch = useAppDispatch();
   const saved = useAppSelector((s) => s.tradeForm.professional);

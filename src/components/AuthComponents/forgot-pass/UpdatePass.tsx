@@ -6,6 +6,11 @@ import { toast, Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const UpdatePass: React.FC = () => {
+
+        useEffect(()=>{
+          document.title = `Forgot Password | Stavbar`
+        }, [])
+      
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState(localStorage.getItem("verified_email") || "");
   const [updatePassword, { isLoading }] = useUpdatePasswordMutation();

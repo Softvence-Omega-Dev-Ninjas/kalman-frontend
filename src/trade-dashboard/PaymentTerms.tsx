@@ -1,7 +1,13 @@
+import { useEffect } from "react"
 import PaymentForm from "./tradeComponents/PaymentTerms/PaymentForm"
 import StepProgressBar from "./tradeComponents/resuable/StepProgressBar"
 
 const PaymentTerms = () => {
+
+      useEffect(()=>{
+                document.title = `Payment Terms | Stavbar`
+              }, [])
+
   return (
     <div>
       <StepProgressBar

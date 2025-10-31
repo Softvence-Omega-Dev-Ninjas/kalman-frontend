@@ -1,6 +1,6 @@
 
 import TradespersonCard from "../reuseable/TradePersonCard";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+// import { ChevronLeft, ChevronRight } from "lucide-react";
 import trade1 from "../../assets/sample_images/trade1.png";
 import { useTradesman } from "@/redux/features/tradesman/hooks/useTradesman";
 import { useMemo } from "react";
@@ -70,14 +70,14 @@ const PopularTradesperson = () => {
           </div>
 
           {/* Navigation Arrows */}
-          <div className="absolute right-0 top-0 flex items-center space-x-2">
+          {/* <div className="absolute right-0 top-0 flex items-center space-x-2">
             <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors duration-200">
               <ChevronLeft className="w-5 h-5 text-gray-600" />
             </button>
             <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors duration-200">
               <ChevronRight className="w-5 h-5 text-gray-600" />
             </button>
-          </div>
+          </div> */}
         </div>
 
         {/* Tradesperson Grid */}

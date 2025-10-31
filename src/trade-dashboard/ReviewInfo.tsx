@@ -1,8 +1,14 @@
+import { useEffect } from "react"
 import StepProgressBar from "./tradeComponents/resuable/StepProgressBar"
 import ReviewInfoForm from "./tradeComponents/ReviewInfo/ReviewInfoForm"
 
 
 const ReviewInfo = () => {
+
+      useEffect(()=>{
+                document.title = `Review Info | Stavbar`
+              }, [])
+
   return (
     <div>
       <StepProgressBar

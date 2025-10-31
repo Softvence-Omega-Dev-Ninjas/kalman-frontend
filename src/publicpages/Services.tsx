@@ -3,9 +3,14 @@ import { MdDoubleArrow } from "react-icons/md";
 import SideFilterForService from "../components/ServiceComponents/SideFilterForService";
 import AllServices from "../components/ServiceComponents/AllServices";
 import { useTradesman } from "@/redux/features/tradesman/hooks/useTradesman";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 function Services() {
+
+    useEffect(()=>{
+      document.title = `Service | Stavbar`
+    }, [])
+  
   const [filters, setFilters] = useState({
     search: "",
     category: "",

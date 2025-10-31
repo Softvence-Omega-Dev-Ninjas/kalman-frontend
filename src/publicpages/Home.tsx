@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import AskATradePerson from "../components/home/AskATradePerson"
 import Banner from "../components/home/Banner"
 import CustomerReviews from "../components/home/CustomerReviews"
@@ -13,6 +14,10 @@ import WhyChooseStaybar from "../components/home/WhyChooseStaybar"
  
 
 function Home() {
+  useEffect(()=>{
+    document.title = `Home | Stavbar`;
+  }, [])
+
   return (
     <div>
       <Banner />

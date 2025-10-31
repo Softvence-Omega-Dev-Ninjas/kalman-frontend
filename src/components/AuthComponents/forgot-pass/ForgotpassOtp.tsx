@@ -7,6 +7,12 @@ import { Button } from "@/components/ui/button";
 import { toast, Toaster } from "react-hot-toast";
 
 const FordotPassOtp: React.FC = () => {
+
+        useEffect(()=>{
+          document.title = `Forgot Password | Stavbar`
+        }, [])
+      
+        
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState(localStorage.getItem("forgot_email") || "");

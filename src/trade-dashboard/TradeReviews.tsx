@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Star, Filter, ChevronDown } from "lucide-react";
 import { useGetTradesmanProfileQuery } from "@/redux/features/tradesman/tradesmanApi";
 import { useReviewCount } from "@/redux/features/tradesman/hooks/useReviewCount";
@@ -37,6 +37,11 @@ interface RatingBarProps {
 }
 
 const TradeReviews: React.FC = () => {
+
+      useEffect(()=>{
+                document.title = `Review | Trade Dashboard | Stavbar`
+              }, [])
+
   const [selectedFilter, setSelectedFilter] =
     useState<string>("Recent Reviews");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);

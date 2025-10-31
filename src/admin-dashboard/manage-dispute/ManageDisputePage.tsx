@@ -16,6 +16,11 @@ import {
 import { Button } from "@/components/ui/button";
 
 const ManagePaymentsPage = () => {
+
+       useEffect(()=>{
+              document.title = `Manage payment | Admin Dashboard | Stavbar`
+            }, [])
+
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
 

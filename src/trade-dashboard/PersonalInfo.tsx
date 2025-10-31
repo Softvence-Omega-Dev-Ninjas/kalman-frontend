@@ -1,7 +1,13 @@
+import { useEffect } from "react"
 import PersonalInfoForm from "./tradeComponents/PersonalInfo/PersonalInfoForm"
 import StepProgressBar from "./tradeComponents/resuable/StepProgressBar"
 
 const PersonalInfo = () => {
+
+        useEffect(()=>{
+                  document.title = `Personal Info | Stavbar`
+                }, [])
+
     return (
         <div>
             <StepProgressBar
