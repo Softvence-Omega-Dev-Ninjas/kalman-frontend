@@ -8,10 +8,9 @@ import { Link } from "react-router-dom";
 import user1 from "../../assets/user2.png";
 
 export default function ProfileCard() {
-  const { data: profile } = useGetTradesmanProfileQuery(undefined);
+  const { data } = useGetTradesmanProfileQuery(undefined);
   const { data: overView } = useGetTradesmanOverviewQuery(undefined);
-  const { averageRating } = useReviewCount(profile?.data?.review);
-  console.log("profiel", profile?.data);
+  const { averageRating } = useReviewCount(data?.data?.review);
 
   return (
     <div className="max-w-5xl mx-auto mt-8">
@@ -28,11 +27,7 @@ export default function ProfileCard() {
         <div className="flex items-center gap-4">
           {/* Avatar */}
           <img
-            src={
-              profile?.data?.images.length !== 0
-                ? profile.data?.images[0]
-                : user1
-            }
+            src={data?.data?.images.length !== 0 ? data.data?.images[0] : user1}
             alt="Esther Howard"
             className="w-20 h-20 rounded-full object-cover"
           />
@@ -40,7 +35,7 @@ export default function ProfileCard() {
           {/* Info */}
           <div>
             <h2 className="text-lg font-semibold text-gray-900">
-              {profile?.data?.firstName} {profile?.data?.lastName}
+              {data?.data?.firstName} {data?.data?.lastName}
             </h2>
 
             {/* Badges */}
@@ -57,11 +52,11 @@ export default function ProfileCard() {
 
             {/* Role & Location */}
             <p className="text-sm text-gray-500 mt-1">
-              {profile?.data?.profession}
+              {data?.data?.profession}
             </p>
-            <p className="text-sm text-gray-500">{profile?.data?.address}</p>
+            <p className="text-sm text-gray-500">{data?.data?.address}</p>
             <p className="text-sm text-gray-500 mt-1">
-              ${profile?.data?.businessDetail?.hourlyRate}/hourly rate
+              ${data?.data?.businessDetail?.hourlyRate}/hourly rate
             </p>
           </div>
         </div>
