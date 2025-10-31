@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PhaseOne from "./PostAJobComponents/PhaseOne";
 import PhaseTwo from "./PostAJobComponents/PhaseTwo";
 import PhaseThree from "./PostAJobComponents/PhaseThree";
@@ -27,6 +27,12 @@ export interface JobData {
 }
 
 const PostAJob = () => {
+
+        useEffect(()=>{
+          document.title = `Post A Job | Stavbar`
+        }, [])
+      
+
   const navigate = useNavigate()
   const [phase, setPhase] = useState(1);
   const [jobData, setJobData] = useState<JobData>({

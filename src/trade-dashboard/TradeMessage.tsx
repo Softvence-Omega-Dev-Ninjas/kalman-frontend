@@ -7,7 +7,13 @@ import { useGetChatHistoryQuery, useGetChatListQuery } from '@/redux/features/me
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 
+
 const TradeMessage = () => {
+
+       useEffect(()=>{
+              document.title = `Chat | Trade Dashboard | Stavbar`
+            }, [])
+
   const user = useSelector(selectCurrentUser);
   console.log("Current User:", user.id);
   // User IDs - Replace with actual user data from auth context/redux

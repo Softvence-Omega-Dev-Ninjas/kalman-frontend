@@ -29,6 +29,11 @@ export interface IJobData {
 }
 
 const ManageJobsPage = () => {
+
+       useEffect(()=>{
+              document.title = `Manage Jobs | Admin Dashboard | Stavbar`
+            }, [])
+
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
   const [search, setSearch] = useState("");

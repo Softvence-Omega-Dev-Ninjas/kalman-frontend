@@ -24,6 +24,11 @@ interface IUserData {
 }
 
 const ManageUsersPage = () => {
+
+       useEffect(()=>{
+              document.title = `Manage User | Admin Dashboard | Stavbar`
+            }, [])
+
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);

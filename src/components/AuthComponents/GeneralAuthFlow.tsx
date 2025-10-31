@@ -12,6 +12,11 @@ const GeneralSignUpCmp =
   GeneralSignUp as React.ComponentType<GeneralSignUpProps>;
 
 const GeneralAuthFlow: React.FC = () => {
+
+      useEffect(()=>{
+      document.title = `Register User | Stavbar`
+    }, [])
+  
   const [step, setStep] = useState<number>(() => {
     const savedStep = localStorage.getItem("auth_step");
     return savedStep ? parseInt(savedStep) : 1;
