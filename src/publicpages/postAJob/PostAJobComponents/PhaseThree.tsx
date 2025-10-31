@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { FaArrowLeft, FaArrowRight, FaRegEdit } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { usePostAJobMutation } from "@/redux/features/jobs/jobsApi";
 import toast from "react-hot-toast";
 import phase3Img from "../../../assets/sample_images/phase3logo.png";
@@ -248,9 +248,9 @@ if (missingField) {
               <IoDocumentTextOutline />
               <span>Job Summary</span>
             </div>
-            <button className="text-lg text-secondary">
+            {/* <button className="text-lg text-secondary">
               <FaRegEdit />
-            </button>
+            </button> */}
           </div>
 
           <div className="text-sm text-black mb-3">

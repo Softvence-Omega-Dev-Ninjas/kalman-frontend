@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 const ManagePaymentsPage = () => {
 
        useEffect(()=>{
-              document.title = `Manage payment | Admin Dashboard | Stavbar`
+              document.title = `Manage Dispute | Admin Dashboard | Stavbar`
             }, [])
 
   const [currentPage, setCurrentPage] = useState(1);

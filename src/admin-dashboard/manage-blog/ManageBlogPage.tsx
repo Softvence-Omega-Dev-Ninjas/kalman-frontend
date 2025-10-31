@@ -1,7 +1,7 @@
 import { Eye, Plus, Search, SquarePen, Trash2 } from "lucide-react";
 import { type TBlog } from "./data/blogData";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import type { Column } from "../shared/CustomTable/CustomTable";
 import CustomTable from "../shared/CustomTable/CustomTable";
@@ -13,6 +13,12 @@ import { useDeleteBlogMutation, useGetAllBlogsQuery } from "@/redux/features/blo
 import { toast } from "react-hot-toast";
 
 const ManageBlogPage = () => {
+
+
+         useEffect(()=>{
+                document.title = `Manage Blog | Admin Dashboard | Stavbar`
+              }, [])
+
   const { data } = useGetAllBlogsQuery(undefined);
   const [deleteBlog] = useDeleteBlogMutation();
 

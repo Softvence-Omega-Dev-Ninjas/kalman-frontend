@@ -21,6 +21,12 @@ interface TCategory {
 }
 
 const ManageCategoryPage = () => {
+
+      
+       useEffect(()=>{
+              document.title = `Manage Categories | Admin Dashboard | Stavbar`
+            }, [])
+
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [editingCategory, setEditingCategory] = useState<TCategory | null>(null);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SquarePen, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -16,6 +16,12 @@ interface TCommission {
 }
 
 const ManageCommission = () => {
+
+
+         useEffect(()=>{
+                document.title = `Manage Commission | Admin Dashboard | Stavbar`
+              }, [])
+
   const [modalOpen, setModalOpen] = useState(false);
   const [editingCommission, setEditingCommission] = useState<TCommission | null>(null);
 
