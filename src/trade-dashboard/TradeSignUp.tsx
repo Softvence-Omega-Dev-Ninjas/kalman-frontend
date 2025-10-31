@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { AiOutlineMail, AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
 import { useState } from 'react'
-import { FcGoogle } from 'react-icons/fc'
+// import { FcGoogle } from 'react-icons/fc'
 import signupImg from "../assets/sample_images/SignUPImg.png"
 import { useSignupMutation } from '@/redux/features/auth/register'
 import { useForm } from 'react-hook-form'
@@ -132,9 +132,9 @@ const TradeSignUp: React.FC<TradeSignUpProps> = ({step, setStep, setEmail}) => {
                             </label>
                             {errors.agree && <p className="text-sm text-red-500 mt-1">{errors.agree.message}</p>}
 
-                            <button type="submit" className="w-full bg-primary text-white py-3 rounded-md font-semibold mt-2" disabled={isLoading}>{isLoading ? 'Registering...' : 'Register Now'}</button>
+                            <button type="submit" className="w-full cursor-pointer bg-primary text-white py-3 rounded-md font-semibold mt-2" disabled={isLoading}>{isLoading ? 'Registering...' : 'Register Now'}</button>
 
-                            <div className="flex items-center my-4 font-semibold">
+                            {/* <div className="flex items-center my-4 font-semibold">
                                 <div className="flex-1 h-px bg-gray-200" />
                                 <div className="px-4 text-sm text-black">Or Continue with</div>
                                 <div className="flex-1 h-px bg-gray-200" />
@@ -143,7 +143,7 @@ const TradeSignUp: React.FC<TradeSignUpProps> = ({step, setStep, setEmail}) => {
                             <button type="button" className="w-full border border-gray-200 rounded-md py-2.5 flex items-center justify-center gap-3">
                                 <FcGoogle />
                                 <span className="text-sm">Google</span>
-                            </button>
+                            </button> */}
 
                             <div className="text-center text-sm text-gray-600 mt-4 font-semibold">
                                 Already have an account? <Link to="/trade-login" className="text-primary">Log In Now</Link>
