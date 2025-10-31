@@ -38,7 +38,11 @@ interface UseChatProps {
   socketUrl?: string;
 }
 
-export const useChat = ({ userId, recipientId, socketUrl = "http://10.10.10.54:7000" }: UseChatProps) => {
+export const useChat = ({
+  userId,
+  recipientId,
+  socketUrl = "https://api.pravaruka.sk",
+}: UseChatProps) => {
   const [chatLog, setChatLog] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [connected, setConnected] = useState(false);
@@ -46,7 +50,10 @@ export const useChat = ({ userId, recipientId, socketUrl = "http://10.10.10.54:7
 
   // Format timestamp
   const formatTime = (dateInput: string | number | Date) => {
-    return new Date(dateInput).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return new Date(dateInput).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   // Fetch chat history
@@ -54,7 +61,9 @@ export const useChat = ({ userId, recipientId, socketUrl = "http://10.10.10.54:7
     const fetchMessages = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${socketUrl}/chat/history/${userId}/${recipientId}`);
+        const res = await fetch(
+          `${socketUrl}/chat/history/${userId}/${recipientId}`
+        );
         if (!res.ok) throw new Error(`HTTP error ${res.status}`);
         const data = await res.json();
 
@@ -124,7 +133,10 @@ export const useChat = ({ userId, recipientId, socketUrl = "http://10.10.10.54:7
     formData.append("file", file);
 
     try {
-      const res = await fetch(`${socketUrl}/chat/upload`, { method: "POST", body: formData });
+      const res = await fetch(`${socketUrl}/chat/upload`, {
+        method: "POST",
+        body: formData,
+      });
       const data = await res.json();
       return data.url || data.data?.url;
     } catch (err) {
