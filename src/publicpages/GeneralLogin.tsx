@@ -6,7 +6,7 @@ import {
   AiOutlineEye,
   AiOutlineMail,
 } from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
+// import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import loginImg from "../assets/sample_images/LoginImg.png";
@@ -119,9 +119,9 @@ if(user.role !== "CUSTOMER"){
     }
   };
 
-  const handleGoogleLogin = () => {
-    toast.success("Google login coming soon!");
-  };
+  // const handleGoogleLogin = () => {
+  //   toast.success("Google login coming soon!");
+  // };
 
   return (
     <div className="min-h-screen bg-white flex items-start">
@@ -258,16 +258,16 @@ if(user.role !== "CUSTOMER"){
               </Button>
 
               {/* Divider */}
-              <div className="flex items-center my-4 font-semibold">
+              {/* <div className="flex items-center my-4 font-semibold">
                 <div className="flex-1 h-px bg-gray-200" />
                 <div className="px-4 text-sm text-gray-400">
                   Or Continue with
                 </div>
                 <div className="flex-1 h-px bg-gray-200" />
-              </div>
+              </div> */}
 
               {/* Google login */}
-              <Button
+              {/* <Button
                 type="button"
                 onClick={handleGoogleLogin}
                 variant="outline"
@@ -275,7 +275,7 @@ if(user.role !== "CUSTOMER"){
               >
                 <FcGoogle size={20} />
                 <span className="text-sm font-medium">Google</span>
-              </Button>
+              </Button> */}
 
               {/* Sign up links */}
               <div className="text-center text-sm text-gray-600 mt-4 font-semibold">
