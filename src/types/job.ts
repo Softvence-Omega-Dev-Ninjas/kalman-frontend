@@ -16,6 +16,7 @@ export interface FilterState {
 export interface Job {
   experience_level: any;
   budget_type: string;
+  budge_type: string;
   customer: any;
   total_applicants: any;
   jobActivity: any;
