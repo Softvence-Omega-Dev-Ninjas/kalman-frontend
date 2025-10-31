@@ -57,7 +57,6 @@ useEffect(() => {
 }, [debouncedSearch]);
 
   // Delete job mutation
-  console.log(data)
   const [deleteJob] = useDeleteAdminJobMutation();
 
   const handleDelete = async (id: string) => {

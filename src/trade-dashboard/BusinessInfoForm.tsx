@@ -33,7 +33,6 @@ export default function BusinessInfoForm() {
       })
     );
     setFiles((prev) => [...prev, ...converted]);
-    console.log('[BusinessInfoForm] Files selected:', incoming.map((f) => ({ name: f.name, size: f.size, type: f.type })));
   };
 
   const removeFile = (idx: number) => setFiles((prev) => prev.filter((_, i) => i !== idx));

@@ -34,7 +34,6 @@ const commissions: TCommission[] = Array.isArray(data?.data)
   ? [data.data]
   : [];
 
-console.log(commissions)
   const handleCreateOrUpdate = async (payload: TCommission) => {
     try {
       await createCommission(payload).unwrap();

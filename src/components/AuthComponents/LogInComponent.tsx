@@ -67,15 +67,12 @@ const LogInComponent: React.FC<LogInComponentProps> = () => {
                 password: formData.password,
             }).unwrap();
 
-            console.log("Login API Response:", result);
-
             // Handle successful login
             if (result.success && result.data) {
                 const token = result.data;
                 
                 // Decode the JWT token to get user information
                 const decodedToken = decodeJWT(token);
-                console.log(decodedToken, "--------------        ");
                 if (decodedToken) {
                     const userData = {
                         id: decodedToken.id,
@@ -83,8 +80,6 @@ const LogInComponent: React.FC<LogInComponentProps> = () => {
                         phone: decodedToken.phone,
                         role: decodedToken.role
                     };
-                    console.log(userData);
-
                     // Dispatch user data and token to Redux store
                     dispatch(setUser({
                         user: userData,
@@ -92,7 +87,6 @@ const LogInComponent: React.FC<LogInComponentProps> = () => {
                     }));
 
                     toast.success(result.message || "Login successful!");
-                    console.log("log ");
 
                     // Save remember me preference
                     if (formData.rememberMe) {
