@@ -16,8 +16,14 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/redux/typeHook";
 import AdminProfileDropdown from "./AdminProfileDropdown";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 const AdminDashboardLayout = () => {
+
+      useEffect(()=>{
+                document.title = `Admin Dashboard | Stavbar`
+              }, [])
+
   const navigate = useNavigate()
   const { scrolled } = useScrollTrigger();
 

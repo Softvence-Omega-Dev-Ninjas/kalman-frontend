@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Clock,
   TrendingUp,
@@ -10,6 +10,11 @@ import { FiCalendar, FiClock, FiMapPin } from "react-icons/fi";
 import { useGetAllCustomersQuery } from "@/redux/features/customer/customerApi";
 
 const UserOverview = () => {
+
+        useEffect(()=>{
+          document.title = `Overview | User Dashboard | Stavbar`
+        }, [])
+      
   const [selectedMonth, setSelectedMonth] = useState("Month");
   const [viewAll , setViewAll] = useState(false);
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 import TradeSignUp from "@/trade-dashboard/TradeSignUp";
@@ -6,6 +6,11 @@ import TradeTwoStepVerification from "../TradeLogin/TradeTwoStepVerification";
 import TradeEnterVerificationCode from "../TradeLogin/TradeEnterVerificationCode";
 
 const TradeSignUpPage: React.FC = () => {
+
+      useEffect(()=>{
+                document.title = `Trade SignUp | Stavbar`
+              }, [])
+
 const [step, setStep] = useState(1);
 const [email, setEmail] = useState<string | null>(null);
 

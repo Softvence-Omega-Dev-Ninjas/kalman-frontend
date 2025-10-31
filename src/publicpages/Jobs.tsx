@@ -7,6 +7,11 @@ import type { FilterState } from "@/types/job";
 import { IoMdOptions } from "react-icons/io";
 
 const Jobs = () => {
+      useEffect(()=>{
+      document.title = `Jobs | Stavbar`
+    }, [])
+  
+
   const [filters, setFilters] = useState<FilterState>({
     search: "",
     category: [],

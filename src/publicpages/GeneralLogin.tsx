@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   AiOutlineEyeInvisible,
@@ -23,6 +23,12 @@ interface LoginFormInputs {
 }
 
 const GeneralLogin: React.FC = () => {
+
+      useEffect(()=>{
+        document.title = `Login User | Stavbar`
+      }, [])
+    
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [login, { isLoading }] = useLoginMutation();

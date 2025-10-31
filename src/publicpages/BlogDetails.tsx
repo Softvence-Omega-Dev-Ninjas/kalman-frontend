@@ -2,8 +2,14 @@ import BlogInfo from "@/components/PublicPages/Blog/BlogDetails/BlogInfo";
 import PageHeader from "../components/reuseable/PageHeader";
 import { useParams } from "react-router-dom";
 import { useGetSingleBlogQuery } from "@/redux/features/blog/blogApi";
+import { useEffect } from "react";
 
 function BlogDetails() {
+
+      useEffect(()=>{
+        document.title = `Blog Details | Stavbar`
+      }, [])
+    
   const { id } = useParams<{ id: string }>();
   const { data, isLoading } = useGetSingleBlogQuery(id);
   return (
