@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CreditCard, Plus, Trash2, Lock, FileText, Folder } from "lucide-react";
+import { CreditCard, Trash2, Lock, FileText, Folder } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PaymentMethodForm from "./tradeComponents/PaymentMethod/PaymentMethodForm";
 import {
@@ -26,10 +26,9 @@ interface PaymentHistoryItem {
 }
 
 export default function TradePayment() {
-
-      useEffect(()=>{
-                document.title = `Payment | Trade Dashboard | Stavbar`
-              }, [])
+  useEffect(() => {
+    document.title = `Payment | Trade Dashboard | Stavbar`;
+  }, []);
 
   const { data } = useGetTradesmanProfileQuery(undefined);
   const [removePaymentMethod] = useRemovePaymentMethodMutation();
@@ -39,7 +38,6 @@ export default function TradePayment() {
   const initialPaymentHistory: PaymentHistoryItem[] =
     data?.data?.payments || [];
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleOpenModal = () => setIsModalOpen(true);
   console.log(data);
   return (
     <div className="pt-8 pb-28 max-w-5xl mx-auto">
