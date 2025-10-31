@@ -13,13 +13,7 @@ export default function ReviewInfoForm() {
   const savedProfessional = useAppSelector((s) => s.tradeForm.professional);
   const [tradeSignUp, { isLoading }] = useTradeSignUpMutation();
   const [error, setError] = useState<string>("");
-  console.log("[ReviewInfoForm] Loaded personal info:", savedPersonal);
-  console.log("[ReviewInfoForm] Loaded professional info:", savedProfessional);
-  console.log("[ReviewInfoForm] ID Files check:", savedProfessional?.idFiles);
-  console.log(
-    "[ReviewInfoForm] Credential Files check:",
-    savedProfessional?.credentialsFiles
-  );
+ 
 
   useEffect(() => {
     try {
@@ -31,7 +25,6 @@ export default function ReviewInfoForm() {
       fd.forEach((value, key) => {
         entries.push([key, String(value)]);
       });
-      console.log("[ReviewInfoForm] FormData preview:", entries);
     } catch (err) {
       console.error("[ReviewInfoForm] Failed building FormData preview", err);
     }
@@ -111,7 +104,6 @@ export default function ReviewInfoForm() {
     [savedPersonal, savedProfessional]
   );
 
-  console.log("signup data:", tradePersonSignupData);
 
   useEffect(() => {
     try {
@@ -169,10 +161,6 @@ export default function ReviewInfoForm() {
 
       const entries: Array<[string, string]> = [];
       fd.forEach((value, key) => entries.push([key, String(value)]));
-      console.log(
-        "[ReviewInfoForm] tradePersonSignupData -> FormData:",
-        entries
-      );
     } catch (err) {
       console.error(
         "[ReviewInfoForm] Failed to convert signup data to FormData",
@@ -231,7 +219,6 @@ export default function ReviewInfoForm() {
 
       // Convert and append doc files as actual File objects
       if (docs && Array.isArray(docs)) {
-        console.log("[ReviewInfoForm] Processing doc files:", docs.length);
         docs.forEach((f: { dataUrl?: string; name?: string }) => {
           if (f?.dataUrl && f?.name) {
             try {
@@ -261,7 +248,6 @@ export default function ReviewInfoForm() {
             try {
               const file = dataUrlToFile(f.dataUrl, f.name);
               fd.append("credential", file);
-              console.log("[ReviewInfoForm] Added credential file:", f.name);
             } catch (err) {
               console.error(
                 "[ReviewInfoForm] Failed to convert credential file:",
@@ -289,7 +275,6 @@ export default function ReviewInfoForm() {
       console.log("[ReviewInfoForm] tradeSignUp response:", res);
 
       if (res.success) {
-        console.log("[ReviewInfoForm] Signup successful, navigating...");
         dispatch(resetTradeForm());
         setError("");
         window.open(res.data.onboardingUrl, "_blank");

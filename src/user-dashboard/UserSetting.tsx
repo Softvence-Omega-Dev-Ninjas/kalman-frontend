@@ -34,10 +34,9 @@ interface ProfileFormData {
 }
 
 const UserSetting: React.FC = () => {
-
-        useEffect(()=>{
-          document.title = `Setting | User Dashboard | Stavbar`
-        }, [])
+  useEffect(() => {
+    document.title = `Setting | User Dashboard | Stavbar`;
+  }, []);
   // RTK Query hooks
   const {
     data: profileData,
@@ -184,7 +183,6 @@ const UserSetting: React.FC = () => {
 
       // Update profile
       const result = await updateProfile(submitData).unwrap();
-      console.log("Profile updated successfully:", result);
 
       //  FIX: Update Redux auth state so navbar shows updated name immediately
       dispatch(

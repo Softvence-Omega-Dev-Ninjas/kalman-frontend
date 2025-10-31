@@ -33,7 +33,6 @@ const OverviewPage = () => {
             }, [])
   //  Type hint added for full response
   const { data , isError , refetch, error} = useGetDasboardOverviewQuery();
-  console.log("data" , data , "error" , error)
 useEffect(()=>{
 refetch()
 }, [])
@@ -42,7 +41,6 @@ refetch()
 
   //  data?.data is the nested object containing the actual overview
   const overview = data?.data ;
-  console.log(data)
 
   return (
     <div>

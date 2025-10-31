@@ -15,7 +15,6 @@ const UpdatePass: React.FC = () => {
   const [email, setEmail] = useState(localStorage.getItem("verified_email") || "");
   const [updatePassword, { isLoading }] = useUpdatePasswordMutation();
   const navigate = useNavigate();
-console.log(setEmail, "-")
   useEffect(() => {
     if (!email) navigate("/forgot-password");
   }, [email, navigate]);
