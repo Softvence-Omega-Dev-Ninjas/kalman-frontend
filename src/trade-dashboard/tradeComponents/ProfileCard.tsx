@@ -12,6 +12,7 @@ export default function ProfileCard() {
   const { data: overView } = useGetTradesmanOverviewQuery(undefined);
   const { averageRating } = useReviewCount(data?.data?.review);
 
+  console.log(data);
   return (
     <div className="max-w-5xl mx-auto mt-8">
       <Link to="/">
@@ -27,7 +28,9 @@ export default function ProfileCard() {
         <div className="flex items-center gap-4">
           {/* Avatar */}
           <img
-            src={data?.data?.images.length !== 0 ? data.data?.images[0] : user1}
+            src={
+              data?.data?.images.length !== 0 ? data?.data?.images[0] : user1
+            }
             alt="Esther Howard"
             className="w-20 h-20 rounded-full object-cover"
           />
