@@ -14,8 +14,8 @@ const UserMessage = () => {
   const USER_ID = user.id;
   const [selectedRecipientId, setSelectedRecipientId] = useState("");
   const [message, setMessage] = useState('');
-  const [selectedContact, setSelectedContact] = useState('');
-  const [showChat, setShowChat] = useState(false);
+  const [, setSelectedContact] = useState('');
+  const [, setShowChat] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   
   const { data: chatLists, isLoading: isLoadingChatLists, refetch: refetchChatLists } = useGetChatListQuery({});
@@ -56,9 +56,9 @@ const UserMessage = () => {
     setShowChat(true);
   };
 
-  const handleBackToContacts = () => {
-    setShowChat(false);
-  };
+  // const handleBackToContacts = () => {
+  //   setShowChat(false);
+  // };
 
   const handleSendMessage = async () => {
     if (!message.trim() && !selectedFile) return;

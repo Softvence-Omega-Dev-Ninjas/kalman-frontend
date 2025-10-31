@@ -9,6 +9,7 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { clearUser, selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { FiMenu, FiX, FiChevronDown, FiLogIn } from "react-icons/fi";
 import icon from "@/assets/user-icon/user-icon1.png";
+import { baseApi } from "@/redux/api/baseApi";
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -79,6 +80,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(clearUser());
+    dispatch(baseApi.util.resetApiState());
     setDropdownOpen(false);
     window.location.href = "/";
   };
