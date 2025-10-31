@@ -41,7 +41,7 @@ const JobInformation = ({ job }: { job: any }) => {
           </div>
         </div>
         <div className="text-secondary space-y-3">
-          <h1 className="text-2xl font-semibold">{job?.budge_type}</h1>
+          {/* <h1 className="text-2xl font-semibold">{job?.budge_type}</h1> */}
           {/* <p className="text-lg">Hourly Budget</p> */}
         </div>
       </div>
@@ -52,7 +52,7 @@ const JobInformation = ({ job }: { job: any }) => {
         </div>
         <div>
           <h1 className="text-xl font-semibold mb-3">Timeline</h1>
-          <p className="text-secondary">Today if possible</p>
+          <p className="text-secondary">{job?.timeline}</p>
         </div>
         <div>
           <h1 className="text-xl font-semibold mb-3">Skill Needed</h1>

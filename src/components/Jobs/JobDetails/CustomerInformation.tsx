@@ -118,7 +118,8 @@ console.log('jobCusInfo',jobCusInfo)
               Shortlist fee
             </h1>
             <p className="text-3xl font-bold text-orange-500">
-              {proposal.shortlist_fee || "$20.00 + VAT"}
+              {/* {proposal.shortlist_fee || "$20.00 + VAT"} */}
+              ${proposal?.shortlist_fee}
             </p>
           </div>
 
@@ -144,24 +145,25 @@ console.log('jobCusInfo',jobCusInfo)
           <div className="mb-6 flex items-center justify-between text-sm text-gray-600">
             <div className="flex items-center gap-2">
               <span className="font-semibold text-foreground">
-                {proposal.shortlisted_count || "01"}
+                {/* {proposal.shortlisted_count || "01"} */}
+                  {proposal?.jobActivity?.shortlisted}
               </span>
               <span>Shortlisted</span>
             </div>
-            <span className="text-gray-400">|</span>
-            <div className="flex items-center gap-2">
+            {/* <span className="text-gray-400">|</span> */}
+            {/* <div className="flex items-center gap-2">
               <span className="font-semibold text-foreground">
                 {proposal.another_count || "01"}
               </span>
               <span>Shortlisted</span>
-            </div>
+            </div> */}
           </div>
 
           {/* Message Section */}
           <div className="mb-6">
             <p className="text-base font-semibold text-foreground">
-              {proposal.customer_message ||
-                "The customer invited you to discuss their lead."}
+           
+                The customer invited you to discuss their lead.
             </p>
           </div>
 
@@ -179,7 +181,8 @@ console.log('jobCusInfo',jobCusInfo)
             Shortlist fee
           </h1>
           <p className="text-3xl font-bold text-orange-500">
-            {jobCusInfo?.shortlist_fee || "$20.00 + VAT"}
+            ${jobCusInfo?.shortlist_fee}
+            {/* {jobCusInfo?.shortlist_fee || "$20.00 + VAT"} */}
           </p>
 
           <div className="p-4 bg-gray-50 rounded-lg border border-gray-200 mt-4 mb-6">
@@ -194,17 +197,18 @@ console.log('jobCusInfo',jobCusInfo)
           <div className="mb-6 flex items-center justify-between text-sm text-gray-600">
             <div className="flex items-center gap-2">
               <span className="font-semibold text-foreground">
-                {jobCusInfo.shortlisted_count || "01"}
+                {/* {jobCusInfo.shortlisted_count || "01"} */}
+                  {jobCusInfo?.jobActivity?.shortlisted}
               </span>
               <span>Shortlisted</span>
             </div>
-            <span className="text-gray-400">|</span>
+            {/* <span className="text-gray-400">|</span>
             <div className="flex items-center gap-2">
               <span className="font-semibold text-foreground">
                 {jobCusInfo.another_count || "01"}
               </span>
               <span>Shortlisted</span>
-            </div>
+            </div> */}
           </div>
 
           {/* Message Section */}
