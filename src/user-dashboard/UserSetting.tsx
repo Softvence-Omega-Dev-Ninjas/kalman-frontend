@@ -34,6 +34,10 @@ interface ProfileFormData {
 }
 
 const UserSetting: React.FC = () => {
+
+        useEffect(()=>{
+          document.title = `Setting | User Dashboard | Stavbar`
+        }, [])
   // RTK Query hooks
   const {
     data: profileData,

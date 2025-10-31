@@ -6,6 +6,11 @@ import { useGetJobsQuery } from "@/redux/features/jobs/jobsApi";
 import type { FilterState } from "@/types/job";
 
 const Jobs = () => {
+      useEffect(()=>{
+      document.title = `Jobs | Stavbar`
+    }, [])
+  
+
   const [filters, setFilters] = useState<FilterState>({
     search: "",
     category: [],

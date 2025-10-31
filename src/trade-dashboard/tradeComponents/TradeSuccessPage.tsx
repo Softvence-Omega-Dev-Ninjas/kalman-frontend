@@ -4,6 +4,11 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 const TradeSuccessPage = () => {
+
+        useEffect(()=>{
+              document.title = `Trade Success | Stavbar`
+            }, [])
+
     const navigate = useNavigate();
 
     useEffect(() => {

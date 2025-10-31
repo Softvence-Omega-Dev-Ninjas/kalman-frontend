@@ -8,6 +8,11 @@ import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
 
 const TradePersonMessage = () => {
+
+      useEffect(()=>{
+              document.title = `Chat | Trade Dashboard | Stavbar`
+            }, [])
+
   const user = useSelector(selectCurrentUser);
   console.log("Current Tradesperson:", user.id);
   

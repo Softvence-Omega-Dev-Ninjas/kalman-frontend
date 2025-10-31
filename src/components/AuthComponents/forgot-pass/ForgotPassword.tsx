@@ -1,11 +1,17 @@
 // src/pages/auth/ForgotPassword.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForgetPasswordMutation } from "@/redux/features/auth/forgotPasswordApi";
 import { toast, Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const ForgotPassword: React.FC = () => {
+
+      useEffect(()=>{
+        document.title = `Forgot Password | Stavbar`
+      }, [])
+    
+
   const [email, setEmail] = useState("");
   const [forgetPassword, { isLoading }] = useForgetPasswordMutation();
   const navigate = useNavigate();

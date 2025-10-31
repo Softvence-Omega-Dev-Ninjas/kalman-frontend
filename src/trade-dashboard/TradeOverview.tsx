@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TrendingUp, ChevronDown } from "lucide-react";
 import { useGetTradesmanOverviewQuery } from "@/redux/features/tradesman/tradesmanApi";
 import RecentInvitation from "./tradeComponents/TradeManOverview/RecentInvitation";
@@ -22,6 +22,11 @@ import MyShortlist from "./tradeComponents/TradeManOverview/MyShortlist";
 // };
 
 const TradeOverview: React.FC = () => {
+
+           useEffect(()=>{
+              document.title = `Overview | Trade Dashboard | Stavbar`
+            }, [])
+
   const [selectedMonth, setSelectedMonth] = useState("Month");
   const { data: recentJobs } = useGetTradesmanOverviewQuery(undefined);
   // const recentJobs: JobItem[] = data?.data?.myShortlist ?? [];
