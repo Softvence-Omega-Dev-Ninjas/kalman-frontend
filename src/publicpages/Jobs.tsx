@@ -4,6 +4,7 @@ import SideFilterBar from "@/components/Jobs/SideFilterBar";
 import JobResults from "@/components/Jobs/JobCard";
 import { useGetJobsQuery } from "@/redux/features/jobs/jobsApi";
 import type { FilterState } from "@/types/job";
+import { IoMdOptions } from "react-icons/io";
 
 const Jobs = () => {
       useEffect(()=>{
@@ -36,22 +37,26 @@ const Jobs = () => {
     setFilters((prev) => ({ ...prev, page }));
   };
 
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilters((prev) => ({
-      ...prev,
-      sortBy: e.target.value as any,
-      page: 1,
-    }));
-  };
+  // const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setFilters((prev) => ({
+  //     ...prev,
+  //     sortBy: e.target.value as any,
+  //     page: 1,
+  //   }));
+  // };
 
   return (
     <div className="min-h-screen bg-[#F2F4F8] py-10 px-4 mt-8">
       <div className="max-w-7xl mx-auto">
         {/* Sorting Header */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="r pt-6 mb-2">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex items-center gap-3 mb-4 text-2xl">
+                <IoMdOptions />
+                <span className=" font-semibold">Filter By</span>
+              </div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 className="md:text-2xl lg:relative right-36 font-medium text-gray-900">
                 Available Jobs ({totalJobs})
               </h2>
             </div>
@@ -59,7 +64,7 @@ const Jobs = () => {
               {/* <div className="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-md">
                 Page {filters.page} of {totalPages}
               </div> */}
-              <div className="text-sm text-gray-600 flex items-center space-x-2">
+              {/* <div className="text-sm text-gray-600 flex items-center space-x-2">
                 <span>Sort by:</span>
                 <select
                   value={filters.sortBy}
@@ -72,7 +77,7 @@ const Jobs = () => {
                   <option value="priceHigh">Price: High to Low</option>
                   <option value="priceLow">Price: Low to High</option>
                 </select>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
