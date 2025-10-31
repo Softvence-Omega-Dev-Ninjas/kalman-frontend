@@ -252,7 +252,7 @@ const Navbar = () => {
                       <div className="border-t border-gray-100 my-2"></div>
 
                       <button
-                        className="flex items-center gap-3 w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 transition-colors duration-200 group"
+                        className="flex items-center gap-3 cursor-pointer w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 transition-colors duration-200 group"
                         onClick={handleLogout}
                       >
                         <IoIosLogOut className="text-red-400 group-hover:text-red-500 text-lg" />
@@ -442,7 +442,7 @@ const Navbar = () => {
                             handleNavLinkClick();
                             handleLogout();
                           }}
-                          className="flex items-center gap-3 w-full text-left py-3 px-4 text-red-600 hover:bg-red-50 rounded-xl transition-colors mt-2"
+                          className="flex cursor-pointer items-center gap-3 w-full text-left py-3 px-4 text-red-600 hover:bg-red-50 rounded-xl transition-colors mt-2"
                         >
                           <IoIosLogOut className="text-lg" />
                           <span>Logout</span>
