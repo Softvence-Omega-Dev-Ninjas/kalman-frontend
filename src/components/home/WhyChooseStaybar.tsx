@@ -46,7 +46,7 @@ const WhyChooseStaybar = () => {
           <div className="space-y-8 pr-10">
             <div>
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Why Choose Staybar
+                Why Choose Stavbar
               </h2>
               <p className="text-gray-600 text-lg leading-relaxed">
                 Connecting you with trusted tradespeople for every project.
