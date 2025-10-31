@@ -33,12 +33,12 @@ jobs:
 
       - name: Test SSH connection
         run: |
-          ssh -i ~/.ssh/vps_key.pem -o StrictHostKeyChecking=yes ubuntu@${{ secrets.VPS_HOST }} "echo '✅ SSH login successful'"
+          ssh -i ~/.ssh/vps_key.pem -o StrictHostKeyChecking=yes root@${{ secrets.VPS_HOST }} "echo '✅ SSH login successful'"
 
       - name: Clean old files on VPS
         run: |
-          ssh -i ~/.ssh/vps_key.pem -o StrictHostKeyChecking=yes ubuntu@${{ secrets.VPS_HOST }} "rm -rf /var/www/dist/*"
+          ssh -i ~/.ssh/vps_key.pem -o StrictHostKeyChecking=yes root@${{ secrets.VPS_HOST }} "rm -rf /var/www/dist/*"
 
       - name: Upload new build to VPS
         run: |
-          scp -i ~/.ssh/vps_key.pem -o StrictHostKeyChecking=yes -r dist/* ubuntu@${{ secrets.VPS_HOST }}:/var/www/dist/
+          scp -i ~/.ssh/vps_key.pem -o StrictHostKeyChecking=yes -r dist/* root@${{ secrets.VPS_HOST }}:/var/www/dist/
