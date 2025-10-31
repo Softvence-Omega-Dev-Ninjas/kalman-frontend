@@ -32,7 +32,7 @@ const OverviewPage = () => {
               document.title = `Overview | Admin Dashboard | Stavbar`
             }, [])
   //  Type hint added for full response
-  const { data , isError , refetch, error} = useGetDasboardOverviewQuery();
+  const { data , isError , refetch} = useGetDasboardOverviewQuery();
 useEffect(()=>{
 refetch()
 }, [])
