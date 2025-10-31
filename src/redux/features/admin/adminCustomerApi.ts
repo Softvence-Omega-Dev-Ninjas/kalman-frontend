@@ -26,7 +26,7 @@ export const adminCustomerApi = baseApi.injectEndpoints({
 
     getAdminCustomerById: builder.query<any, string>({
       query: (id) => ({
-        url: `/admin/customer/${id}`,
+        url: `/admin/customer${id}`,
         method: "GET",
       }),
       providesTags:[ "Admin"],
@@ -34,7 +34,7 @@ export const adminCustomerApi = baseApi.injectEndpoints({
 
     deleteAdminCustomer: builder.mutation<void, string>({
       query: (id) => ({
-        url: `/admin/customer/${id}`,
+        url: `/admin/customer${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Admin"],
