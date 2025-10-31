@@ -95,7 +95,10 @@ export const useChat = ({
   useEffect(() => {
     if (!userId) return;
 
-    socketRef.current = io(socketUrl, { query: { userId } });
+    socketRef.current = io(socketUrl, { 
+      query: { userId },
+      withCredentials: true,
+    });
 
     socketRef.current.on("connect", () => {
       console.log("✅ Connected:", socketRef.current?.id);
