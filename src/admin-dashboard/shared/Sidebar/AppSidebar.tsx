@@ -86,7 +86,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <div className="text-2xl font-bold text-white">
             
                       <h1 className="text-2xl md:text-3xl font-bold text-[#0D1B2A]">
-                        Stavbar
+                        {import.meta.env.VITE_APP_NAME} 
                       </h1>
                   
                   </div>

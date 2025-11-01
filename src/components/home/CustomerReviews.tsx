@@ -52,7 +52,7 @@ const CustomerReviews = () => {
                 Millions of genuine reviews
               </h3>
               <p className="text-gray-200 mb-8 leading-relaxed">
-                Reviews on Staybar are written by customers like you
+                Reviews on <span className="text-primary">{import.meta.env.VITE_APP_NAME} </span> are written by customers like you
               </p>
               
             <Link to={"/post-a-job"}>  <button className="bg-primary hover:bg-primary/80 w-full cursor-pointer text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
