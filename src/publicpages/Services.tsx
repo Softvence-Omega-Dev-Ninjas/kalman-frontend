@@ -6,11 +6,10 @@ import { useTradesman } from "@/redux/features/tradesman/hooks/useTradesman";
 import { useEffect, useMemo, useState } from "react";
 
 function Services() {
+  useEffect(() => {
+    document.title = `Service | Stavbar`;
+  }, []);
 
-    useEffect(()=>{
-      document.title = `Service | Stavbar`
-    }, [])
-  
   const [filters, setFilters] = useState({
     search: "",
     category: "",

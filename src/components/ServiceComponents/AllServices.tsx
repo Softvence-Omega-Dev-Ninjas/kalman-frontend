@@ -16,6 +16,7 @@ const AllServices: React.FC<AllTradesmanProps> = ({
   setPage,
   totalPages,
 }) => {
+  console.log("tradesman", tradesman);
   if (isLoading) {
     return (
       <div className="p-8 bg-white rounded-lg shadow-sm border border-gray-200">

@@ -29,9 +29,16 @@ const TradespersonCard = ({
   const { averageRating } = useReviewCount(review);
 
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+    <div
+      onClick={() => navigate(`/services/${id}`)}
+      className="cursor-pointer bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200"
+    >
       <div className="h-[200px] overflow-hidden">
-        <img src={image} alt={name} className="w-full h-full object-cover" />
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110"
+        />
       </div>
 
       <div className="p-5 space-y-3">
@@ -40,15 +47,20 @@ const TradespersonCard = ({
           <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
           <div className="flex items-center text-black font-semibold text-sm">
             <Clock className="w-4 h-4 mr-1" />
-            <span>{availability}</span>
+            <span>{availability.toUpperCase()}</span>
           </div>
         </div>
 
         {/* Profession and Rating */}
         <div className="flex items-center justify-between">
-          <span className="text-orange-500 text-sm font-medium px-2 py-1 bg-orange-100 rounded-md">
-            {profession}
-          </span>
+          {profession ? (
+            <span className="text-orange-500 text-sm font-medium px-2 py-1 bg-orange-100 rounded-md">
+              {profession}
+            </span>
+          ) : (
+            <span></span>
+          )}
+
           <div className="flex items-center">
             <Star className="w-4 h-4 fill-orange-400 text-orange-400 mr-1" />
             <span className="text-sm font-medium text-gray-700">
@@ -70,7 +82,7 @@ const TradespersonCard = ({
           </div>
           <button
             onClick={() => navigate(`/services/${id}`)}
-            className="text-orange-500 hover:text-orange-600 underline font-medium text-sm flex items-center transition-colors duration-200"
+            className=" cursor-pointer text-orange-500 hover:text-orange-600 underline font-medium text-sm flex items-center transition-colors duration-200"
           >
             <span>Contact now</span>
             <MdArrowOutward className="text-xl" />
