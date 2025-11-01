@@ -51,7 +51,7 @@ import BlogDetails from "../publicpages/BlogDetails";
 // import TradeSignUp from "./trade-dashboard/TradeSignUp";
 import TradeSignUpPage from "../trade-dashboard/tradeComponents/TradeSignUp/TradeSignUpPage";
 import TradeSuccessPage from "../trade-dashboard/tradeComponents/TradeSuccessPage";
-import ManageCommision from "../admin-dashboard/manage-commision/ManageCommision";
+// import ManageCommision from "../admin-dashboard/manage-commision/ManageCommision";
 
 
 import ForgotPassword from "../components/AuthComponents/forgot-pass/ForgotPassword";
@@ -325,10 +325,10 @@ const router = createBrowserRouter([
         path: "admin/manage-blog",
         element:  <AdminProtectedRoute > <ManageBlogPage /></AdminProtectedRoute>,
       },
-      {
-        path : "admin/Commision",
-        element: <AdminProtectedRoute > <ManageCommision /></AdminProtectedRoute>,
-      }
+      // {
+      //   path : "admin/Commision",
+      //   element: <AdminProtectedRoute > <ManageCommision /></AdminProtectedRoute>,
+      // }
     ],
   },
 
