@@ -6,7 +6,7 @@ import StepProgressBar from "./tradeComponents/resuable/StepProgressBar"
 const BusinessDetails = () => {
 
       useEffect(()=>{
-                document.title = `Business Details | Stavbar`
+                document.title = `Business Details | ${import.meta.env.VITE_APP_NAME}`
               }, [])
 
   return (

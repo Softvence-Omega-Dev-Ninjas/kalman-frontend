@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 const ManagePaymentsPage = () => {
 
        useEffect(()=>{
-              document.title = `Manage Dispute | Admin Dashboard | Stavbar`
+              document.title = `Manage Dispute | Admin Dashboard | ${import.meta.env.VITE_APP_NAME}`
             }, [])
 
   const [currentPage, setCurrentPage] = useState(1);

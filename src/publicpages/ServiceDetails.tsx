@@ -15,7 +15,7 @@ import { useAppSelector } from "@/redux/typeHook";
 
 const ServiceDetails = () => {
     useEffect(()=>{
-      document.title = `Service Details | Stavbar`
+      document.title = `Service Details | ${import.meta.env.VITE_APP_NAME}`
     }, [])
   
   const { id } = useParams<{ id: string }>();

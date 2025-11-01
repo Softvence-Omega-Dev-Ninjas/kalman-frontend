@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 const JobDetails = () => {
       useEffect(()=>{
-        document.title = `Job Details | Stavbar`
+        document.title = `Job Details | ${import.meta.env.VITE_APP_NAME}`
       }, [])
     
   const { id: jobid } = useParams();

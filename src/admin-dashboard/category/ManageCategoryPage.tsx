@@ -24,7 +24,7 @@ const ManageCategoryPage = () => {
 
       
        useEffect(()=>{
-              document.title = `Manage Categories | Admin Dashboard | Stavbar`
+              document.title = `Manage Categories | Admin Dashboard | ${import.meta.env.VITE_APP_NAME}`
             }, [])
 
   const [search, setSearch] = useState("");

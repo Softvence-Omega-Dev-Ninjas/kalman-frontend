@@ -25,7 +25,7 @@ interface LoginFormInputs {
 const GeneralLogin: React.FC = () => {
 
       useEffect(()=>{
-        document.title = `Login User | Stavbar`
+        document.title = `Login User | ${import.meta.env.VITE_APP_NAME}`
       }, [])
     
 

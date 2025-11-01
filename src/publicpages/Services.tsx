@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 
 function Services() {
   useEffect(() => {
-    document.title = `Service | Stavbar`;
+    document.title = `Service | ${import.meta.env.VITE_APP_NAME}`;
   }, []);
 
   const [filters, setFilters] = useState({

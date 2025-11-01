@@ -26,7 +26,7 @@ interface FormData {
 
 const SettingPage = () => {
   useEffect(() => {
-    document.title = `Setting | Trade Dashboard | Stavbar`;
+    document.title = `Setting | Trade Dashboard | ${import.meta.env.VITE_APP_NAME}`;
   }, []);
 
   const [portfolioPreviews, setPortfolioPreviews] = useState<(string | null)[]>(

@@ -5,7 +5,7 @@ import PageHeader from "../components/reuseable/PageHeader"
 function Contact() {
 
       useEffect(()=>{
-        document.title = `Contact | Stavbar`
+        document.title = `Contact | ${import.meta.env.VITE_APP_NAME}`
       }, [])
     
 

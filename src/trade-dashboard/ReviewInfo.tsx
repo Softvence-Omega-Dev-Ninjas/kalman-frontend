@@ -6,7 +6,7 @@ import ReviewInfoForm from "./tradeComponents/ReviewInfo/ReviewInfoForm"
 const ReviewInfo = () => {
 
       useEffect(()=>{
-                document.title = `Review Info | Stavbar`
+                document.title = `Review Info | ${import.meta.env.VITE_APP_NAME}`
               }, [])
 
   return (
