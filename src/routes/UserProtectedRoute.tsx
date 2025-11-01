@@ -22,11 +22,11 @@ const UserProtectedRoute = ({ children }: Props) => {
 
     if (Date.now() > exp) {
       toast.error("Session expired! Please login again.");
-      return <Navigate to="/admin/general-login" replace />;
+      return <Navigate to="/general-login" replace />;
     }
   } catch {
     toast.error("Invalid token! Please login again.");
-    return <Navigate to="/admin/general-login" replace />;
+    return <Navigate to="/general-login" replace />;
   }
 
   if (user?.role !== "CUSTOMER") {

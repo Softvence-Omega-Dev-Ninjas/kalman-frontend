@@ -39,7 +39,7 @@ interface RatingBarProps {
 const TradeReviews: React.FC = () => {
 
       useEffect(()=>{
-                document.title = `Review | Trade Dashboard | Stavbar`
+                document.title = `Review | Trade Dashboard | ${import.meta.env.VITE_APP_NAME}`
               }, [])
 
   const [selectedFilter, setSelectedFilter] =

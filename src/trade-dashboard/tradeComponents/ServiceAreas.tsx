@@ -19,7 +19,7 @@ const markerIcon = new L.Icon({
 export default function ServiceAreas(): JSX.Element {
 
       useEffect(()=>{
-                document.title = `Service Areas | Stavbar`
+                document.title = `Service Areas | ${import.meta.env.VITE_APP_NAME}`
               }, [])
 
   const [distance, setDistance] = useState<number | null>(null);

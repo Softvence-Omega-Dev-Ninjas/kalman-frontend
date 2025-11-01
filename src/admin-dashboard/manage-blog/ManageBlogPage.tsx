@@ -16,7 +16,7 @@ const ManageBlogPage = () => {
 
 
          useEffect(()=>{
-                document.title = `Manage Blog | Admin Dashboard | Stavbar`
+                document.title = `Manage Blog | Admin Dashboard | ${import.meta.env.VITE_APP_NAME}`
               }, [])
 
   const { data } = useGetAllBlogsQuery(undefined);

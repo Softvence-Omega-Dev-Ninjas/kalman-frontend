@@ -39,7 +39,7 @@ export interface UserJobsResponse {
 const UserJobs = () => {
 
         useEffect(()=>{
-            document.title = `My Jobs | User Dashboard | Stavbar`
+            document.title = `My Jobs | User Dashboard | ${import.meta.env.VITE_APP_NAME}`
           }, [])
 
   const { data, isLoading, isError } = useGetUserJobsQuery();

@@ -9,7 +9,7 @@ import { toast, Toaster } from "react-hot-toast";
 const FordotPassOtp: React.FC = () => {
 
         useEffect(()=>{
-          document.title = `Forgot Password | Stavbar`
+          document.title = `Forgot Password | ${import.meta.env.VITE_APP_NAME}`
         }, [])
       
         

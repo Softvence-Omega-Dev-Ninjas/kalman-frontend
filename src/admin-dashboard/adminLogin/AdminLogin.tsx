@@ -13,7 +13,7 @@ const AdminLogin: React.FC = () => {
 
 
          useEffect(()=>{
-                document.title = `Admin Login | Stavbar`
+                document.title = `Admin Login | ${import.meta.env.VITE_APP_NAME}`
               }, [])
 
   const navigate = useNavigate();

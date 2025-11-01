@@ -12,7 +12,7 @@ const SettingsPage: React.FC = () => {
 
 
        useEffect(()=>{
-              document.title = `Setting | Admin Dashboard | Stavbar`
+              document.title = `Setting | Admin Dashboard | ${import.meta.env.VITE_APP_NAME}`
             }, [])
 
   // --- Commission ---

@@ -35,7 +35,7 @@ interface ProfileFormData {
 
 const UserSetting: React.FC = () => {
   useEffect(() => {
-    document.title = `Setting | User Dashboard | Stavbar`;
+    document.title = `Setting | User Dashboard | ${import.meta.env.VITE_APP_NAME}`;
   }, []);
   // RTK Query hooks
   const {

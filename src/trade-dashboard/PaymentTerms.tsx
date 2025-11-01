@@ -5,7 +5,7 @@ import StepProgressBar from "./tradeComponents/resuable/StepProgressBar"
 const PaymentTerms = () => {
 
       useEffect(()=>{
-                document.title = `Payment Terms | Stavbar`
+                document.title = `Payment Terms | ${import.meta.env.VITE_APP_NAME}`
               }, [])
 
   return (

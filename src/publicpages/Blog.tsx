@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 function Blog() {
       useEffect(()=>{
-        document.title = `Blogs | Stavbar`
+        document.title = `Blogs | ${import.meta.env.VITE_APP_NAME}`
       }, [])
     
 

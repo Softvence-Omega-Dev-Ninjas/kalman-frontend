@@ -12,7 +12,7 @@ import { useGetAllCustomersQuery } from "@/redux/features/customer/customerApi";
 const UserOverview = () => {
 
         useEffect(()=>{
-          document.title = `Overview | User Dashboard | Stavbar`
+          document.title = `Overview | User Dashboard | ${import.meta.env.VITE_APP_NAME}`
         }, [])
       
   const [selectedMonth, setSelectedMonth] = useState("Month");

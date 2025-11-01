@@ -24,7 +24,7 @@ import MyShortlist from "./tradeComponents/TradeManOverview/MyShortlist";
 const TradeOverview: React.FC = () => {
 
            useEffect(()=>{
-              document.title = `Overview | Trade Dashboard | Stavbar`
+              document.title = `Overview | Trade Dashboard | ${import.meta.env.VITE_APP_NAME}`
             }, [])
 
   const [selectedMonth, setSelectedMonth] = useState("Month");

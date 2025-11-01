@@ -31,7 +31,7 @@ export interface IJobData {
 const ManageJobsPage = () => {
 
        useEffect(()=>{
-              document.title = `Manage Jobs | Admin Dashboard | Stavbar`
+              document.title = `Manage Jobs | Admin Dashboard | ${import.meta.env.VITE_APP_NAME}`
             }, [])
 
   const [currentPage, setCurrentPage] = useState(1);

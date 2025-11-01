@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const UpdatePass: React.FC = () => {
 
         useEffect(()=>{
-          document.title = `Forgot Password | Stavbar`
+          document.title = `Forgot Password | ${import.meta.env.VITE_APP_NAME}`
         }, [])
       
   const [password, setPassword] = useState("");

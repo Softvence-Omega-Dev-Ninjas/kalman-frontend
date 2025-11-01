@@ -8,7 +8,7 @@ import { IoMdOptions } from "react-icons/io";
 
 const Jobs = () => {
       useEffect(()=>{
-      document.title = `Jobs | Stavbar`
+      document.title = `Jobs | ${import.meta.env.VITE_APP_NAME}`
     }, [])
   
 
