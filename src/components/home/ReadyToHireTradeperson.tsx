@@ -22,7 +22,7 @@ const ReadyToHireTradeperson: React.FC = () => {
 
         <div className="mt-8">
          <Link to={"/post-a-job"} >
-          <button className="bg-primary cursor-pointer hover:bg-primary/80 text-white px-5 py-2.5 rounded-md shadow-sm cursor-pointer">
+          <button className="bg-primary cursor-pointer hover:bg-orange-600 text-white px-5 py-2.5 rounded-md shadow-sm cursor-pointer">
             Post your job
           </button>
           </Link>

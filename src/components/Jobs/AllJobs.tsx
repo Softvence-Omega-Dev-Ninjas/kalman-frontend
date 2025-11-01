@@ -26,7 +26,6 @@
 //         <Loader2 className="animate-spin w-8 h-8 text-primary" />
 //       </div>
 //     );
-// console.log(jobs)
 //   return (
 //     <div className="px-4">
 //       <div className=" gap-3 flex flex-col ">

@@ -12,7 +12,6 @@ const TradeCount: React.FC<Props> = ({
 }) => {
   const { data, refetch, isLoading } = useHomePageDataQuery();
 
-  // Refetch on mount (optional)
   useEffect(() => {
     refetch();
   }, [refetch]);
@@ -21,14 +20,13 @@ const TradeCount: React.FC<Props> = ({
     return (
       <section
         style={{ backgroundColor: bg }}
-        className="py-6 text-center text-gray-500"
+        className="py-8 text-center text-gray-500 text-base sm:text-lg"
       >
         Loading stats...
       </section>
     );
   }
 
-  // Prepare dynamic stats if data exists
   const stats = data?.data
     ? [
         { value: data.data.totalTradesMan?.toString() || "0", label: "Tradespeople" },
@@ -43,29 +41,28 @@ const TradeCount: React.FC<Props> = ({
       ];
 
   return (
-    <section style={{ backgroundColor: bg }} className="py-6">
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="flex items-center justify-center gap-8 md:gap-16 flex-wrap">
+    <section style={{ backgroundColor: bg }} className="py-10 sm:py-14">
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
           {stats.map((s, i) => (
             <div
               key={i}
-              className="flex items-center  gap-4 md:gap-6 min-w-[120px] "
+              className="flex items-center gap-4 md:gap-6 min-w-[120px]"
             >
-              {/* Left Accent Bar */}
               <div
-                style={{ width: 4, height: 86, backgroundColor: accent }}
+                style={{ width: 4, height: 80, backgroundColor: accent }}
                 className="hidden md:block rounded"
               />
-
-              {/* Text */}
-              <div className=" ">
+              <div>
                 <div
-                  className="text-2xl md:text-4xl font-bold"
+                  className="text-2xl sm:text-3xl md:text-4xl font-bold"
                   style={{ color: accent }}
                 >
                   {s.value}
                 </div>
-                <div className="text-sm text-gray-600 mt-1">{s.label}</div>
+                <div className="text-sm sm:text-base text-gray-600 mt-1">
+                  {s.label}
+                </div>
               </div>
             </div>
           ))}

@@ -1,6 +1,8 @@
 import React from 'react'
 import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import star from "../../assets/logo/Shape.png"
+import star2 from "../../assets/logo/Shape (1).png"
 
 const columnLinks = [
   {
@@ -46,35 +48,16 @@ const columnLinks = [
 const Footer: React.FC = () => {
   return (
     <footer className="bg-white text-gray-800">
-      <div className="max-w-6xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-          <div className="md:col-span-1">
-            <h3 className="text-2xl font-bold mb-6">Stavbar</h3>
-            <div className="flex items-center gap-3 mb-6">
-              <Link
-                to="/facebook"
-                className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center"
-              >
-                <FaFacebookF />
-              </Link>
-              <Link
-                to="/twitter"
-                className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center"
-              >
-                <FaTwitter />
-              </Link>
-              <Link
-                to="/instagram"
-                className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center"
-              >
-                <FaInstagram />
-              </Link>
-            </div>
-          </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {/* Top section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-8">
+          <h3 className="text-3xl font-bold sm:col-span-2 md:col-span-3 lg:col-span-4">
+            Stavbar
+          </h3>
 
           {columnLinks.map((col, idx) => (
-            <div key={idx} className="md:col-span-1">
-              <h4 className="font-semibold mb-4">{col.title}</h4>
+            <div key={idx}>
+              <h4 className="font-semibold text-lg mb-4">{col.title}</h4>
               <ul className="space-y-3 text-sm">
                 {col.links.map((l, i) => (
                   <li key={i}>
@@ -91,10 +74,55 @@ const Footer: React.FC = () => {
           ))}
         </div>
 
+        {/* Social + Rating Section */}
+        <div className="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8">
+          {/* Social icons */}
+          <div className="flex justify-center sm:justify-start gap-3">
+            <Link
+              to="/facebook"
+              className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center transition-colors hover:bg-[#1877F2] hover:text-white"
+            >
+              <FaFacebookF />
+            </Link>
+            <Link
+              to="/twitter"
+              className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center transition-colors hover:bg-[#1DA1F2] hover:text-white"
+            >
+              <FaTwitter />
+            </Link>
+            <Link
+              to="/instagram"
+              className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center transition-colors hover:bg-[#E4405F] hover:text-white"
+            >
+              <FaInstagram />
+            </Link>
+          </div>
+
+          {/* Rating section */}
+          <div className="flex flex-wrap justify-center items-center gap-3">
+            <p>Excellent</p>
+            <div className="flex gap-1">
+              {[1, 2, 3, 4, 5].map((_, idx) => (
+                <div
+                  key={idx}
+                  className="p-1 bg-green-600 rounded-xs w-6 h-6 flex justify-center items-center"
+                >
+                  <img src={star} alt="" />
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-2 items-center">
+              <img src={star2} alt="" className="w-5 h-5" />
+              <p>Trustpilot</p>
+            </div>
+          </div>
+        </div>
+
         <hr className="border-t border-gray-200 my-8" />
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
-          <div className="flex items-center gap-6">
+        {/* Bottom section */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
+          <div className="flex flex-wrap justify-center sm:justify-start gap-4">
             <Link
               to="/privacy"
               className="text-gray-600 underline hover:text-primary transition-colors"
@@ -109,11 +137,9 @@ const Footer: React.FC = () => {
             </Link>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="text-gray-600">
-              © Copyright 2025, All Rights Reserved by Stavbar
-            </span>
-          </div>
+          <span className="text-gray-600 text-center sm:text-right">
+            © Copyright 2025, All Rights Reserved by Stavbar
+          </span>
         </div>
       </div>
     </footer>

@@ -4,10 +4,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import {
-  Card,
-
-} from "@/components/ui/card"
+import { Card } from "@/components/ui/card";
 // import avatar from "@/assets/dashboard/header/avatar.png";
 // import { MdOutlineNotificationsNone } from "react-icons/md";
 import useScrollTrigger from "@/hooks/useScrollTrigger";
@@ -19,16 +16,15 @@ import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 
 const AdminDashboardLayout = () => {
+  useEffect(() => {
+    document.title = `Admin Dashboard | Stavbar`;
+  }, []);
 
-      useEffect(()=>{
-                document.title = `Admin Dashboard | Stavbar`
-              }, [])
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { scrolled } = useScrollTrigger();
 
-  const {admin } = useAppSelector((state)=> state.admin)
-  console.log(admin , "admin here")
+  const { admin } = useAppSelector((state) => state.admin);
+  console.log(admin, "admin here");
   return (
     <div>
       <SidebarProvider>
@@ -48,21 +44,24 @@ const AdminDashboardLayout = () => {
               </div>
               <div className="flex items-center gap-4 mr-2">
                 {/* <MdOutlineNotificationsNone className="text-xl" /> */}
-                {
-                  admin ? 
-                        <AdminProfileDropdown />: 
-                        <Button onClick={()=>navigate("/admin/login")} className=" cursor-pointer">
-                               Login
-                        </Button>
-                }
+                {admin ? (
+                  <AdminProfileDropdown />
+                ) : (
+                  <Button
+                    onClick={() => navigate("/admin/login")}
+                    className=" cursor-pointer"
+                  >
+                    Login
+                  </Button>
+                )}
               </div>
             </div>
           </header>
           <div className="bg-[#F9FAFB] min-h-[calc(100vh)] z-0">
             <div className="p-5">
-            <Card className="p-5 min-h-[88vh]">
-                <Outlet/>
-            </Card>
+              <Card className="p-5 min-h-[88vh]">
+                <Outlet />
+              </Card>
             </div>
           </div>
           {/* <footer className="w-full px-4 py-6 bg-primary-200 text-sm text-white text-center">

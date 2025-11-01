@@ -15,7 +15,6 @@ export const useTradesman = (filters = {}) => {
 
   const { data, isLoading, isError } = useGetAllTradesmansQuery(queryParams);
 
-  console.log("service", data);
   // Normalize data
   const tradesmen = Array.isArray(data?.data?.data) ? data.data.data : [];
   const totalPages = data?.data?.metadata?.totalPages ?? 1;

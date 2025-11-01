@@ -34,7 +34,6 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 };
 
 
-console.log(jobData)
   // Category
   const { data } = useGetCategoriesHQuery();
   const categories: TCategory[] = data?.data?.result || [];
@@ -65,7 +64,7 @@ const handleChooseClick = (e?: React.MouseEvent) => {
       setPreviewUrls((prev) => [...prev, ...urls]);
     }
   };
-console.log(jobData)
+
   // Submit Job (fixed console + contact method + image data)
   const submitJob = async () => {
     try {
@@ -87,12 +86,8 @@ const missingField = requiredFields.find(field => !field.value);
 
 if (missingField) {
   toast(`${missingField.name} is missing!`);
-  console.log(`Missing field: ${missingField.name}`);
   return;
 }
-
-
-      console.log("Images ready to upload:", images);
 
       const data = {
         title: jobData.title,

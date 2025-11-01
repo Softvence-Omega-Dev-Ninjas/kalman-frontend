@@ -33,7 +33,6 @@ const ManageUsersPage = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
   const pageSize = 10;
-// console.log(search)
   // debounce search
   useEffect(() => {
     const handler = setTimeout(() => {
