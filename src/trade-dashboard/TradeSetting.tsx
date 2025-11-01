@@ -183,8 +183,11 @@ const SettingPage = () => {
         await updateSettings(submitData).unwrap();
         toast.success("Settings updated successfully");
       } catch (error: any) {
-        console.error("Error updating settings:", error);
-        toast.error(error?.data?.message || "Failed to update settings");
+        const errMessage =
+          (error as any)?.data?.message ||
+          (error as any)?.message ||
+          "Failed to update settings";
+        toast.error(errMessage);
       }
     }
   };

@@ -32,6 +32,7 @@ const Navbar = () => {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const userState = useSelector(selectCurrentUser);
+  console.log('userState', userState)
   // Check if mobile device
   useEffect(() => {
     const checkMobile = () => {
@@ -165,7 +166,7 @@ const Navbar = () => {
                       alt="User"
                       className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-white shadow-lg transition-all duration-300 group-hover:border-orange-400 group-hover:scale-105"
                     />
-                    <div className="absolute -bottom-0 -right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                    {/* <div className="absolute -bottom-0 -right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div> */}
                   </div>
 
                   {/* Show user info on desktop */}
