@@ -30,7 +30,7 @@ const WhyChooseStaybar = () => {
           <div className="space-y-8">
             <div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Why Choose Stavbar
+                Why Choose <span className="text-primary">{import.meta.env.VITE_APP_NAME} </span> 
               </h2>
               <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
                 Connecting you with trusted tradespeople for every project.

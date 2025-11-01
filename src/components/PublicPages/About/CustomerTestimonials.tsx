@@ -48,7 +48,7 @@ const CustomerTestimonials = () => {
                 Millions of genuine reviews
               </h3>
               <p className="text-gray-200 mb-8 leading-relaxed">
-                Reviews on Staybar are written by customers like you
+                Reviews on <span className="text-primary">{import.meta.env.VITE_APP_NAME} </span> are written by customers like you
               </p>
               
               <button className="bg-primary w-full text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
