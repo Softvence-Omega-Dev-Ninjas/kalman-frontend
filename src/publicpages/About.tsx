@@ -9,7 +9,7 @@ import PageHeader from "../components/reuseable/PageHeader"
 function About() {
 
       useEffect(()=>{
-        document.title = `About | Stavbar`
+        document.title = `About | ${import.meta.env.VITE_APP_NAME}`
       }, [])
     
 

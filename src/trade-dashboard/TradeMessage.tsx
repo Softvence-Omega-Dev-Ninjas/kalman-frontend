@@ -19,7 +19,7 @@ import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 
 const TradeMessage = () => {
   useEffect(() => {
-    document.title = `Chat | Trade Dashboard | Stavbar`;
+    document.title = `Chat | Trade Dashboard | ${import.meta.env.VITE_APP_NAME}`;
   }, []);
 
   const user = useSelector(selectCurrentUser);

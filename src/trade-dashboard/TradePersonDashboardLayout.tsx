@@ -7,7 +7,7 @@ import ScrollToTop from "@/components/scroll/ScrollToTop";
 
 function TradePersonDashboardLayout() {
   useEffect(() => {
-    document.title = `Trade Dashboard | Stavbar`;
+    document.title = `Trade Dashboard | ${import.meta.env.VITE_APP_NAME}`;
   }, []);
 
   return (

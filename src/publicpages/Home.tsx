@@ -15,7 +15,7 @@ import WhyChooseStaybar from "../components/home/WhyChooseStaybar"
 
 function Home() {
   useEffect(()=>{
-    document.title = `Home | Stavbar`;
+    document.title = `Home | ${import.meta.env.VITE_APP_NAME}`;
   }, [])
 
   return (

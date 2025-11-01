@@ -5,7 +5,7 @@ import TradeLogInComponent from "./tradeComponents/TradeLogin/TradeLoginComponen
 const TradeLogin: React.FC = () => {
 
       useEffect(()=>{
-                document.title = `Trade Login | Stavbar`
+                document.title = `Trade Login | ${import.meta.env.VITE_APP_NAME}`
               }, [])
 
   return (

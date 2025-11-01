@@ -8,7 +8,7 @@ import TradeEnterVerificationCode from "../TradeLogin/TradeEnterVerificationCode
 const TradeSignUpPage: React.FC = () => {
 
       useEffect(()=>{
-                document.title = `Trade SignUp | Stavbar`
+                document.title = `Trade SignUp | ${import.meta.env.VITE_APP_NAME}`
               }, [])
 
 const [step, setStep] = useState(1);

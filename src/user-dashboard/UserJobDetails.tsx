@@ -130,7 +130,7 @@ console.log(proposal)
 const UserJobDetails: React.FC = () => {
 
         useEffect(()=>{
-            document.title = `Job Details | User Dashboard | Stavbar`
+            document.title = `Job Details | User Dashboard | ${import.meta.env.VITE_APP_NAME}`
           }, [])
 
   const { id } = useParams();

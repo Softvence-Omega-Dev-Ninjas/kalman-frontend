@@ -29,7 +29,7 @@ export interface DashboardApiResponse {
 const OverviewPage = () => {
 
       useEffect(()=>{
-              document.title = `Overview | Admin Dashboard | Stavbar`
+              document.title = `Overview | Admin Dashboard | ${import.meta.env.VITE_APP_NAME}`
             }, [])
   //  Type hint added for full response
   const { data , isError , refetch} = useGetDasboardOverviewQuery();

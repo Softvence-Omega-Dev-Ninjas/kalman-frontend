@@ -9,7 +9,7 @@ import ScrollToTop from "@/components/scroll/ScrollToTop"
 function UserDashboardLayout() {
 
         useEffect(()=>{
-          document.title = `User Dashboard | Stavbar`
+          document.title = `User Dashboard | ${import.meta.env.VITE_APP_NAME}`
         }, [])
       
 

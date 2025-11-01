@@ -27,7 +27,7 @@ interface PaymentHistoryItem {
 
 export default function TradePayment() {
   useEffect(() => {
-    document.title = `Payment | Trade Dashboard | Stavbar`;
+    document.title = `Payment | Trade Dashboard | ${import.meta.env.VITE_APP_NAME}`;
   }, []);
 
   const { data } = useGetTradesmanProfileQuery(undefined);

@@ -7,7 +7,7 @@ export default function NotFound() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    document.title = "Not Found Page | Stavbar"
+    document.title = `Not Found Page | ${import.meta.env.VITE_APP_NAME}`
   }, [])
 
   return (

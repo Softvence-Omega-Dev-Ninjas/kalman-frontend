@@ -14,7 +14,7 @@ const GeneralSignUpCmp =
 const GeneralAuthFlow: React.FC = () => {
 
       useEffect(()=>{
-      document.title = `Register User | Stavbar`
+      document.title = `Register User | ${import.meta.env.VITE_APP_NAME}`
     }, [])
   
   const [step, setStep] = useState<number>(() => {

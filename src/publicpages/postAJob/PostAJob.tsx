@@ -29,7 +29,7 @@ export interface JobData {
 const PostAJob = () => {
 
         useEffect(()=>{
-          document.title = `Post A Job | Stavbar`
+          document.title = `Post A Job | ${import.meta.env.VITE_APP_NAME}`
         }, [])
       
 

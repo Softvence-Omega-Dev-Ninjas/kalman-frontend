@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const TradeSuccessPage = () => {
 
         useEffect(()=>{
-              document.title = `Trade Success | Stavbar`
+              document.title = `Trade Success | ${import.meta.env.VITE_APP_NAME}`
             }, [])
 
     const navigate = useNavigate();

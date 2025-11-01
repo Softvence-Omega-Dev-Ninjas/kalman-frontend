@@ -18,7 +18,7 @@ import ScrollToTop from "@/components/scroll/ScrollToTop";
 
 const AdminDashboardLayout = () => {
   useEffect(() => {
-    document.title = `Admin Dashboard | Stavbar`;
+    document.title = `Admin Dashboard | ${import.meta.env.VITE_APP_NAME}`;
   }, []);
 
   const navigate = useNavigate();

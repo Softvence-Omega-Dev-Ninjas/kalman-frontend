@@ -7,7 +7,7 @@ import { useEffect } from "react";
 function BlogDetails() {
 
       useEffect(()=>{
-        document.title = `Blog Details | Stavbar`
+        document.title = `Blog Details | ${import.meta.env.VITE_APP_NAME}`
       }, [])
     
   const { id } = useParams<{ id: string }>();

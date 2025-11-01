@@ -26,7 +26,7 @@ interface IUserData {
 const ManageUsersPage = () => {
 
        useEffect(()=>{
-              document.title = `Manage User | Admin Dashboard | Stavbar`
+              document.title = `Manage User | Admin Dashboard | ${import.meta.env.VITE_APP_NAME}`
             }, [])
 
   const [currentPage, setCurrentPage] = useState(1);
