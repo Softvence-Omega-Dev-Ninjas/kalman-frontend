@@ -22,7 +22,8 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
   const jobId = jobCusInfo?.id;
 
   const { data: proposalResponse, isLoading } = useGetMyProposalByJobIdQuery(jobId);
-  const proposal = proposalResponse || null;
+  const proposal = proposalResponse?.data || null;
+  console.log('proposal',proposal)
 
   const handleSendMessage = () => {
     if (!user?.id) {
@@ -114,7 +115,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
             </h1>
             <p className="text-3xl font-bold text-orange-500">
               {/* {proposal.shortlist_fee || "$20.00 + VAT"} */}
-              ${proposal?.shortlist_fee}
+              ${proposal?.jobs?.shortlist_fee}
             </p>
           </div>
 
@@ -137,13 +138,13 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
           </div>
 
           {/* Status Section */}
-          <div className="mb-6 flex items-center justify-between text-sm text-gray-600">
+          <div className="mb- flex items-center justify-between text-sm text-gray-600">
             <div className="flex items-center gap-2">
               <span className="font-semibold text-foreground">
                 {/* {proposal.shortlisted_count || "01"} */}
-                  {proposal?.jobActivity?.shortlisted}
+                  {/* {proposal?.jobs?.jobActivity?.shortlisted} */}
               </span>
-              <span>Shortlisted</span>
+              {/* <span>Shortlisted</span> */}
             </div>
             {/* <span className="text-gray-400">|</span> */}
             {/* <div className="flex items-center gap-2">

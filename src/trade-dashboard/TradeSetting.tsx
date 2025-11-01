@@ -25,10 +25,9 @@ interface FormData {
 }
 
 const SettingPage = () => {
-
-      useEffect(()=>{
-              document.title = `Setting | Trade Dashboard | Stavbar`
-            }, [])
+  useEffect(() => {
+    document.title = `Setting | Trade Dashboard | Stavbar`;
+  }, []);
 
   const [portfolioPreviews, setPortfolioPreviews] = useState<(string | null)[]>(
     Array(4).fill(null)
@@ -158,7 +157,11 @@ const SettingPage = () => {
         toast.success("Settings updated successfully");
       } catch (error) {
         console.error("Error updating settings:", error);
-        toast.error("Failed to update settings");
+        const errMessage =
+          (error as any)?.data?.message ||
+          (error as any)?.message ||
+          "Failed to update settings";
+        toast.error(errMessage);
       }
     }
   };
