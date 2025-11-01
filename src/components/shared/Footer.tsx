@@ -52,7 +52,7 @@ const Footer: React.FC = () => {
         {/* Top section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-8">
           <h3 className="text-3xl font-bold sm:col-span-2 md:col-span-3 lg:col-span-4">
-            Stavbar
+            {import.meta.env.VITE_APP_NAME} 
           </h3>
 
           {columnLinks.map((col, idx) => (
@@ -138,7 +138,7 @@ const Footer: React.FC = () => {
           </div>
 
           <span className="text-gray-600 text-center sm:text-right">
-            © Copyright 2025, All Rights Reserved by Stavbar
+            © Copyright 2025, All Rights Reserved by <span className=''>{import.meta.env.VITE_APP_NAME} </span>
           </span>
         </div>
       </div>
