@@ -32,7 +32,6 @@ const TwoStepVerification: React.FC<TwoStepVerificationProps> = ({
 
     try {
       await sendOtp({ email }).unwrap();
-      console.log("OTP sent to:", email);
       toast.success("OTP sent to your email!");
       setStep(step + 1);
     } catch (err) {

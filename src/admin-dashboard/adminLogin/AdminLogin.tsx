@@ -75,7 +75,6 @@ const AdminLogin: React.FC = () => {
       if (res.success && res.data) {
         const token = res.data;
         const decoded = decodeJWT(token);
-    //  console.log(res)
     if(decoded.role !== "ADMIN"){
       toast.error("Only Admin can login from here!")
       return

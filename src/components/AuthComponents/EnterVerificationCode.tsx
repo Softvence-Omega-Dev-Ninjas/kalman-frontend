@@ -61,9 +61,8 @@ const EnterVerificationCode: React.FC<EnterVerificationCodeProps> = ({
     if (otp.length !== 6) return;
 
     try {
-      const result = await verifyOtp({ otp: parseInt(otp), email }).unwrap();
+      await verifyOtp({ otp: parseInt(otp), email }).unwrap();
       toast.success("OTP verified successfully!");
-      console.log("OTP verification successful:", result);
 
       // Clear email after successful verification
       handleResetFlow();

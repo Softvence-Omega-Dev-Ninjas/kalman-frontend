@@ -12,7 +12,7 @@ interface ProposalModalProps {
 
 const ProposalModal = ({ jobId, tradesManId, onClose }: ProposalModalProps) => {
   // I got
-  console.log("jobsandtrademan", jobId, tradesManId);
+
   const [proposalText, setProposalText] = useState("");
   const [createProposal, { isLoading }] = useCreateProposalMutation();
 
@@ -36,8 +36,6 @@ const ProposalModal = ({ jobId, tradesManId, onClose }: ProposalModalProps) => {
       } else {
         toast.success("Proposal submitted successfully!");
       }
-
-      console.log(" Response:", response);
 
       onClose();
       setProposalText("");
