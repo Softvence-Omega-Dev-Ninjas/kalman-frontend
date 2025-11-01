@@ -9,7 +9,7 @@ import {
 
 } from "@/components/ui/card"
 // import avatar from "@/assets/dashboard/header/avatar.png";
-import { MdOutlineNotificationsNone } from "react-icons/md";
+// import { MdOutlineNotificationsNone } from "react-icons/md";
 import useScrollTrigger from "@/hooks/useScrollTrigger";
 import { AppSidebar } from "@/admin-dashboard/shared/Sidebar/AppSidebar";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -17,6 +17,7 @@ import { useAppSelector } from "@/redux/typeHook";
 import AdminProfileDropdown from "./AdminProfileDropdown";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import ScrollToTop from "@/components/scroll/ScrollToTop";
 
 const AdminDashboardLayout = () => {
 
@@ -31,6 +32,7 @@ const AdminDashboardLayout = () => {
   console.log(admin , "admin here")
   return (
     <div>
+       <ScrollToTop />
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset className="">
