@@ -70,16 +70,19 @@ const TradeLogInComponent: React.FC = () => {
         const decodedToken = decodeJWT(token);
         console.log("Decoded Token:", decodedToken);
 
-if(decodedToken.role !== "TRADESMAN"){
-  toast.error("Only Trade Person are allow for login from here!")
-  return
-}
+        if (decodedToken.role !== "TRADESMAN") {
+          toast.error("Only Trade Person are allow for login from here!");
+          return;
+        }
         if (decodedToken) {
           const userData = {
             id: decodedToken.id,
             email: decodedToken.email,
-            phone: decodedToken.phone,
+            phone: decodedToken.phone || null, // phone may be null
+            image: result.data.user.image || null, // <-- take from API response
             role: decodedToken.role,
+            firstName: result.data.user.firstName || "",
+            lastName: result.data.user.lastname || "",
           };
 
           dispatch(
@@ -91,18 +94,11 @@ if(decodedToken.role !== "TRADESMAN"){
 
           toast.success(result.message || "Login successful!");
 
-          // if (data.rememberMe) {
-          //   localStorage.setItem("rememberMe", "true");
-          // } else {
-          //   localStorage.removeItem("rememberMe");
-          // }
-          if (result.data?.user?.firstName || result.data?.user?.lastName) {
+          if (userData.firstName || userData.lastName) {
             navigate("/");
           } else {
             navigate("/trade-person/personal-info");
           }
-        } else {
-          toast.error("Failed to decode user information");
         }
       } else {
         toast.error("Login failed: Invalid response format");
@@ -224,7 +220,7 @@ if(decodedToken.role !== "TRADESMAN"){
             type="submit"
             disabled={isLoading}
             style={{ backgroundColor: "#FF7346" }}
-            className="w-full text-white py-3 rounded-md font-semibold mt-2 disabled:opacity-60"
+            className="w-full text-white cursor-pointer py-3 rounded-md font-semibold mt-2 disabled:opacity-60"
           >
             {isLoading ? "Signing in..." : "Sign In"}
           </button>

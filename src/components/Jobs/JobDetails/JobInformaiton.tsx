@@ -19,11 +19,6 @@ const JobInformation = ({ job }: { job: any }) => {
         <div className="space-y-3">
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-semibold">{job?.title}</h1>
-            {/* {job.tag === "Urgent" && (
-              <span className="px-3 py-1 text-sm rounded-md bg-red-100 text-red-500">
-                {job?.tag}
-              </span>
-            )} */}
           </div>
           <div className="flex items-center gap-3 text-secondary">
             <div className="flex items-center gap-2">
@@ -52,7 +47,7 @@ const JobInformation = ({ job }: { job: any }) => {
         </div>
         <div>
           <h1 className="text-xl font-semibold mb-3">Timeline</h1>
-          <p className="text-secondary">{job?.timeline}</p>
+          <p className="text-secondary capitalize">{job?.timeline}</p>
         </div>
         <div>
           <h1 className="text-xl font-semibold mb-3">Skill Needed</h1>
