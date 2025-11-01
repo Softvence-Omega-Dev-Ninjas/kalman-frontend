@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { usePostAJobMutation } from "@/redux/features/jobs/jobsApi";
 import toast from "react-hot-toast";
@@ -15,6 +15,11 @@ import type { TCategory } from "@/admin-dashboard/category/data/categoryData";
 import { useNavigate } from "react-router-dom";
 
 const PhaseThree = ({ phase, setPhase, jobData }: any) => {
+
+    useEffect(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" }); 
+    }, []);
+
   const [contactMethod, setContactMethod] = useState(jobData.contact_method || "");
   const [images, setImages] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);

@@ -25,6 +25,11 @@ interface TCategory {
 }
 
 const PhaseOne = ({ phase, setPhase, jobData, setJobData }: PhaseOneProps) => {
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" }); 
+  }, []);
+
   const [budgetType, setBudgetType] = useState(jobData.budge_type || "");
   const [title, setTitle] = useState(jobData.title);
   const [description, setDescription] = useState(jobData.description);

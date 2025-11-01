@@ -3,6 +3,7 @@ import UserNavigation from "./UserDashComponents/UserNavigation"
 import UserProfileCard from "./UserDashComponents/UserProfileCard"
 import Navbar from "@/components/shared/Navbar"
 import { useEffect } from "react"
+import ScrollToTop from "@/components/scroll/ScrollToTop"
 
 
 function UserDashboardLayout() {
@@ -14,6 +15,7 @@ function UserDashboardLayout() {
 
   return (
     <div>
+       <ScrollToTop />
       <Navbar/>
       <UserProfileCard/>
       <UserNavigation/>

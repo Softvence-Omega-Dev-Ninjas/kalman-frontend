@@ -3,6 +3,7 @@ import NavigationBar from "./tradeComponents/NavigationBar";
 import ProfileCard from "./tradeComponents/ProfileCard";
 import Navbar from "@/components/shared/Navbar";
 import { useEffect } from "react";
+import ScrollToTop from "@/components/scroll/ScrollToTop";
 
 function TradePersonDashboardLayout() {
   useEffect(() => {
@@ -11,6 +12,7 @@ function TradePersonDashboardLayout() {
 
   return (
     <div className="mt-34">
+       <ScrollToTop />
       <Navbar />
       <ProfileCard />
       <NavigationBar />

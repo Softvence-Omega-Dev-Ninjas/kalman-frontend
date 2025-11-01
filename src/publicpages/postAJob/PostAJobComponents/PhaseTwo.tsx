@@ -4,7 +4,7 @@ import emergencyIcon from "../../../assets/sample_images/emergency.png";
 import urgentIcon from "../../../assets/sample_images/urgent.png";
 import soonIcon from "../../../assets/sample_images/soon.png";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { JobData } from "../PostAJob";
 
 const timelineOptions = [
@@ -25,6 +25,11 @@ const PhaseTwo = ({
   jobData: JobData;
   setJobData: React.Dispatch<React.SetStateAction<JobData>>;
 }) => {
+
+    useEffect(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" }); 
+    }, []);
+    
   const [selected, setSelected] = useState(jobData.timeline);
   const [date, setDate] = useState(jobData.date);
   const [time, setTime] = useState(jobData.time);

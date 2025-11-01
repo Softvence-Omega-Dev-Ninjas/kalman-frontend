@@ -146,7 +146,7 @@ const SettingsPage: React.FC = () => {
           <Button
             onClick={handleSaveCommission}
             disabled={savingCommission || commissionLoading}
-            className="w-full bg-primary text-white hover:bg-primary/90"
+            className="w-full bg-primary text-white hover:bg-primary/90 cursor-pointer"
           >
             {savingCommission ? "Saving..." : "Save Commission Settings"}
           </Button>
@@ -232,7 +232,7 @@ const SettingsPage: React.FC = () => {
               <Button
                 onClick={handleSaveSystemActivity}
                 disabled={savingSystem || systemLoading}
-                className="w-full bg-primary text-white hover:bg-primary/90"
+                className="w-full bg-primary text-white hover:bg-primary/90 cursor-pointer"
               >
                 {savingSystem ? "Saving..." : "Save System Settings"}
               </Button>

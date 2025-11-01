@@ -14,6 +14,7 @@ import { useAppSelector } from "@/redux/typeHook";
 import AdminProfileDropdown from "./AdminProfileDropdown";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import ScrollToTop from "@/components/scroll/ScrollToTop";
 
 const AdminDashboardLayout = () => {
   useEffect(() => {
@@ -27,6 +28,7 @@ const AdminDashboardLayout = () => {
   console.log(admin, "admin here");
   return (
     <div>
+       <ScrollToTop />
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset className="">
