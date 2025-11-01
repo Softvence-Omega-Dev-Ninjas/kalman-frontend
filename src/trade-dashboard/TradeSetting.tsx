@@ -25,10 +25,9 @@ interface FormData {
 }
 
 const SettingPage = () => {
-
-      useEffect(()=>{
-              document.title = `Setting | Trade Dashboard | Stavbar`
-            }, [])
+  useEffect(() => {
+    document.title = `Setting | Trade Dashboard | Stavbar`;
+  }, []);
 
   const [portfolioPreviews, setPortfolioPreviews] = useState<(string | null)[]>(
     Array(4).fill(null)
@@ -49,7 +48,7 @@ const SettingPage = () => {
     city: user?.city || profileData?.data?.city || "",
     state: user?.state || profileData?.data?.state || "",
     zipCode: user?.zipCode || profileData?.data?.zipCode || "",
-    images: Array(4).fill(null),
+    images: profileData?.data?.images || Array(4).fill(null),
   });
 
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
@@ -59,7 +58,24 @@ const SettingPage = () => {
   // Update form when user data changes
   useEffect(() => {
     if (user || profileData) {
-      setFormData({
+      const apiImages = Array.isArray(profileData?.data?.images)
+        ? profileData.data.images
+        : [];
+
+      const formattedImages = apiImages.map((img: string) =>
+        img.startsWith("http")
+          ? img
+          : `${import.meta.env.VITE_API_URL || ""}/${img}`
+      );
+
+      // ✅ Always ensure exactly 4 slots
+      const paddedImages = [
+        ...formattedImages,
+        ...Array(4 - formattedImages.length).fill(null),
+      ].slice(0, 4);
+
+      setFormData((prev) => ({
+        ...prev,
         firstName: user?.name || profileData?.data?.firstName || "",
         lastName: user?.name || profileData?.data?.lastName || "",
         email: user?.email || "",
@@ -70,8 +86,10 @@ const SettingPage = () => {
         city: user?.city || profileData?.data?.city || "",
         state: user?.state || profileData?.data?.state || "",
         zipCode: user?.zipCode || profileData?.data?.zipCode || "",
-        images: Array(4).fill(null),
-      });
+        images: paddedImages, // ✅ always array of 4
+      }));
+
+      setPortfolioPreviews(paddedImages);
     }
   }, [user, profileData]);
 
@@ -128,7 +146,6 @@ const SettingPage = () => {
       console.log("Form Data:", formData);
 
       try {
-        // Create FormData for multipart/form-data submission
         const submitData = new FormData();
 
         // Add text fields
@@ -145,20 +162,27 @@ const SettingPage = () => {
         submitData.append("state", formData.state);
         submitData.append("zipCode", formData.zipCode);
 
-        // Add portfolio images (only if they exist)
+        // ✅ Add portfolio images (same key "images" multiple times)
         if (formData.images && Array.isArray(formData.images)) {
-          formData.images.forEach((file) => {
-            if (file) {
-              submitData.append(`images`, file);
-            }
+          const uploadableImages = formData.images.filter(
+            (img) => img && img instanceof File
+          );
+
+          if (uploadableImages.length > 4) {
+            toast.error("You can upload up to 5 images only");
+            return;
+          }
+
+          uploadableImages.forEach((file) => {
+            submitData.append("images", file); // ✅ just "images"
           });
         }
 
         await updateSettings(submitData).unwrap();
         toast.success("Settings updated successfully");
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error updating settings:", error);
-        toast.error("Failed to update settings");
+        toast.error(error?.data?.message || "Failed to update settings");
       }
     }
   };

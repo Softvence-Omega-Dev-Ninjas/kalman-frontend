@@ -217,8 +217,15 @@ export default function ReviewInfoForm() {
       Object.entries(tradePersonSignupData).forEach(([k, v]) => {
         if (v === undefined || v === null) return;
         if (k === "doc" || k === "credential" || k === "docs") return;
-        if (typeof v === "object") {
-          fd.append(k, JSON.stringify(v));
+
+        if (k === "subCategories" && Array.isArray(v)) {
+          v.forEach((subCat) => {
+            fd.append("subCategories[]", String(subCat)); // append each item individually
+          });
+        } else if (Array.isArray(v)) {
+          fd.append(k, JSON.stringify(v)); // for other arrays
+        } else if (typeof v === "object") {
+          fd.append(k, JSON.stringify(v)); // nested objects
         } else {
           fd.append(k, String(v));
         }
@@ -290,7 +297,7 @@ export default function ReviewInfoForm() {
 
       if (res.success) {
         console.log("[ReviewInfoForm] Signup successful, navigating...");
-        dispatch(resetTradeForm());
+        //dispatch(resetTradeForm());
         setError("");
         window.open(res.data.onboardingUrl, "_blank");
         // navigate(`${res.data.onboardingUrl}`);
