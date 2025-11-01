@@ -174,7 +174,9 @@ const SettingPage = () => {
           }
 
           uploadableImages.forEach((file) => {
-            submitData.append("images", file); // ✅ just "images"
+            if (file) {
+              submitData.append("images", file);
+            }
           });
         }
 
