@@ -15,10 +15,9 @@ const FordotPassOtp: React.FC = () => {
         
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
-  const [email, setEmail] = useState(localStorage.getItem("forgot_email") || "");
+  const [email] = useState(localStorage.getItem("forgot_email") || "");
   const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
   const [sendOtpByEmail, { isLoading: isResending }] = useSendOtpByEmailMutation();
-console.log(setEmail, "-")
   useEffect(() => {
     if (!email) navigate("/forgot-password");
   }, [email, navigate]);

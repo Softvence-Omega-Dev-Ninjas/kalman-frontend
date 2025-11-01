@@ -21,13 +21,9 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
   const jobCusInfo = customer;
   const jobId = jobCusInfo?.id;
 
-console.log('jobCusInfo',jobCusInfo)
   const { data: proposalResponse, isLoading } = useGetMyProposalByJobIdQuery(jobId);
-  console.log(isLoading)
-  console.log('proposalResponse',proposalResponse);
-
-  const proposal = proposalResponse || null;
-  console.log('proposal',proposal);
+  const proposal = proposalResponse?.data || null;
+  console.log('proposal',proposal)
 
   const handleSendMessage = () => {
     if (!user?.id) {
@@ -119,7 +115,7 @@ console.log('jobCusInfo',jobCusInfo)
             </h1>
             <p className="text-3xl font-bold text-orange-500">
               {/* {proposal.shortlist_fee || "$20.00 + VAT"} */}
-              ${proposal?.shortlist_fee}
+              ${proposal?.jobs?.shortlist_fee}
             </p>
           </div>
 
@@ -142,13 +138,13 @@ console.log('jobCusInfo',jobCusInfo)
           </div>
 
           {/* Status Section */}
-          <div className="mb-6 flex items-center justify-between text-sm text-gray-600">
+          <div className="mb- flex items-center justify-between text-sm text-gray-600">
             <div className="flex items-center gap-2">
               <span className="font-semibold text-foreground">
                 {/* {proposal.shortlisted_count || "01"} */}
-                  {proposal?.jobActivity?.shortlisted}
+                  {/* {proposal?.jobs?.jobActivity?.shortlisted} */}
               </span>
-              <span>Shortlisted</span>
+              {/* <span>Shortlisted</span> */}
             </div>
             {/* <span className="text-gray-400">|</span> */}
             {/* <div className="flex items-center gap-2">

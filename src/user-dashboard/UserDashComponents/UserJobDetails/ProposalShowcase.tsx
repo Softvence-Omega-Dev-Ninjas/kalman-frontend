@@ -22,17 +22,14 @@ interface ProposalCardProps {
 
 const ProposalCard: React.FC<ProposalCardProps> = ({ proposal }) => {
   const handleAccept = () => {
-    console.log(`Accepted proposal from ${proposal.name}`);
     // Handle accept logic here
   };
 
   const handleDecline = () => {
-    console.log(`Declined proposal from ${proposal.name}`);
     // Handle decline logic here
   };
 
   const handleContact = () => {
-    console.log(`Contacting ${proposal.name}`);
     // Handle contact logic here
   };
 

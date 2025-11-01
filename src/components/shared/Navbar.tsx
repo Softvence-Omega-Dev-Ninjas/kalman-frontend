@@ -32,8 +32,7 @@ const Navbar = () => {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const userState = useSelector(selectCurrentUser);
-  console.log("userState", userState);
-
+  console.log('userState', userState)
   // Check if mobile device
   useEffect(() => {
     const checkMobile = () => {
@@ -167,7 +166,7 @@ const Navbar = () => {
                       alt="User"
                       className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-white shadow-lg transition-all duration-300 group-hover:border-orange-400 group-hover:scale-105"
                     />
-                    <div className="absolute -bottom-0 -right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                    {/* <div className="absolute -bottom-0 -right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div> */}
                   </div>
 
                   {/* Show user info on desktop */}
@@ -196,10 +195,7 @@ const Navbar = () => {
                     <div className="px-4 py-3 border-b border-gray-100">
                       <div className="flex items-center gap-3">
                         <img
-                          src={
-                            icon ||
-                            "https://randomuser.me/api/portraits/men/61.jpg"
-                          }
+                          src={userState?.image || icon}
                           alt="User"
                           className="w-12 h-12 rounded-full object-cover border-2 border-orange-100"
                         />
@@ -392,10 +388,7 @@ const Navbar = () => {
                       <div className="mt-8 pt-6 border-t border-gray-200">
                         <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-xl">
                           <img
-                            src={
-                              icon ||
-                              "https://randomuser.me/api/portraits/men/61.jpg"
-                            }
+                            src={userState?.image || icon}
                             alt="User"
                             className="w-10 h-10 rounded-full object-cover"
                           />
