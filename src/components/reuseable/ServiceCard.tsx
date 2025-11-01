@@ -19,12 +19,12 @@ const ServiceCard = ({
   buttonText = "Explore now" 
 }: ServiceCardProps) => {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+    <div className="bg-white rounded-lg overflow-hidden shadow-sm border group border-gray-100">
       <div className="aspect-[4/3] overflow-hidden">
         <img 
           src={image} 
           alt={title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover group-hover:scale-107 duration-300 transition-all "
         />
       </div>
       
@@ -57,7 +57,7 @@ const ServiceCard = ({
         </div>
         
         <Link to={"/services"}>
-          <button className="w-full bg-primary cursor-pointer hover:bg-primary/80 text-white font-medium py-3 px-4 rounded-md transition-colors duration-200">
+          <button className="w-full bg-primary cursor-pointer hover:bg-orange-600 text-white font-medium py-3 px-4 rounded-md transition-colors duration-200">
             {buttonText}
           </button>
         </Link>
