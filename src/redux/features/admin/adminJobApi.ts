@@ -25,7 +25,7 @@ export const adminJobsApi = baseApi.injectEndpoints({
 
     getAdminJobById: builder.query<any, string>({
       query: (id) => ({
-        url: `/admin/jobs/${id}`,
+        url: `/admin/jobs${id}`,
         method: "GET",
       }),
       providesTags:[ "Admin"],
@@ -33,7 +33,7 @@ export const adminJobsApi = baseApi.injectEndpoints({
 
     deleteAdminJob: builder.mutation<void, string>({
       query: (id) => ({
-        url: `/admin/jobs/${id}`,
+        url: `/admin/jobs${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Admin"],
