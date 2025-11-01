@@ -69,7 +69,7 @@ export const tradesmanApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["Profile", "Tradesman"],
+      invalidatesTags: ["Profile", "Tradesman", "PaymentMethods"],
     }),
 
     addPaymentMethod: builder.mutation({

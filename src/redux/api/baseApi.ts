@@ -5,7 +5,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "https://api.pravaruka.sk", //  Change this to your API base URL
     baseUrl: "https://api.pravaruka.sk", //  Change this to your API base URL
     prepareHeaders: (headers, { getState }) => {
       const state = getState() as any;
