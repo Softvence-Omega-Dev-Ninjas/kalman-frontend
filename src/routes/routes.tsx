@@ -60,6 +60,7 @@ import UpdatePass from "../components/AuthComponents/forgot-pass/UpdatePass";
 import AdminProtectedRoute from "./AdminProtectedRoute";
 import TradeManProtectedRoute from "./TradeManProtectedRoute";
 import UserProtectedRoute from "./UserProtectedRoute";
+// import LoadingPage from "@/components/loading/LoadingPage";
 
 // import TradeSignUpPage from "./trade-dashboard/tradeComponents/TradeSignUp/TradeSignUpPage";
 
@@ -336,6 +337,10 @@ const router = createBrowserRouter([
     path: "admin/login",
     element: <AdminLogin />,
   },
+  // {
+  //   path: "/loading",
+  //   element: <LoadingPage />
+  // },
   {
     path: "*",
     element: <NotFound />,
