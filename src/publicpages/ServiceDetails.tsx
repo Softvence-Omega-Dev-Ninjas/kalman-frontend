@@ -1,7 +1,7 @@
 import { IoLocationOutline } from "react-icons/io5";
-import image1 from "../assets/sample_images/image.png";
+// import image1 from "../assets/sample_images/image.png";
 import image2 from "../assets/sample_images/image2.png";
-import image3 from "../assets/sample_images/image3.png";
+// import image3 from "../assets/sample_images/image3.png";
 import { MdOutlineReport } from "react-icons/md";
 import { useEffect, useState } from "react";
 import BookingModal from "../components/ServiceComponents/BookingModal";
