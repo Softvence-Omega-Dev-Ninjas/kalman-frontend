@@ -188,9 +188,6 @@ const SideFilterForService: React.FC<SideFilterForServiceProps> = ({
                   />
                 ))}
               </div>
-              <span className="text-sm text-gray-500 ml-auto">
-                ({review.count.toString().padStart(2, "0")})
-              </span>
             </label>
           ))}
         </div>
