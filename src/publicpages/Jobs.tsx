@@ -26,6 +26,7 @@ const Jobs = () => {
   });
 
   const { data: jobData, isLoading, refetch } = useGetJobsQuery(filters);
+  // console.log(jobData,jobData)
   const jobs = jobData?.data?.data || [];
   const totalPages = jobData?.data?.meta?.totalPages || 1;
   const totalJobs = jobData?.data?.meta?.total || 0;

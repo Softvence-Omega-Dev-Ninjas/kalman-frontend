@@ -12,16 +12,18 @@ import ChatWidget from "@/components/chat/ChatWidget";
 import ChatMinimized from "@/components/chat/ChatMinimized";
 import { useGetMyProposalByJobIdQuery } from "@/redux/features/proposal/proposalApi";
 
-
 const CustomerInformation = ({ customer }: { customer: any }) => {
   const [sendProposal, setSendProposal] = useState(false);
-  const [chatState, setChatState] = useState<'closed' | 'minimized' | 'open'>('closed');
+  const [chatState, setChatState] = useState<"closed" | "minimized" | "open">(
+    "closed"
+  );
   const user = useSelector(selectCurrentUser);
   const navigate = useNavigate();
   const jobCusInfo = customer;
   const jobId = jobCusInfo?.id;
 
-  const { data: proposalResponse, isLoading } = useGetMyProposalByJobIdQuery(jobId);
+  const { data: proposalResponse, isLoading } =
+    useGetMyProposalByJobIdQuery(jobId);
   const proposal = proposalResponse?.data || null;
   // console.log('proposal',proposal)
 
@@ -33,7 +35,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
     }
 
     // Open the chat widget
-    setChatState('open');
+    setChatState("open");
   };
 
   const handleSendProposal = () => {
@@ -46,15 +48,15 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
   };
 
   const handleCloseChat = () => {
-    setChatState('closed');
+    setChatState("closed");
   };
 
   const handleMinimizeChat = () => {
-    setChatState('minimized');
+    setChatState("minimized");
   };
 
   const handleOpenChat = () => {
-    setChatState('open');
+    setChatState("open");
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -114,8 +116,8 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
               Shortlist fee
             </h1>
             <p className="text-3xl font-bold text-orange-500">
-              {/* {proposal.shortlist_fee || "$20.00 + VAT"} */}
-              ${proposal?.jobs?.shortlist_fee}
+              {/* {proposal.shortlist_fee || "$20.00 + VAT"} */}$
+              {proposal?.jobs?.shortlist_fee}
             </p>
           </div>
 
@@ -128,7 +130,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
               The shortlist fee will be charged automatically once the customer
               provides their contact details.
             </p>
-            <button 
+            <button
               // onClick={handleSendProposal}
               className="w-full cursor-pointer py-3 px-4 bg-white border border-gray-300 rounded-lg font-medium text-foreground hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
             >
@@ -138,33 +140,28 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
           </div>
 
           {/* Status Section */}
-          <div className="mb- flex items-center justify-between text-sm text-gray-600">
+          <div className="mb- flex items-center justify-between text-sm text-gray-600 mb-4">
             <div className="flex items-center gap-2">
               <span className="font-semibold text-foreground">
-                {/* {proposal.shortlisted_count || "01"} */}
-                  {/* {proposal?.jobs?.jobActivity?.shortlisted} */}
-              </span>
-              {/* <span>Shortlisted</span> */}
-            </div>
-            {/* <span className="text-gray-400">|</span> */}
-            {/* <div className="flex items-center gap-2">
-              <span className="font-semibold text-foreground">
-                {proposal.another_count || "01"}
+                {jobCusInfo?.jobActivity?.shortlisted
+                  ? jobCusInfo.jobActivity.shortlisted < 10
+                    ? `0${jobCusInfo.jobActivity.shortlisted}`
+                    : jobCusInfo.jobActivity.shortlisted
+                  : "00"}
               </span>
               <span>Shortlisted</span>
-            </div> */}
+            </div>
           </div>
 
           {/* Message Section */}
           <div className="mb-6">
             <p className="text-base font-semibold text-foreground">
-           
-                The customer invited you to discuss their lead.
+              The customer invited you to discuss their lead.
             </p>
           </div>
 
           {/* CTA Button */}
-          <button 
+          <button
             onClick={handleSendMessage}
             className="w-full py-3 cursor-pointer px-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors"
           >
@@ -194,7 +191,11 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
             <div className="flex items-center gap-2">
               <span className="font-semibold text-foreground">
                 {/* {jobCusInfo.shortlisted_count || "01"} */}
-                  {jobCusInfo?.jobActivity?.shortlisted}
+                {jobCusInfo?.jobActivity?.shortlisted
+                  ? jobCusInfo.jobActivity.shortlisted < 10
+                    ? `0${jobCusInfo.jobActivity.shortlisted}`
+                    : jobCusInfo.jobActivity.shortlisted
+                  : "00"}
               </span>
               <span>Shortlisted</span>
             </div>
@@ -224,7 +225,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
       )}
 
       <LocationMap jobCusInfo={jobCusInfo} />
-      
+
       {/* Proposal Modal */}
       {sendProposal && (
         <ProposalModal
@@ -235,7 +236,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
       )}
 
       {/* Chat Widget */}
-      {chatState === 'open' && (
+      {chatState === "open" && (
         <ChatWidget
           recipientId={jobCusInfo.customer?.id}
           recipientName={jobCusInfo.customer?.name}
@@ -246,7 +247,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
       )}
 
       {/* Minimized Chat */}
-      {chatState === 'minimized' && (
+      {chatState === "minimized" && (
         <ChatMinimized
           recipientName={jobCusInfo.customer?.name}
           recipientImage={jobCusInfo.customer?.profile_image}
