@@ -28,9 +28,7 @@ export default function ProfileCard() {
         <div className="flex items-center gap-4">
           {/* Avatar */}
           <img
-            src={
-              data?.data?.images.length !== 0 ? data?.data?.images[0] : user1
-            }
+            src={data?.data?.images[0] || user1}
             alt="Esther Howard"
             className="w-20 h-20 rounded-full object-cover"
           />
