@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { User, Wand2, Plus } from "lucide-react";
+import { User, Wand2, Plus, PencilIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
@@ -36,6 +36,11 @@ const SettingPage = () => {
   const [portfolioPreviews, setPortfolioPreviews] = useState<(string | null)[]>(
     Array(4).fill(null)
   );
+  const [profileImage, setProfileImage] = useState<UploadedImage | File | null>(
+    null
+  );
+  const [profilePreview, setProfilePreview] = useState<string | null>(null);
+
   const [errors, setErrors] = useState<
     Partial<Record<keyof FormDataLocal, string>>
   >({});
@@ -74,6 +79,19 @@ const SettingPage = () => {
     zipCode: user?.zipCode || profileData?.data?.zipCode || "",
     images: initialImages(),
   });
+
+  useEffect(() => {
+    if (!profileData) return;
+
+    // initialize profile image
+    if (profileData.data.profileImage) {
+      const url = profileData.data.profileImage.startsWith("http")
+        ? profileData.data.profileImage
+        : `${import.meta.env.VITE_API_URL}/${profileData.data.profileImage}`;
+      setProfileImage({ index: 0, url });
+      setProfilePreview(url);
+    }
+  }, [profileData]);
 
   useEffect(() => {
     if (!profileData && !user) return;
@@ -184,6 +202,39 @@ const SettingPage = () => {
     }
   };
 
+  const handleProfileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const preview = URL.createObjectURL(file);
+    setProfilePreview(preview);
+    setProfileImage(file);
+
+    try {
+      const uploadData = new FormData();
+      uploadData.append("image", file);
+
+      const resp = await postImg(uploadData).unwrap();
+      const url = resp?.data || null;
+      if (!url) throw new Error("No URL returned from upload");
+
+      setProfileImage({ index: 0, url });
+      setProfilePreview(url);
+      toast.success("Profile image uploaded");
+    } catch (err) {
+      console.error(err);
+      toast.error("Profile image upload failed — saved locally");
+    }
+  };
+
+  const handleProfileDelete = () => {
+    setProfileImage(null);
+    setProfilePreview(null);
+    toast.success("Profile image removed");
+  };
+
   // ✅ Form submission
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -202,6 +253,8 @@ const SettingPage = () => {
         state: String(formData.state),
         zipCode: String(formData.zipCode),
         images: [],
+        profileImage:
+          profileImage && "url" in profileImage ? profileImage.url : null,
       };
 
       // Prepare images array
@@ -311,6 +364,40 @@ const SettingPage = () => {
                   }
                   className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 outline-none"
                 />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-600 block mb-2">
+                  Profile Image
+                </label>
+                <label className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center cursor-pointer relative overflow-hidden">
+                  {profilePreview ? (
+                    <>
+                      <img
+                        src={profilePreview}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleProfileDelete();
+                        }}
+                        className="absolute top-1 right-1 bg-gray-800/70 text-white rounded-sm p-1 opacity-0 hover:opacity-100 transition"
+                      >
+                        <PencilIcon size={15} />
+                      </button>
+                    </>
+                  ) : (
+                    <Plus className="w-8 h-8 text-gray-400" />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    onChange={handleProfileChange}
+                  />
+                </label>
               </div>
 
               <div className="md:col-span-2">
