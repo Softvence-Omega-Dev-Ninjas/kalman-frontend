@@ -49,7 +49,7 @@ const AllServices: React.FC<AllTradesmanProps> = ({
           <TradespersonCard
             id={person.id}
             key={index}
-            image={trade1}
+            image={person?.images?.length > 0 ? person?.images[0] : trade1}
             name={`${person.firstName} ${person.lastName}`}
             profession={person.profession}
             review={person?.review}
