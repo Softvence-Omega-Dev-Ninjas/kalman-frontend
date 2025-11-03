@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import CustomTable, { type Column } from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 import {
   useDeleteAdminCustomerMutation,
   useGetAllAdminCustomersQuery,
@@ -57,23 +58,56 @@ const ManageUsersPage = () => {
   const users = data?.data.users || [];
   const totalUser = data?.data.totalUser || 0;
 
-  // Dialog state
   const [selectedUser, setSelectedUser] = useState<IUserData | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Delete mutation
+
   const [deleteCustomer] = useDeleteAdminCustomerMutation();
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this user?")) return;
-    try {
-      await deleteCustomer(id).unwrap();
-      toast.success("User deleted successfully!");
-      refetch();
-    } catch (err: any) {
-      toast.error(err?.data?.message || "Delete failed");
-    }
-  };
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "You are about to delete this user permanently!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#f97316", 
+    cancelButtonColor: "#6b7280", 
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+    background: "#fff",
+    customClass: {
+      popup: "rounded-xl shadow-lg",
+      confirmButton: "rounded-md font-semibold",
+      cancelButton: "rounded-md font-semibold",
+    },
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await deleteCustomer(id).unwrap();
+
+    await Swal.fire({
+      title: "Deleted!",
+      text: "User deleted successfully!",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+
+    toast.success("User deleted successfully!");
+    refetch();
+  } catch (err: any) {
+    await Swal.fire({
+      title: "Error!",
+      text: err?.data?.message || "Failed to delete user!",
+      icon: "error",
+      confirmButtonColor: "#d33",
+    });
+    toast.error(err?.data?.message || "Delete failed");
+  }
+};
+
 
   const handleView = (user: IUserData) => {
     setSelectedUser(user);

@@ -13,7 +13,7 @@ interface TCategory {
 const PopularServicesCategory = () => {
   const { data, isLoading, error, refetch } = useGetCategoriesHQuery();
   const [showAll, setShowAll] = useState(false);
-
+console.log(data)
   useEffect(() => {
     refetch();
   }, [refetch]);
