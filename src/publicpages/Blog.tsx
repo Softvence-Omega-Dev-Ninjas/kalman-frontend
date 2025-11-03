@@ -9,7 +9,11 @@ function Blog() {
       }, [])
     
 
-  const { data, isLoading } = useGetAllBlogsQuery(undefined);
+  const { data, isLoading , refetch} = useGetAllBlogsQuery(undefined);
+
+  useEffect(()=>{
+    refetch()
+  }, [])
 
   return (
     <div>
