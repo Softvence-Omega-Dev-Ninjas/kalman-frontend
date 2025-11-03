@@ -1,5 +1,5 @@
 import TradespersonCard from "../reuseable/TradePersonCard";
-import trade1 from "../../assets/sample_images/trade1.png";
+import image2 from "../../assets/default-image.jpg";
 import { PaginationControls } from "../Jobs/common/PaginationControls";
 interface AllTradesmanProps {
   tradesman: any[];
@@ -16,7 +16,6 @@ const AllServices: React.FC<AllTradesmanProps> = ({
   setPage,
   totalPages,
 }) => {
-  console.log("tradesman", tradesman);
   if (isLoading) {
     return (
       <div className="p-8 bg-white rounded-lg shadow-sm border border-gray-200">
@@ -49,7 +48,7 @@ const AllServices: React.FC<AllTradesmanProps> = ({
           <TradespersonCard
             id={person.id}
             key={index}
-            image={person?.images?.length > 0 ? person?.images[0] : trade1}
+            image={person?.images[0] || image2}
             name={`${person.firstName} ${person.lastName}`}
             profession={person.profession}
             review={person?.review}
