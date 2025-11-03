@@ -176,12 +176,13 @@ const ManagePaymentsPage = () => {
           </Button>
         </div>
       </header>
-
+{/* 
       {isLoading ? (
         <div className="text-center py-10 text-gray-500">Loading...</div>
-      ) : (
+      ) :
+       ( */}
         <>
-          <CustomTable columns={paymentColumns} data={paginatedData} />
+          <CustomTable isLoading={isLoading} columns={paymentColumns} data={paginatedData} />
 
           {payments.length > pageSize && (
             <CustomPagination
@@ -192,7 +193,7 @@ const ManagePaymentsPage = () => {
             />
           )}
         </>
-      )}
+       {/* )} */}
     </div>
   );
 };
