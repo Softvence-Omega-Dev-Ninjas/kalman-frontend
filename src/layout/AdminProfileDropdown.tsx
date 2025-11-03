@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { baseApi } from "@/redux/api/baseApi";
 import { adminLogout } from "@/redux/features/admin/adminSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/typeHook";
 import { useState, useEffect, useRef } from "react";
@@ -19,7 +18,6 @@ const AdminProfileDropdown = () => {
   const handleLogout = () => {
     // Clear Redux state
     dispatch(adminLogout());
-    dispatch(baseApi.util.resetApiState());
     // Redirect to login
     navigate("/admin/login");
     toast("Admin logout successfully!");
