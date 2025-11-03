@@ -1,4 +1,4 @@
-import { FaArrowLeft } from "react-icons/fa";
+import { GoArrowLeft } from "react-icons/go";
 import { useNavigate, useParams } from "react-router-dom";
 import CustomerInformation from "../components/Jobs/JobDetails/CustomerInformation";
 import { useGetJobByIdQuery } from "@/redux/features/jobs/jobsApi";
@@ -11,12 +11,14 @@ const JobDetails = () => {
       }, [])
     
   const { id: jobid } = useParams();
+  console.log(jobid);
   const navigate = useNavigate();
 
   if (!jobid) return null;
 
   const { data: job, isLoading } = useGetJobByIdQuery(jobid);
   const singlejob = job?.data;
+  console.log('singlejob', singlejob)
 
   if (isLoading) {
     return (
@@ -33,7 +35,7 @@ const JobDetails = () => {
           className="flex items-center gap-2 cursor-pointer mb-5"
           onClick={() => navigate(-1)}
         >
-          <FaArrowLeft />
+          <GoArrowLeft size={20} />
           <span>Back To Jobs</span>
         </div>
         <div className="flex items-start gap-6">

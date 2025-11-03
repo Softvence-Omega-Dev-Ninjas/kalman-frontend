@@ -6,14 +6,17 @@ import { useGetProposalsByJobIdQuery, useUpdateProposalMutation } from "@/redux/
 import { useGetJobByIdQuery } from "@/redux/features/jobs/jobsApi";
 import toast from "react-hot-toast";
 
-const ProposalCard: React.FC<{ proposal: any; onStatusChange?: () => void }> = ({ proposal, onStatusChange }) => {
-  const [updateProposal, { isLoading }] =   useUpdateProposalMutation();
-console.log(proposal)
+const ProposalCard: React.FC<{ proposal: any; onStatusChange?: () => void }> = ({
+  proposal,
+  onStatusChange,
+}) => {
+  const [updateProposal, { isLoading }] = useUpdateProposalMutation();
+
   const handleAccept = async () => {
     try {
-      await updateProposal({ id: proposal.id,  status: "ACCEPTED"  }).unwrap();
+      await updateProposal({ id: proposal.id, status: "ACCEPTED" }).unwrap();
       toast("Proposal accepted!");
-      onStatusChange?.(); // parent refetch
+      onStatusChange?.();
     } catch (error) {
       console.error(error);
       toast("Failed to accept proposal");
@@ -22,14 +25,16 @@ console.log(proposal)
 
   const handleDecline = async () => {
     try {
-      await updateProposal({ id: proposal.id, status: "REJECTED"  }).unwrap();
+      await updateProposal({ id: proposal.id, status: "REJECTED" }).unwrap();
       toast("Proposal rejected!");
-      onStatusChange?.(); // parent refetch
+      onStatusChange?.();
     } catch (error) {
       console.error(error);
       toast("Failed to reject proposal");
     }
   };
+
+  const status = proposal.status?.toUpperCase();
 
   return (
     <div className="border rounded-lg p-6 shadow-sm flex flex-col md:flex-row gap-6">
@@ -64,34 +69,50 @@ console.log(proposal)
             </div>
           </div>
 
+          {/* Buttons */}
           <div className="flex flex-col items-center gap-3">
+            {status === "PENDING" && (
+              <>
                 <button
                   onClick={handleAccept}
-                  disabled={isLoading || proposal.status === "ACCEPTED"}
-                  className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    proposal.status === "ACCEPTED" || isLoading
-                      ? "bg-green-500 text-white cursor-not-allowed opacity-50"
-                      : "bg-green-500 hover:bg-green-400 text-white cursor-pointer"
+                  disabled={isLoading}
+                  className={`flex items-center cursor-pointer justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-green-500 hover:bg-green-400 text-white ${
+                    isLoading ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 >
                   Accept
-                  {proposal.status === "ACCEPTED" && <Check size={16} />}
                 </button>
-
                 <button
                   onClick={handleDecline}
-                  disabled={isLoading || proposal.status === "REJECTED"}
-                  className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    proposal.status === "REJECTED" || isLoading
-                      ? "bg-red-500 text-white cursor-not-allowed opacity-50"
-                      : "bg-red-500 hover:bg-red-400 text-white cursor-pointer"
+                  disabled={isLoading}
+                  className={`flex items-center cursor-pointer justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-red-500 hover:bg-red-400 text-white ${
+                    isLoading ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 >
                   Decline
-                  {proposal.status === "REJECTED" && <Check size={16} />}
                 </button>
+              </>
+            )}
+
+            {status === "ACCEPTED" && (
+              <button
+                disabled
+                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-green-500 text-white opacity-80 cursor-not-allowed"
+              >
+                Accepted <Check size={16} />
+              </button>
+            )}
+
+            {status === "REJECTED" && (
+              <button
+                disabled
+                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-red-500 text-white opacity-80 cursor-not-allowed"
+              >
+                Rejected <Check size={16} />
+              </button>
+            )}
           </div>
-            </div>
+        </div>
 
         {/* Job details */}
         <div className="mt-4">
@@ -104,28 +125,28 @@ console.log(proposal)
         </div>
 
         {/* Bottom info */}
-        <div className="flex items-center justify-between  gap-4 text-sm text-gray-500 mt-4">
+        <div className="flex items-center justify-between gap-4 text-sm text-gray-500 mt-4">
           <div className="flex items-center gap-2 font-semibold">
             <span className="text-xl text-primary font-bold">
-              ${proposal.jobs?.price ? proposal.jobs.price.toFixed(2) : "N/A"}
-              /hr
+              ${proposal.jobs?.price ? proposal.jobs.price.toFixed(2) : "N/A"}/hr
             </span>
           </div>
           <div className="flex items-center gap-2">
             <Briefcase size={16} />
-            <span>Job complete: {proposal?.jobs?.isComplete? "Yes" : "No"}</span>
+            <span>
+              Job complete: {proposal?.jobs?.isComplete ? "Yes" : "No"}
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <Clock size={16} />
-            <span>{proposal.status || "N/A"}</span>
+            <span>{status || "N/A"}</span>
           </div>
         </div>
       </div>
-
-      {/* Right side: Actions */}
     </div>
   );
 };
+
 
 const UserJobDetails: React.FC = () => {
 

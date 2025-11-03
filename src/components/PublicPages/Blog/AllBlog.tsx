@@ -5,6 +5,7 @@ interface AllBlogsProps {
 }
 
 const AllBlog: React.FC<AllBlogsProps> = ({ blog }) => {
+  console.log(blog)
   return (
     <section className="bg-[#F2F4F8] py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -17,7 +18,7 @@ const AllBlog: React.FC<AllBlogsProps> = ({ blog }) => {
               images={post?.imeges}
               title={post?.title}
               description={post?.description}
-              author={post?.userId}
+              author={post?.user}
               createdAt={post?.createdAt}
             />
           ))}
