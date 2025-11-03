@@ -8,7 +8,7 @@ interface BlogProps {
   isLoading: boolean;
 }
 
-const BlogInfo: React.FC<BlogProps> = ({ images }) => {
+const BlogInfo: React.FC<BlogProps> = ({ images , blog}) => {
   return (
     <div className="max-w-[1550px] mx-auto px-4 md:px-10 py-6">
       <img
@@ -18,7 +18,7 @@ const BlogInfo: React.FC<BlogProps> = ({ images }) => {
       />
       <main className="flex flex-col lg:flex-row gap-8 mt-8">
         <div className="lg:w-3/4">
-          <BlogArticle />
+          <BlogArticle blog={blog}/>
         </div>
 
         <div className="lg:w-1/4">
