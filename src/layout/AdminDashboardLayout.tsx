@@ -24,7 +24,7 @@ const AdminDashboardLayout = () => {
   const navigate = useNavigate();
   const { scrolled } = useScrollTrigger();
 
-  const { admin } = useAppSelector((state) => state.admin);
+  const { user: admin } = useAppSelector((state) => state.auth);
   console.log(admin, "admin here");
   return (
     <div>

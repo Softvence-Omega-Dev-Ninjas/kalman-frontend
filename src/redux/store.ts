@@ -11,7 +11,7 @@ import {
 import storage from "redux-persist/lib/storage";
 //  Import your reducers
 import authReducer from "@/redux/features/auth/authSlice";
-import adminReducer from "./features/admin/adminSlice"
+// import adminReducer from "./features/admin/adminSlice"
 import { baseApi } from "@/redux/api/baseApi"; // optional if you use RTK Query
 import tradeFormReducer from "@/redux/features/tradeForm/tradeFormSlice";
 
@@ -25,7 +25,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer, // optional for RTK Query
   auth: authReducer,
-  admin: adminReducer ,
+  // admin: adminReducer ,
   tradeForm: tradeFormReducer,
 });
 
