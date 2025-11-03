@@ -2,9 +2,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
 
+
 import { baseApi } from "@/redux/api/baseApi";
 // import { adminLogout } from "@/redux/features/admin/adminSlice";
 import { clearUser } from "@/redux/features/auth/authSlice";
+
+
+
+
+
 import { useAppDispatch, useAppSelector } from "@/redux/typeHook";
 import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
@@ -25,6 +31,7 @@ const AdminProfileDropdown = () => {
       return;
     }
     // Clear Redux state
+
 
 
     dispatch(clearUser());
