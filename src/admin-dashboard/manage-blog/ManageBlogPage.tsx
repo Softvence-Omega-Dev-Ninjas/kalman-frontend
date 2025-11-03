@@ -19,7 +19,7 @@ const ManageBlogPage = () => {
                 document.title = `Manage Blog | Admin Dashboard | ${import.meta.env.VITE_APP_NAME}`
               }, [])
 
-  const { data } = useGetAllBlogsQuery(undefined);
+  const { data , isLoading} = useGetAllBlogsQuery(undefined);
   const [deleteBlog] = useDeleteBlogMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -130,7 +130,7 @@ const ManageBlogPage = () => {
         </div>
       </header>
 
-      <CustomTable columns={blogColumns} data={paginatedData} emptyMessage="No Blog Found!" />
+      <CustomTable isLoading={isLoading} columns={blogColumns} data={paginatedData} emptyMessage="No Blog Found!" />
 
       {/* Only show pagination if more than 1 page */}
       {Math.ceil(blogs.length / pageSize) > 1 && (

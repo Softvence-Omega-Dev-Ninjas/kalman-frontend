@@ -54,14 +54,14 @@ const Banner = () => {
                     placeholder="What service do you need?"
                     value={service}
                     onChange={(e) => setService(e.target.value)}
-                    className="flex-1 px-5 sm:px-6 py-3 sm:py-4 text-gray-700 placeholder-gray-400 focus:outline-none bg-white w-full"
+                    className=" px-5 sm:px-6 py-3 sm:py-4 text-gray-700 placeholder-gray-400 focus:outline-none bg-white w-full sm:w-[69%]"
                   />
 
                   {/* Divider */}
                   <div className="hidden sm:block w-px h-8 bg-gray-300" />
 
                   {/* LOCATION INPUT */}
-                  <div className="flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-4 bg-white w-full sm:w-auto">
+                  <div className="flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-4 bg-white w-full  sm:w-[29%]">
                     <MapPin className="w-5 h-5 text-gray-400 shrink-0" />
                     <input
                       type="text"
