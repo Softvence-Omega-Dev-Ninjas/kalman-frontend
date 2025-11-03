@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Search, SquarePen, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 import {
   useCreateCategoryMutation,
   useUpdateCategoryMutation,
@@ -86,15 +87,46 @@ useEffect(()=>{
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this category?")) return;
-    try {
-      await deleteCategory(id).unwrap();
-      toast.success("Category deleted successfully!");
-      refetch();
-    } catch (err: any) {
-      toast.error(err?.data?.message || "Delete failed");
-    }
-  };
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "You won’t be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+    background: "#fff",
+    customClass: {
+      popup: "rounded-xl shadow-lg",
+    },
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await deleteCategory(id).unwrap();
+
+    await Swal.fire({
+      title: "Deleted!",
+      text: "Category has been deleted successfully.",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+
+    toast.success("Category deleted successfully!");
+    refetch();
+  } catch (err: any) {
+    Swal.fire({
+      title: "Error!",
+      text: err?.data?.message || "Delete failed",
+      icon: "error",
+      confirmButtonColor: "#d33",
+    });
+    toast.error(err?.data?.message || "Delete failed");
+  }
+};
 
   const handleAdd = () => {
     setEditingCategory(null);
