@@ -9,9 +9,11 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { clearUser, selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { FiMenu, FiX, FiChevronDown, FiLogIn } from "react-icons/fi";
 import icon from "@/assets/user-icon/user-icon1.png";
+
 import { baseApi } from "@/redux/api/baseApi";
 import toast from "react-hot-toast";
 import { useAppSelector } from "@/redux/typeHook";
+
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -85,7 +87,6 @@ const {user} = useAppSelector((state)=> state.auth)
       return;
     }
     dispatch(clearUser());
-    dispatch(baseApi.util.resetApiState());
     setDropdownOpen(false);
     window.location.href = "/";
   };
