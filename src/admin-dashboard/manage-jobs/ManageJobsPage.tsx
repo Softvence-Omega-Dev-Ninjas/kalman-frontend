@@ -1,4 +1,6 @@
-import { Eye, Filter, Search, Trash2 } from "lucide-react";
+import { Eye, 
+  // Filter,
+  Search, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Column } from "../shared/CustomTable/CustomTable";
 import CustomTable from "../shared/CustomTable/CustomTable";
@@ -202,10 +204,10 @@ useEffect(() => {
           </div>
 
           {/* Filter Button */}
-          <button className="flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
+          {/* <button className="flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
             <Filter size={18} className="mr-2" />
             Filter By
-          </button>
+          </button> */}
         </div>
       </header>
 

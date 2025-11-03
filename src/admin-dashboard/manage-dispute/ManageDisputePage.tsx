@@ -1,4 +1,6 @@
-import { Eye, Filter, Search } from "lucide-react";
+import { Eye, 
+  // Filter,
+   Search } from "lucide-react";
 import { useState, useMemo, useEffect } from "react";
 import CustomTable from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
@@ -13,7 +15,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 
 const ManagePaymentsPage = () => {
 
@@ -170,10 +172,10 @@ const ManagePaymentsPage = () => {
               placeholder="Search Payment..."
             />
           </div>
-          <Button variant="outline" className="flex items-center px-4 py-2 text-sm font-medium">
+          {/* <Button variant="outline" className="flex items-center px-4 py-2 text-sm font-medium">
             <Filter size={18} className="mr-2" />
             Filter By
-          </Button>
+          </Button> */}
         </div>
       </header>
 {/* 
