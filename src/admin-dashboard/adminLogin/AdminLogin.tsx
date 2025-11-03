@@ -6,7 +6,8 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import loginImg from "../../assets/sample_images/LoginImg.png";
 import { useAdminLoginMutation } from "@/redux/features/auth/login";
-import { setAdmin } from "@/redux/features/admin/adminSlice";
+// import { setAdmin } from "@/redux/features/admin/adminSlice";
+import { setUser } from "@/redux/features/auth/authSlice";
 
 
 const AdminLogin: React.FC = () => {
@@ -87,7 +88,7 @@ const AdminLogin: React.FC = () => {
             role: decoded.role,
           };
 
-          dispatch(setAdmin({ admin, token }));
+          dispatch(setUser({ user :admin, token }));
 
       
 

@@ -12,6 +12,7 @@ function BlogDetails() {
     
   const { id } = useParams<{ id: string }>();
   const { data, isLoading } = useGetSingleBlogQuery(id);
+  console.log(data)
   return (
     <div>
       <PageHeader

@@ -1,13 +1,19 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { adminLogout } from "@/redux/features/admin/adminSlice";
+
+import { baseApi } from "@/redux/api/baseApi";
+
+import { clearUser } from "@/redux/features/auth/authSlice";
+
+
+
 import { useAppDispatch, useAppSelector } from "@/redux/typeHook";
 import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const AdminProfileDropdown = () => {
-  const { admin } = useAppSelector((state) => state.admin);
+  const {user: admin } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   // Derived info
@@ -16,8 +22,15 @@ const AdminProfileDropdown = () => {
   const role = admin?.role || "N/A";
 
   const handleLogout = () => {
+    if(admin?.role !== "ADMIN"){
+      toast.error("Only Admins can logout from here.");
+      return;
+    }
     // Clear Redux state
-    dispatch(adminLogout());
+
+    dispatch(clearUser());
+    dispatch(baseApi.util.resetApiState());
+
     // Redirect to login
     navigate("/admin/login");
     toast("Admin logout successfully!");

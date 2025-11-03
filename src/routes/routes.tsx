@@ -184,7 +184,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <TradeOverview />,
-      },
+      },  
       {
         path: "jobs/:id",
         element: <TradeJobDetails></TradeJobDetails>,
