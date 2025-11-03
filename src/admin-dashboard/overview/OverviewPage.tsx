@@ -4,6 +4,7 @@ import StatesSection from "./StatesSection/StatesSection";
 import StatesChart from "./StatesChart.tsx/StatesChart";
 import { useGetDasboardOverviewQuery } from "@/redux/features/admin/dashboardApi";
 import { useEffect } from "react";
+import LoadingPage from "@/components/loading/LoadingPage";
 
 export interface DashboardOverviewResponse {
   totalUser: number;
@@ -32,7 +33,7 @@ const OverviewPage = () => {
               document.title = `Overview | Admin Dashboard | ${import.meta.env.VITE_APP_NAME}`
             }, [])
   //  Type hint added for full response
-  const { data , isError , refetch} = useGetDasboardOverviewQuery();
+  const { data ,isLoading , isError , refetch} = useGetDasboardOverviewQuery();
 useEffect(()=>{
 refetch()
 }, [])
@@ -42,7 +43,10 @@ refetch()
   //  data?.data is the nested object containing the actual overview
   const overview = data?.data ;
 
+
+
   return (
+    isLoading?  <LoadingPage /> :
     <div>
       <StatesSection overview={overview} />
       {/* comming soon */}
