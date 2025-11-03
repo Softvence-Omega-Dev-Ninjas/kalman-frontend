@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { User, Wand2, Plus } from "lucide-react";
-
+import { User, Wand2, Plus, PencilIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
@@ -8,9 +7,12 @@ import {
   useGetTradesmanProfileQuery,
   useUpdateSettingsMutation,
 } from "@/redux/features/tradesman/tradesmanApi";
+import { usePostImgMutation } from "@/redux/features/image/imageUploadApi";
 
-// Form types
-interface FormData {
+type UploadedImage = { index: number; url: string };
+type ImageSlot = UploadedImage | File | null;
+
+interface FormDataLocal {
   firstName: string;
   lastName: string;
   email: string;
@@ -20,24 +22,51 @@ interface FormData {
   street: string;
   city: string;
   state: string;
-  zipCode: string;
-  images: (File | null)[];
+  zipCode: string | number;
+  images: ImageSlot[];
 }
 
 const SettingPage = () => {
   useEffect(() => {
-    document.title = `Setting | Trade Dashboard | ${import.meta.env.VITE_APP_NAME}`;
+    document.title = `Setting | Trade Dashboard | ${
+      import.meta.env.VITE_APP_NAME
+    }`;
   }, []);
 
   const [portfolioPreviews, setPortfolioPreviews] = useState<(string | null)[]>(
     Array(4).fill(null)
   );
-  const [updateSettings, { isLoading }] = useUpdateSettingsMutation();
+  const [profileImage, setProfileImage] = useState<UploadedImage | File | null>(
+    null
+  );
+  const [profilePreview, setProfilePreview] = useState<string | null>(null);
 
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof FormDataLocal, string>>
+  >({});
+  const [updateSettings, { isLoading }] = useUpdateSettingsMutation();
+  const [postImg] = usePostImgMutation();
   const user = useSelector(selectCurrentUser);
   const { data: profileData } = useGetTradesmanProfileQuery(undefined);
 
-  const [formData, setFormData] = useState<FormData>({
+  const initialImages = () => {
+    const apiImages = Array.isArray(profileData?.data?.images)
+      ? profileData.data.images
+      : [];
+    const formatted: ImageSlot[] = [];
+    for (let i = 0; i < 4; i++) {
+      const img = apiImages[i];
+      if (img) {
+        const url = img.startsWith("http")
+          ? img
+          : `${import.meta.env.VITE_API_URL || ""}/${img}`;
+        formatted.push({ index: i, url });
+      } else formatted.push(null);
+    }
+    return formatted;
+  };
+
+  const [formData, setFormData] = useState<FormDataLocal>({
     firstName: user?.name || profileData?.data?.firstName || "",
     lastName: user?.name || profileData?.data?.lastName || "",
     email: user?.email || "",
@@ -48,173 +77,206 @@ const SettingPage = () => {
     city: user?.city || profileData?.data?.city || "",
     state: user?.state || profileData?.data?.state || "",
     zipCode: user?.zipCode || profileData?.data?.zipCode || "",
-    images: profileData?.data?.images || Array(4).fill(null),
+    images: initialImages(),
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
-    {}
-  );
-
-  // Update form when user data changes
   useEffect(() => {
-    if (user || profileData) {
-      const apiImages = Array.isArray(profileData?.data?.images)
-        ? profileData.data.images
-        : [];
+    if (!profileData) return;
 
-      const formattedImages = apiImages.map((img: string) =>
-        img.startsWith("http")
-          ? img
-          : `${import.meta.env.VITE_API_URL || ""}/${img}`
-      );
-
-      // ✅ Always ensure exactly 4 slots
-      const paddedImages = [
-        ...formattedImages,
-        ...Array(4 - formattedImages.length).fill(null),
-      ].slice(0, 4);
-
-      setFormData((prev) => ({
-        ...prev,
-        firstName: user?.name || profileData?.data?.firstName || "",
-        lastName: user?.name || profileData?.data?.lastName || "",
-        email: user?.email || "",
-        phone: user?.phone || profileData?.data?.phoneNumber || "",
-        profession: user?.profession || profileData?.data?.profession || "",
-        bio: user?.bio || profileData?.data?.bio || "",
-        street: user?.street || profileData?.data?.address || "",
-        city: user?.city || profileData?.data?.city || "",
-        state: user?.state || profileData?.data?.state || "",
-        zipCode: user?.zipCode || profileData?.data?.zipCode || "",
-        images: paddedImages, // ✅ always array of 4
-      }));
-
-      setPortfolioPreviews(paddedImages);
+    // initialize profile image
+    if (profileData.data.profileImage) {
+      const url = profileData.data.profileImage.startsWith("http")
+        ? profileData.data.profileImage
+        : `${import.meta.env.VITE_API_URL}/${profileData.data.profileImage}`;
+      setProfileImage({ index: 0, url });
+      setProfilePreview(url);
     }
+  }, [profileData]);
+
+  useEffect(() => {
+    if (!profileData && !user) return;
+    const apiImages = Array.isArray(profileData?.data?.images)
+      ? profileData.data.images
+      : [];
+    const formattedImages: ImageSlot[] = [];
+    const newPreviews: (string | null)[] = [];
+
+    for (let i = 0; i < 4; i++) {
+      const img = apiImages[i];
+      if (img) {
+        const url = img.startsWith("http")
+          ? img
+          : `${import.meta.env.VITE_API_URL || ""}/${img}`;
+        formattedImages.push({ index: i, url });
+        newPreviews.push(url);
+      } else {
+        formattedImages.push(null);
+        newPreviews.push(null);
+      }
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      firstName: user?.name || profileData?.data?.firstName || "",
+      lastName: user?.name || profileData?.data?.lastName || "",
+      email: user?.email || "",
+      phone: user?.phone || profileData?.data?.phoneNumber || "",
+      profession: user?.profession || profileData?.data?.profession || "",
+      bio: user?.bio || profileData?.data?.bio || "",
+      street: user?.street || profileData?.data?.address || "",
+      city: user?.city || profileData?.data?.city || "",
+      state: user?.state || profileData?.data?.state || "",
+      zipCode: user?.zipCode || profileData?.data?.zipCode || "",
+      images: formattedImages,
+    }));
+
+    setPortfolioPreviews(newPreviews);
   }, [user, profileData]);
 
+  // ✅ Validation logic
   const validateForm = (): boolean => {
-    const newErrors: Partial<Record<keyof FormData, string>> = {};
-
-    if (!formData.firstName.trim()) {
+    const newErrors: Partial<Record<keyof FormDataLocal, string>> = {};
+    if (!formData.firstName.trim())
       newErrors.firstName = "First Name is required";
-    }
-
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = "Last Name is required";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Invalid email address";
-    }
-
-    if (!formData.street.trim()) {
-      newErrors.street = "Street is required";
-    }
-
-    if (!formData.city.trim()) {
-      newErrors.city = "City is required";
-    }
-
-    if (!formData.state.trim()) {
-      newErrors.state = "State is required";
-    }
-
-    if (!formData.zipCode) {
-      newErrors.zipCode = "ZIP Code is required";
-    } else if (formData.zipCode.length < 5) {
-      newErrors.zipCode = "ZIP Code must be at least 5 digits";
-    }
-
+    if (!formData.lastName.trim()) newErrors.lastName = "Last Name is required";
+    if (!formData.street.trim()) newErrors.street = "Street is required";
+    if (!formData.city.trim()) newErrors.city = "City is required";
+    if (!formData.state.trim()) newErrors.state = "State is required";
+    if (!formData.zipCode) newErrors.zipCode = "ZIP Code is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (field: keyof FormData, value: string) => {
+  // ✅ Input handler
+  const handleInputChange = (field: keyof FormDataLocal, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }));
-    }
+    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      console.log("Form Data:", formData);
-
-      try {
-        const submitData = new FormData();
-
-        // Add text fields
-        submitData.append("firstName", formData.firstName);
-        submitData.append("lastName", formData.lastName);
-        submitData.append("email", formData.email);
-        submitData.append("phone", formData.phone);
-        submitData.append("profession", formData.profession);
-        submitData.append("bio", formData.bio);
-
-        // Add address fields
-        submitData.append("street", formData.street);
-        submitData.append("city", formData.city);
-        submitData.append("state", formData.state);
-        submitData.append("zipCode", formData.zipCode);
-
-        // ✅ Add portfolio images (same key "images" multiple times)
-        if (formData.images && Array.isArray(formData.images)) {
-          const uploadableImages = formData.images.filter(
-            (img) => img && img instanceof File
-          );
-
-          if (uploadableImages.length > 4) {
-            toast.error("You can upload up to 5 images only");
-            return;
-          }
-
-          uploadableImages.forEach((file) => {
-            if (file) {
-              submitData.append("images", file);
-            }
-          });
-        }
-
-        await updateSettings(submitData).unwrap();
-        toast.success("Settings updated successfully");
-      } catch (error: any) {
-        const errMessage =
-          (error as any)?.data?.message ||
-          (error as any)?.message ||
-          "Failed to update settings";
-        toast.error(errMessage);
-      }
-    }
-  };
-
-  const handlePortfolioChange = (
+  // ✅ Image handler
+  const handlePortfolioChange = async (
     index: number,
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const preview = URL.createObjectURL(file);
-      setPortfolioPreviews((prev) => {
-        const updated = [...prev];
-        updated[index] = preview;
-        return updated;
-      });
+    if (!file) return;
+
+    const preview = URL.createObjectURL(file);
+    setPortfolioPreviews((prev) => {
+      const updated = [...prev];
+      updated[index] = preview;
+      return updated;
+    });
+
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.map((it, i) => (i === index ? file : it)),
+    }));
+
+    try {
+      const uploadData = new FormData();
+      uploadData.append("image", file);
+
+      const resp = await postImg(uploadData).unwrap();
+
+      // assume resp contains the uploaded URL at resp.data.url or resp.url
+      const url = (resp && resp?.data) || null;
+      if (!url) throw new Error("No URL returned from upload");
+
+      // replace slot with UploadedImage object
       setFormData((prev) => ({
         ...prev,
-        images: prev.images.map((item, i) => (i === index ? file : item)),
+        images: prev.images.map((it, i) => (i === index ? { index, url } : it)),
       }));
+
+      setPortfolioPreviews((prev) => {
+        const updated = [...prev];
+        updated[index] = url;
+        return updated;
+      });
+
+      toast.success("Image uploaded");
+    } catch (err: any) {
+      console.error("Upload failed:", err);
+      toast.error("Image upload failed — saved locally. Try again.");
+    }
+  };
+
+  const handleProfileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const preview = URL.createObjectURL(file);
+    setProfilePreview(preview);
+    setProfileImage(file);
+
+    try {
+      const uploadData = new FormData();
+      uploadData.append("image", file);
+
+      const resp = await postImg(uploadData).unwrap();
+      const url = resp?.data || null;
+      if (!url) throw new Error("No URL returned from upload");
+
+      setProfileImage({ index: 0, url });
+      setProfilePreview(url);
+      toast.success("Profile image uploaded");
+    } catch (err) {
+      console.error(err);
+      toast.error("Profile image upload failed — saved locally");
+    }
+  };
+
+  const handleProfileDelete = () => {
+    setProfileImage(null);
+    setProfilePreview(null);
+    toast.success("Profile image removed");
+  };
+
+  // ✅ Form submission
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    try {
+      const submitData: any = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        profession: formData.profession,
+        bio: formData.bio,
+        street: String(formData.street),
+        city: String(formData.city),
+        state: String(formData.state),
+        zipCode: String(formData.zipCode),
+        images: [],
+        profileImage:
+          profileImage && "url" in profileImage ? profileImage.url : null,
+      };
+
+      // Prepare images array
+      formData.images.forEach((slot, index) => {
+        if (!slot) return;
+        if ("url" in slot) {
+          submitData.images.push({ index, url: slot.url });
+        }
+      });
+
+      await updateSettings(submitData).unwrap();
+      toast.success("Settings updated successfully");
+    } catch (error: any) {
+      const msg =
+        error?.data?.message || error?.message || "Failed to update settings";
+      toast.error(msg);
     }
   };
 
   return (
     <div className="max-w-5xl mx-auto min-h-screen">
       <div className="pb-28">
-        {/* Main Form */}
         <form id="main-form" onSubmit={onSubmit} className="space-y-8">
           {/* Profile Info */}
           <div className="bg-[#F9FAFB] border border-gray-200 rounded-lg p-6 shadow-sm">
@@ -232,34 +294,37 @@ const SettingPage = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="Enter First Name"
                   value={formData.firstName}
                   onChange={(e) =>
                     handleInputChange("firstName", e.target.value)
                   }
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className={`w-full p-3 border ${
+                    errors.firstName ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:ring-2 focus:ring-cyan-500 outline-none`}
                 />
                 {errors.firstName && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-xs text-red-500 mt-1">
                     {errors.firstName}
                   </p>
                 )}
               </div>
+
               <div>
                 <label className="text-sm font-medium text-gray-600 block mb-1">
                   Last Name *
                 </label>
                 <input
                   type="text"
-                  placeholder="Enter Last Name"
                   value={formData.lastName}
                   onChange={(e) =>
                     handleInputChange("lastName", e.target.value)
                   }
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className={`w-full p-3 border ${
+                    errors.lastName ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:ring-2 focus:ring-cyan-500 outline-none`}
                 />
                 {errors.lastName && (
-                  <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
+                  <p className="text-xs text-red-500 mt-1">{errors.lastName}</p>
                 )}
               </div>
 
@@ -269,27 +334,21 @@ const SettingPage = () => {
                 </label>
                 <input
                   type="email"
-                  placeholder={`${user?.email || "Enter Email Address"}`}
-                  value={user?.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  className="w-full read-only p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  value={user?.email || ""}
                   readOnly
+                  className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
                 />
-                {errors.email && (
-                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-                )}
               </div>
 
               <div>
                 <label className="text-sm font-medium text-gray-600 block mb-1">
-                  Phone Number
+                  Phone
                 </label>
                 <input
                   type="text"
-                  placeholder="Enter Phone No"
                   value={formData.phone}
                   onChange={(e) => handleInputChange("phone", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 outline-none"
                 />
               </div>
 
@@ -299,13 +358,46 @@ const SettingPage = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="Enter Profession"
                   value={formData.profession}
                   onChange={(e) =>
                     handleInputChange("profession", e.target.value)
                   }
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 outline-none"
                 />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-600 block mb-2">
+                  Profile Image
+                </label>
+                <label className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center cursor-pointer relative overflow-hidden">
+                  {profilePreview ? (
+                    <>
+                      <img
+                        src={profilePreview}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleProfileDelete();
+                        }}
+                        className="absolute top-1 right-1 bg-gray-800/70 text-white rounded-sm p-1 opacity-0 hover:opacity-100 transition"
+                      >
+                        <PencilIcon size={15} />
+                      </button>
+                    </>
+                  ) : (
+                    <Plus className="w-8 h-8 text-gray-400" />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    onChange={handleProfileChange}
+                  />
+                </label>
               </div>
 
               <div className="md:col-span-2">
@@ -313,17 +405,15 @@ const SettingPage = () => {
                   <label className="text-sm font-medium text-gray-600">
                     Bio
                   </label>
-                  <span className="text-xs text-cyan-500 cursor-pointer flex items-center hover:text-cyan-600">
-                    <Wand2 className="w-4 h-4 mr-1" /> Auto Generate Text with
-                    AI
+                  <span className="text-xs text-cyan-500 flex items-center cursor-pointer hover:text-cyan-600">
+                    <Wand2 className="w-4 h-4 mr-1" /> Auto Generate with AI
                   </span>
                 </div>
                 <textarea
-                  placeholder="Enter Bio...."
                   rows={4}
                   value={formData.bio}
                   onChange={(e) => handleInputChange("bio", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 resize-none outline-none"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 outline-none resize-none"
                 />
               </div>
             </div>
@@ -337,17 +427,18 @@ const SettingPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
                 <label className="text-sm font-medium text-gray-600 block mb-1">
-                  Street Address *
+                  Street *
                 </label>
                 <input
                   type="text"
-                  placeholder="Enter Address"
                   value={formData.street}
                   onChange={(e) => handleInputChange("street", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className={`w-full p-3 border ${
+                    errors.street ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:ring-2 focus:ring-cyan-500 outline-none`}
                 />
                 {errors.street && (
-                  <p className="text-red-500 text-xs mt-1">{errors.street}</p>
+                  <p className="text-xs text-red-500 mt-1">{errors.street}</p>
                 )}
               </div>
 
@@ -357,13 +448,14 @@ const SettingPage = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="Enter City"
                   value={formData.city}
                   onChange={(e) => handleInputChange("city", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className={`w-full p-3 border ${
+                    errors.city ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:ring-2 focus:ring-cyan-500 outline-none`}
                 />
                 {errors.city && (
-                  <p className="text-red-500 text-xs mt-1">{errors.city}</p>
+                  <p className="text-xs text-red-500 mt-1">{errors.city}</p>
                 )}
               </div>
 
@@ -374,9 +466,11 @@ const SettingPage = () => {
                 <select
                   value={formData.state}
                   onChange={(e) => handleInputChange("state", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 bg-white outline-none"
+                  className={`w-full p-3 border ${
+                    errors.state ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:ring-2 focus:ring-cyan-500 bg-white outline-none`}
                 >
-                  <option value="">State</option>
+                  <option value="">Select State</option>
                   <option value="CA">California</option>
                   <option value="NY">New York</option>
                   <option value="TX">Texas</option>
@@ -384,7 +478,7 @@ const SettingPage = () => {
                   <option value="IL">Illinois</option>
                 </select>
                 {errors.state && (
-                  <p className="text-red-500 text-xs mt-1">{errors.state}</p>
+                  <p className="text-xs text-red-500 mt-1">{errors.state}</p>
                 )}
               </div>
 
@@ -394,13 +488,14 @@ const SettingPage = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="Enter Zip Code"
                   value={formData.zipCode}
                   onChange={(e) => handleInputChange("zipCode", e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
+                  className={`w-full p-3 border ${
+                    errors.zipCode ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:ring-2 focus:ring-cyan-500 outline-none`}
                 />
                 {errors.zipCode && (
-                  <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>
+                  <p className="text-xs text-red-500 mt-1">{errors.zipCode}</p>
                 )}
               </div>
             </div>
@@ -412,22 +507,22 @@ const SettingPage = () => {
               Portfolio
             </h2>
             <label className="text-sm font-medium text-gray-600 block mb-2">
-              Add photos
+              Add Photos
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {portfolioPreviews.map((preview, i) => (
                 <label
                   key={i}
-                  className="w-full h-24 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center cursor-pointer text-gray-400 hover:border-gray-500 transition-colors overflow-hidden"
+                  className="w-full h-24 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center cursor-pointer hover:border-gray-500 transition overflow-hidden"
                 >
                   {preview ? (
                     <img
                       src={preview}
                       alt={`Portfolio ${i}`}
-                      className="w-full h-full object-cover rounded-md"
+                      className="w-full h-full object-cover"
                     />
                   ) : (
-                    <Plus className="w-8 h-8" />
+                    <Plus className="w-8 h-8 text-gray-400" />
                   )}
                   <input
                     type="file"
@@ -447,7 +542,7 @@ const SettingPage = () => {
             type="submit"
             form="main-form"
             disabled={isLoading}
-            className="py-3 px-8 bg-primary text-white rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+            className="py-3 px-8 bg-primary text-white rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition"
           >
             {isLoading ? "Saving..." : "Save Changes"}
           </button>

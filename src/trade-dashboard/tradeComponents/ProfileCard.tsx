@@ -5,7 +5,7 @@ import {
 } from "@/redux/features/tradesman/tradesmanApi";
 import { CheckCircle, Star, Award, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import user1 from "../../assets/user2.png";
+import user1 from "../../assets/default-image.jpg";
 
 export default function ProfileCard() {
   const { data } = useGetTradesmanProfileQuery(undefined);
@@ -28,9 +28,7 @@ export default function ProfileCard() {
         <div className="flex items-center gap-4">
           {/* Avatar */}
           <img
-            src={
-              data?.data?.images.length !== 0 ? data?.data?.images[0] : user1
-            }
+            src={data?.data?.profileImage || user1}
             alt="Esther Howard"
             className="w-20 h-20 rounded-full object-cover"
           />
