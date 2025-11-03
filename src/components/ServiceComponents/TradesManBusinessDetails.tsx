@@ -1,4 +1,7 @@
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/typeHook";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 interface BusinessDetail {
   businessDetail: any;
@@ -17,6 +20,16 @@ const TradesManBusinessDetails: React.FC<TradesManBusinessDetailsProps> = ({
   setOpenContact,
 }) => {
   const userState = useAppSelector((state) => state.auth.user);
+  const currentUser = useSelector(selectCurrentUser);
+  const customerId = currentUser?.id;
+  const handleClick = () => {
+    if (!customerId) {
+      toast.error("Please Login");
+      return;
+    } else {
+      setOpenContact(true);
+    }
+  };
   return (
     <div className="bg-white rounded-lg p-6 shadow-md">
       <div className="flex items-start justify-between">
@@ -46,7 +59,7 @@ const TradesManBusinessDetails: React.FC<TradesManBusinessDetailsProps> = ({
       </div>
       {userState?.role !== "TRADESMAN" && (
         <button
-          onClick={() => setOpenContact(true)}
+          onClick={() => handleClick()}
           className="w-full text-sm lg:text-lg  mt-6 bg-primary hover:bg-orange-600 text-white px-4 py-3 rounded-md"
         >
           Invite to Project
