@@ -10,6 +10,15 @@ import { clearUser, selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { FiMenu, FiX, FiChevronDown, FiLogIn } from "react-icons/fi";
 import icon from "@/assets/user-icon/user-icon1.png";
 
+import { baseApi } from "@/redux/api/baseApi";
+import toast from "react-hot-toast";
+import { useAppSelector } from "@/redux/typeHook";
+
+
+
+import toast from "react-hot-toast";
+import { useAppSelector } from "@/redux/typeHook";
+
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -76,8 +85,12 @@ const Navbar = () => {
     setSigninModal(true);
     setOpen(false);
   };
-
+const {user} = useAppSelector((state)=> state.auth)
   const handleLogout = () => {
+     if(user?.role === "ADMIN"){
+      toast.error("Admin cannot logout from here.");
+      return;
+    }
     dispatch(clearUser());
     setDropdownOpen(false);
     window.location.href = "/";
@@ -221,9 +234,13 @@ const Navbar = () => {
                       {/* Conditionally render dashboard link based on role */}
                       <Link
                         to={
-                          userState.role === "CUSTOMER"
-                            ? "/user-dashboard"
-                            : "/trade-person"
+                          userState.role === "ADMIN"
+                                  ? "/dashboard"
+                                  : userState.role === "CUSTOMER"
+                                  ? "/user-dashboard"
+                                  : userState.role === "TRADESMAN"
+                                  ? "/trade-person"
+                                  : "/user-login"
                         }
                         className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-orange-50 transition-colors duration-200 group"
                         onClick={() => setDropdownOpen(false)}
@@ -235,26 +252,40 @@ const Navbar = () => {
                       {/* Conditionally render profile settings link based on role */}
                       <Link
                         to={
-                          userState.role === "CUSTOMER"
-                            ? "/user-dashboard/settings"
-                            : "/trade-person/settings"
+                        userState.role === "ADMIN"
+                              ? "/dashboard/admin/settings"
+                              : userState.role === "CUSTOMER"
+                              ? "/user-dashboard/settings"
+                              : userState.role === "TRADESMAN"
+                              ? "/trade-person/settings"
+                              : "/user-login"
                         }
                         className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-orange-50 transition-colors duration-200 group"
                         onClick={() => setDropdownOpen(false)}
                       >
                         <IoSettingsSharp className="text-gray-400 group-hover:text-orange-500 text-lg" />
-                        <span>Profile Settings</span>
+                        <span>
+                          {
+                             userState.role === "ADMIN"
+                              ? "Dashboard Settings"
+                              :  "Profie Settings"
+                        }
+                          
+                          
+                        </span>
                       </Link>
 
                       <div className="border-t border-gray-100 my-2"></div>
 
-                      <button
+                     {
+                        userState.role !== "ADMIN" &&  <button
                         className="flex items-center gap-3 cursor-pointer w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 transition-colors duration-200 group"
                         onClick={handleLogout}
                       >
                         <IoIosLogOut className="text-red-400 group-hover:text-red-500 text-lg" />
                         <span>Logout</span>
                       </button>
+                     }
                     </div>
                   </div>
                 )}

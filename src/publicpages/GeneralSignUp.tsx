@@ -84,7 +84,7 @@ const GeneralSignUp: React.FC<GeneralSignUpProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-start">
+    <div className="min-h-screen bg-white flex items-start ">
       <div className="max-w-7xl w-full mx-auto px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left image */}

@@ -7,7 +7,7 @@ interface Props {
 }
 
 const AdminProtectedRoute = ({ children }: Props) => {
-  const { admin, token } = useAppSelector((state) => state.admin);
+  const { user: admin, token } = useAppSelector((state) => state.auth);
 
   if (!token) {
     toast.error("Please login to continue!");
