@@ -1,9 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
-import { baseApi } from "@/redux/api/baseApi";
 
+
+import { baseApi } from "@/redux/api/baseApi";
+// import { adminLogout } from "@/redux/features/admin/adminSlice";
 import { clearUser } from "@/redux/features/auth/authSlice";
+
+
 
 
 
@@ -27,6 +31,8 @@ const AdminProfileDropdown = () => {
       return;
     }
     // Clear Redux state
+
+
 
     dispatch(clearUser());
     dispatch(baseApi.util.resetApiState());
