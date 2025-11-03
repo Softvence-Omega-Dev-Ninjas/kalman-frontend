@@ -1,12 +1,12 @@
-import React from "react";
-
 const LoadingPage = () => {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-r from-orange-100 via-amber-100 to-orange-200">
       {/* Logo / Icon */}
       <div className="mb-8">
         <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-xl animate-bounce">
-          <span className="text-white font-bold text-3xl">{import.meta.env.VITE_APP_NAME.slice(0,1)}</span>
+          <span className="text-white font-bold text-3xl">
+            {import.meta.env.VITE_APP_NAME.slice(0, 1)}
+          </span>
         </div>
       </div>
 
@@ -18,7 +18,9 @@ const LoadingPage = () => {
       </div>
 
       {/* Loading Text */}
-      <p className="mt-6 text-gray-700 text-lg font-medium">Loading, please wait...</p>
+      <p className="mt-6 text-gray-700 text-lg font-medium">
+        Loading, please wait...
+      </p>
 
       <style>
         {`
