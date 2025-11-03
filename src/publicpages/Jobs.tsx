@@ -5,6 +5,7 @@ import JobResults from "@/components/Jobs/JobCard";
 import { useGetJobsQuery } from "@/redux/features/jobs/jobsApi";
 import type { FilterState } from "@/types/job";
 import { IoMdOptions } from "react-icons/io";
+import PageHeader from "@/components/reuseable/PageHeader";
 
 const Jobs = () => {
       useEffect(()=>{
@@ -46,7 +47,12 @@ const Jobs = () => {
   // };
 
   return (
-    <div className="min-h-screen bg-[#F2F4F8] py-10 px-4 mt-8">
+    <div>
+      <PageHeader
+        title="Find Jobs"
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Jobs" }]}
+      />
+    <div className="min-h-screen bg-[#F2F4F8] py-10 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Sorting Header */}
         <div className="r pt-6 mb-2">
@@ -67,7 +73,7 @@ const Jobs = () => {
               {/* <div className="text-sm text-gray-600 flex items-center space-x-2">
                 <span>Sort by:</span>
                 <select
-                  value={filters.sortBy}
+                  value={totalJobs.sortBy}
                   onChange={handleSortChange}
                   className="font-semibold text-gray-900 border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 cursor-pointer"
                 >
@@ -101,6 +107,7 @@ const Jobs = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };
