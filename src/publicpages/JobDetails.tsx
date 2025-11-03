@@ -11,12 +11,14 @@ const JobDetails = () => {
       }, [])
     
   const { id: jobid } = useParams();
+  console.log(jobid);
   const navigate = useNavigate();
 
   if (!jobid) return null;
 
   const { data: job, isLoading } = useGetJobByIdQuery(jobid);
   const singlejob = job?.data;
+  console.log('singlejob', singlejob)
 
   if (isLoading) {
     return (
