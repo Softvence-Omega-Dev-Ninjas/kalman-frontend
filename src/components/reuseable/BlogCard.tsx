@@ -4,7 +4,7 @@ interface BlogCardProps {
   images: any[];
   title: string;
   description: string;
-  author: string;
+  author: any;
   createdAt: string;
   id: string;
 }
@@ -17,6 +17,21 @@ const BlogCard = ({
   author,
   createdAt,
 }: BlogCardProps) => {
+
+  function calculateReadingTime(text: string): string {
+  if (!text) return "0 min read";
+
+  const wordsPerMinute = 200; 
+  const words = text.trim().split(/\s+/).length;
+  const minutes = Math.ceil(words / wordsPerMinute);
+
+  if (minutes < 1) {
+    return "Less than 1 min read";
+  }
+
+  return `${minutes} min read`;
+}
+
   const toPath = `/blog/${id}`;
   return (
     <Link to={toPath} className="block no-underline">
@@ -44,15 +59,15 @@ const BlogCard = ({
             <div className="flex items-center gap-3 text-sm">
               <img
                 src={
-                  "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg"
+                 author?.profile_image || "N/A"
                 }
-                alt={author}
+                alt={author?.name || "N/A"}
                 className="w-12 h-12 rounded-full object-cover"
               />
               <div>
-                <p className="font-medium">{"XYZ"}</p>
+                <p className="font-medium">{author.name}</p>
                 <p className="text-gray-500 text-xs">
-                  {createdAt?.split("T")[0]} • {"5 min read"}
+                  {createdAt?.split("T")[0]} • {calculateReadingTime(description)}
                 </p>
               </div>
             </div>
