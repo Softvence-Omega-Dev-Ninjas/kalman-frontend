@@ -1,4 +1,5 @@
 
+import LoadingPage from "@/components/loading/LoadingPage";
 import React from "react";
 
 export interface Column<T> {
@@ -23,7 +24,7 @@ const CustomTable = <T extends object>({
   if (isLoading) {
     return (
       <div className="w-full py-10 flex justify-center items-center text-gray-500">
-        Loading...
+        <LoadingPage />
       </div>
     );
   }
