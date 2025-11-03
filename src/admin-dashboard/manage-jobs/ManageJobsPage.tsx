@@ -4,6 +4,7 @@ import type { Column } from "../shared/CustomTable/CustomTable";
 import CustomTable from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 import {
   useDeleteAdminJobMutation,
   useGetAllAdminJobsQuery,
@@ -56,21 +57,49 @@ useEffect(() => {
   setCurrentPage(1);
 }, [debouncedSearch]);
 
-  // Delete job mutation
+
   const [deleteJob] = useDeleteAdminJobMutation();
-
   const handleDelete = async (id: string) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this job?");
-    if (!confirmDelete) return;
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+    background: "#fff",
+    customClass: {
+      popup: "rounded-xl shadow-lg",
+      confirmButton: "rounded-md font-semibold",
+      cancelButton: "rounded-md font-semibold",
+    },
+  });
+  if (!result.isConfirmed) return;
+  try {
+    await deleteJob(id).unwrap();
+    await Swal.fire({
+      title: "Deleted!",
+      text: "Job deleted successfully!",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
 
-    try {
-      await deleteJob(id).unwrap();
-      toast.success("Job deleted successfully!");
-      refetch();
-    } catch (error: any) {
-      toast.error(error?.data?.message || "Failed to delete job!");
-    }
-  };
+    toast.success("Job deleted successfully!");
+    refetch();
+  } catch (error: any) {
+
+    await Swal.fire({
+      title: "Error!",
+      text: error?.data?.message || "Failed to delete job!",
+      icon: "error",
+      confirmButtonColor: "#d33",
+    });
+    toast.error(error?.data?.message || "Failed to delete job!");
+  }
+};
 
   const jobs: IJobData[] = data?.data.jobs || [];
   const totalJobs = data?.data?.totalJobs || 0;
