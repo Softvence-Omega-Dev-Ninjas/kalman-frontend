@@ -121,7 +121,7 @@ const Navbar = () => {
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">{import.meta.env.VITE_APP_NAME.slice(0,1)}</span>
+                <span className="text-white font-bold text-lg">{import.meta.env.VITE_APP_NAME?.slice(0,1)}</span>
               </div>
               <h1 className="text-2xl hidden sm:block md:text-3xl font-bold text-gray-900">
                 {import.meta.env.VITE_APP_NAME}

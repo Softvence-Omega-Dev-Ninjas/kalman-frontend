@@ -27,7 +27,7 @@ const OurPopularServices = () => {
 
   return (
     <div className="bg-gray-50 py-16 px-4">
-      <div className="max-w-[1580px] mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-16">
           <h2 className="text-4xl font-semibold text-gray-900 mb-6">
