@@ -14,10 +14,10 @@ import { useReviewCount } from "@/redux/features/tradesman/hooks/useReviewCount"
 import { useAppSelector } from "@/redux/typeHook";
 
 const ServiceDetails = () => {
-    useEffect(()=>{
-      document.title = `Service Details | ${import.meta.env.VITE_APP_NAME}`
-    }, [])
-  
+  useEffect(() => {
+    document.title = `Service Details | ${import.meta.env.VITE_APP_NAME}`;
+  }, []);
+
   const { id } = useParams<{ id: string }>();
   const { data } = useGetSingleTradesmanQuery(id);
   const [openContact, setOpenContact] = useState(false);
@@ -35,27 +35,62 @@ const ServiceDetails = () => {
         </div>
         {/* Gallery - left two-thirds */}
         <div className="lg:col-span-2">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="lg:col-span-2 rounded-lg overflow-hidden">
-              <img
-                src={image1}
-                alt="main"
-                className="w-full h-96 object-cover rounded-lg"
-              />
-            </div>
-            <div className="flex flex-col gap-6">
-              <img
-                src={image2}
-                alt="thumb1"
-                className="w-full h-44 object-cover rounded-lg"
-              />
-              <img
-                src={image3}
-                alt="thumb2"
-                className="w-full h-44 object-cover rounded-lg ring-4 ring-[#0B8AE6]"
-              />
-            </div>
-          </div>
+          {data?.data?.images?.length > 0 && (
+            <>
+              {data?.data?.images.length === 1 && (
+                <div className="w-full">
+                  <img
+                    src={data?.data?.images[0]}
+                    alt="main"
+                    className="w-full h-96 object-cover rounded-lg"
+                  />
+                </div>
+              )}
+
+              {data?.data?.images.length === 2 && (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                  <div className="lg:col-span-2 rounded-lg overflow-hidden">
+                    <img
+                      src={data?.data?.images[0]}
+                      alt="main"
+                      className="w-full h-96 object-cover rounded-lg"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-6">
+                    <img
+                      src={data?.data?.images[1]}
+                      alt="thumb1"
+                      className="w-full h-96 object-cover rounded-lg"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {data?.data?.images.length >= 3 && (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                  <div className="lg:col-span-2 rounded-lg overflow-hidden">
+                    <img
+                      src={data?.data?.images[0]}
+                      alt="main"
+                      className="w-full h-96 object-cover rounded-lg"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-6">
+                    <img
+                      src={data?.data?.images[1]}
+                      alt="thumb1"
+                      className="w-full h-44 object-cover rounded-lg"
+                    />
+                    <img
+                      src={data?.data?.images[2]}
+                      alt="thumb2"
+                      className="w-full h-44 object-cover rounded-lg ring-4 ring-[#0B8AE6]"
+                    />
+                  </div>
+                </div>
+              )}
+            </>
+          )}
 
           <div className="flex flex-col  md:flex-row items-start gap-8 mt-10">
             <div className="w-full md:w-2/3 pr-10">
