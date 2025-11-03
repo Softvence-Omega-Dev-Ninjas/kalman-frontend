@@ -1,6 +1,6 @@
 const LoadingPage = () => {
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-r from-orange-100 via-amber-100 to-orange-200">
+    <div className="min-h-[60vh] w-full flex flex-col items-center justify-center ">
       {/* Logo / Icon */}
       <div className="mb-8">
         <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-xl animate-bounce">

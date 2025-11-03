@@ -148,7 +148,7 @@ useEffect(() => {
     },
   ];
 
-  if (isLoading) return <div>Loading jobs...</div>;
+  // if (isLoading) return <div>Loading jobs...</div>;
   if (isError) return <div className="text-red-500">Failed to load jobs.</div>;
 
   return (
@@ -181,7 +181,7 @@ useEffect(() => {
       </header>
 
       {/* Table */}
-      <CustomTable columns={jobColumns} data={jobs }     emptyMessage={"No Job Found!"}/>
+      <CustomTable columns={jobColumns} data={jobs } isLoading={isLoading}    emptyMessage={"No Job Found!"}/>
 
       {/* Pagination */}
       {totalPages > 1 && (
