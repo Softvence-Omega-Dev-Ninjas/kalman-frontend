@@ -23,7 +23,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
 
   const { data: proposalResponse, isLoading } = useGetMyProposalByJobIdQuery(jobId);
   const proposal = proposalResponse?.data || null;
-  console.log('proposal',proposal)
+  // console.log('proposal',proposal)
 
   const handleSendMessage = () => {
     if (!user?.id) {
