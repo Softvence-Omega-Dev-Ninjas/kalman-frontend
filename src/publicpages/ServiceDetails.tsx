@@ -1,8 +1,5 @@
 import { IoLocationOutline } from "react-icons/io5";
-import image1 from "../assets/sample_images/image.png";
-import image2 from "../assets/sample_images/image2.png";
-import image3 from "../assets/sample_images/image3.png";
-import { MdOutlineReport } from "react-icons/md";
+import image2 from "../assets/default-image.jpg";
 import { useEffect, useState } from "react";
 import BookingModal from "../components/ServiceComponents/BookingModal";
 import RatingReviews from "@/components/ServiceComponents/RatingReviews";
@@ -28,14 +25,10 @@ const ServiceDetails = () => {
       <div className="max-w-[1490px] mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-semibold mb-6">Service</h2>
-          <button className="flex items-center gap-1 px-2 py-1 border border-gray-300 rounded-md">
-            <span>Report</span>
-            <MdOutlineReport />
-          </button>
         </div>
         {/* Gallery - left two-thirds */}
         <div className="lg:col-span-2">
-          {data?.data?.images?.length > 0 && (
+          {data?.data?.images?.length > 0 ? (
             <>
               {data?.data?.images.length === 1 && (
                 <div className="w-full">
@@ -90,6 +83,14 @@ const ServiceDetails = () => {
                 </div>
               )}
             </>
+          ) : (
+            <div className="w-full">
+              <img
+                src={image2}
+                alt="main"
+                className="w-full h-96 object-cover rounded-lg"
+              />
+            </div>
           )}
 
           <div className="flex flex-col  md:flex-row items-start gap-8 mt-10">
