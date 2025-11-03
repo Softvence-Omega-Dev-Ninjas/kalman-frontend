@@ -1,4 +1,6 @@
-import { Eye, Filter, Search, Trash2 } from "lucide-react";
+import { Eye,
+  //  Filter, 
+   Search, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import CustomTable, { type Column } from "../shared/CustomTable/CustomTable";
 import CustomPagination from "../shared/CustomPagination/CustomPagination";
@@ -15,6 +17,7 @@ interface IUserData {
   fileName: string;
   email: string;
   image?: string | null;
+    role?: string; 
   type: "Customer" | "Tradesman" | string;
   status: "Active" | "Suspended" | "Deactivated" | string;
   location: string;
@@ -121,6 +124,7 @@ const ManageUsersPage = () => {
         fileName: user.name || user.email.split("@")[0],
         email: user.email,
         image: user.profile_image || null,
+         role: user.role, 
         type:
           user.role === "CUSTOMER"
             ? "Customer"
@@ -227,18 +231,24 @@ const ManageUsersPage = () => {
       header: "Action",
       cell: (row) => (
         <div className="flex items-center space-x-2">
-          <button
+            <button
             onClick={() => handleView(row)}
             className="text-gray-400 hover:text-indigo-600 cursor-pointer"
           >
             <Eye size={18} />
           </button>
+         {
+          row?.role !== "ADMIN" && 
+          <>
+         
           <button
             onClick={() => handleDelete(row.id)}
             className="text-gray-400 hover:text-red-600 cursor-pointer"
           >
             <Trash2 size={18} />
           </button>
+          </>
+         }
         </div>
       ),
     },
@@ -261,9 +271,9 @@ const ManageUsersPage = () => {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <button className="flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
+          {/* <button className="flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
             <Filter size={18} className="mr-2" /> Filter By
-          </button>
+          </button> */}
         </div>
       </header>
 
