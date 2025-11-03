@@ -1,5 +1,5 @@
 import TradespersonCard from "../reuseable/TradePersonCard";
-import trade1 from "../../assets/sample_images/trade1.png";
+import image2 from "../../assets/default-image.jpg";
 import { useTradesman } from "@/redux/features/tradesman/hooks/useTradesman";
 import { useMemo } from "react";
 
@@ -52,7 +52,8 @@ const PopularTradesperson = () => {
             Our popular tradespeople are here to make life easier.
           </p>
           <p className="text-gray-600 text-base sm:text-lg">
-            From trusted home fixes to essential services, we've got you covered.
+            From trusted home fixes to essential services, we've got you
+            covered.
           </p>
         </div>
 
@@ -61,7 +62,7 @@ const PopularTradesperson = () => {
             <TradespersonCard
               key={index}
               id={person.id}
-              image={person.images?.[0] || trade1}
+              image={person?.images?.[0] || image2}
               name={`${person.firstName} ${person.lastName}`}
               profession={person.profession}
               review={person.review}
