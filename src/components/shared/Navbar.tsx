@@ -179,7 +179,7 @@ const {user} = useAppSelector((state)=> state.auth)
                   {!isMobile && (
                     <div className="hidden lg:flex flex-col items-start">
                       <span className="text-sm font-semibold text-gray-800">
-                        {userState.name ||`${userState.firstName}` || userState.role}
+                         {(userState.name || userState.firstName) || userState.role}
                       </span>
                       <span className="text-xs text-gray-500 capitalize">
                         {userState.role}
