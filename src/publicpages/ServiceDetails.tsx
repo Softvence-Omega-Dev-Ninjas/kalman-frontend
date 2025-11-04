@@ -98,7 +98,7 @@ const ServiceDetails = () => {
               <div>
                 <div className="flex items-start gap-4 ">
                   <img
-                    src={data?.data?.profileImage||image2}
+                    src={data?.data?.user?.profile_image||image2}
                     alt="avatar"
                     className="w-16 h-16 rounded-full object-cover"
                   />
