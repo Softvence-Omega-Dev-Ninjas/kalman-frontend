@@ -40,6 +40,10 @@ const TradeSignUp: React.FC<TradeSignUpProps> = ({step, setStep, setEmail}) => {
         try {
             // RTK Query mutation - unwrap to access result or throw on error
             const res = await signup(payload).unwrap()
+            if(res.message.toLowerCase().includes("email already exist")){
+                toast.error(res.message)
+                return
+            }
             if(res.success){
                 toast.success('Registration successful! Please log in.');
                 // Guard optional callbacks in case parent didn't pass them
@@ -47,7 +51,6 @@ const TradeSignUp: React.FC<TradeSignUpProps> = ({step, setStep, setEmail}) => {
                 setStep?.((prev) => (typeof prev === 'number' ? prev + 1 : (typeof step === 'number' ? step + 1 : 1)));
                 // navigate('/trade-login');
             }
-            console.log('signup success', res);
         } catch (err) {
             console.error('signup failed', err);
         }

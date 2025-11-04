@@ -69,7 +69,10 @@ const GeneralSignUp: React.FC<GeneralSignUpProps> = ({
 
       toast.success(result?.message);
 
-      if (result?.message?.toLowerCase().includes("already exist")) return;
+      if (result?.message?.toLowerCase().includes("already exist")){
+        toast.error(result.message)
+       return;
+      }
 
       setUserEmail(result?.data?.email);
       setStep(2);
