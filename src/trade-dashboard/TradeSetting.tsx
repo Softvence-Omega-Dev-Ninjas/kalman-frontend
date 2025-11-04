@@ -343,7 +343,7 @@ const SettingPage = () => {
                   Phone
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   value={formData.phone}
                   onChange={(e) => handleInputChange("phone", e.target.value)}
                   className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 outline-none"
@@ -485,7 +485,7 @@ const SettingPage = () => {
                   ZIP Code *
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   value={formData.zipCode}
                   onChange={(e) => handleInputChange("zipCode", e.target.value)}
                   className={`w-full p-3 border ${
