@@ -9,16 +9,8 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { clearUser, selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { FiMenu, FiX, FiChevronDown, FiLogIn } from "react-icons/fi";
 import icon from "@/assets/user-icon/user-icon1.png";
-
-import { baseApi } from "@/redux/api/baseApi";
 import toast from "react-hot-toast";
 import { useAppSelector } from "@/redux/typeHook";
-
-
-
-import toast from "react-hot-toast";
-import { useAppSelector } from "@/redux/typeHook";
-
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -41,7 +33,7 @@ const Navbar = () => {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const userState = useSelector(selectCurrentUser);
-  console.log("userState", userState);
+  console.log("userState nav", userState);
   // Check if mobile device
   useEffect(() => {
     const checkMobile = () => {
@@ -187,7 +179,7 @@ const {user} = useAppSelector((state)=> state.auth)
                   {!isMobile && (
                     <div className="hidden lg:flex flex-col items-start">
                       <span className="text-sm font-semibold text-gray-800">
-                        {userState.name || userState.role}
+                        {userState.name ||`${userState.firstName}` || userState.role}
                       </span>
                       <span className="text-xs text-gray-500 capitalize">
                         {userState.role}

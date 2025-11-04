@@ -243,7 +243,6 @@ const SettingPage = () => {
       const submitData: any = {
         firstName: formData.firstName,
         lastName: formData.lastName,
-        email: formData.email,
         phone: formData.phone,
         profession: formData.profession,
         bio: formData.bio,
