@@ -8,6 +8,7 @@ import {
   Send,
   ArrowLeft,
   X,
+  User,
 } from "lucide-react";
 import { useChat } from "../hooks/useChat";
 import {
@@ -24,19 +25,21 @@ const TradeMessage = () => {
 
   const user = useSelector(selectCurrentUser);
   console.log("Current User:", user.id);
-  // User IDs - Replace with actual user data from auth context/redux
-  const USER_ID = user.id; // Current logged-in user (sender)
+  
+  const USER_ID = user.id;
   const [selectedRecipientId, setSelectedRecipientId] = useState("");
-
   const [message, setMessage] = useState("");
-  const [selectedContact, setSelectedContact] = useState();
+  const [selectedContact, setSelectedContact] = useState<string>("");
+  console.log("Selected Recipient ID:", selectedContact);
   const [showChat, setShowChat] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  
   const {
     data: chatLists,
     isLoading: isLoadingChatLists,
     refetch: refetchChatLists,
   } = useGetChatListQuery({});
+  
   const {
     data: chatConversations,
     isLoading: isLoadingChatConversations,
@@ -44,7 +47,6 @@ const TradeMessage = () => {
   } = useGetChatHistoryQuery({ userA: USER_ID, userB: selectedRecipientId });
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
   const chatInputRef = useRef<HTMLInputElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -57,18 +59,43 @@ const TradeMessage = () => {
   } = useChat({
     userId: USER_ID,
     recipientId: selectedRecipientId,
-    socketUrl: "https://api.pravaruka.sk", // Change to your backend URL
+    socketUrl: "https://api.pravaruka.sk",
   });
 
   console.log(connected);
-
   console.log("Chat Lists:", chatLists);
+  
   const contacts = chatLists?.data || [];
 
+  // Helper function to get contact display name
+  const getContactName = (contact: any) => {
+    return contact.name || contact.email || "Unknown User";
+  };
+
+  // Helper function to get contact avatar
+  const getContactAvatar = (contact: any) => {
+    return contact.profile_image || null;
+  };
+
+  // Helper function to get last message text
+  const getLastMessage = (contact: any) => {
+    if (!contact.lastMessage) return "No messages";
+    
+    if (typeof contact.lastMessage === "string") {
+      return contact.lastMessage;
+    }
+    
+    return contact.lastMessage?.message || "No messages";
+  };
+
   // Filter contacts based on search query
-  const filteredContacts = contacts.filter((contact: any) =>
-    contact.name?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredContacts = contacts.filter((contact: any) => {
+    const name = getContactName(contact).toLowerCase();
+    const email = contact.email?.toLowerCase() || "";
+    const query = searchQuery.toLowerCase();
+    
+    return name.includes(query) || email.includes(query);
+  });
 
   console.log("Chat Contacts:", contacts);
   console.log("Chat Conversations:", chatConversations);
@@ -161,37 +188,42 @@ const TradeMessage = () => {
                   key={contact.id}
                   onClick={() => handleContactSelect(contact)}
                   className={`flex items-center p-3 sm:p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 ${
-                    contact.name === selectedContact ? "bg-orange-50" : ""
+                    contact.id === selectedRecipientId ? "bg-orange-50" : ""
                   }`}
                 >
                   <div className="relative">
-                    <img
-                      src={contact.profile_image}
-                      alt={contact.name}
-                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
-                    />
-                    {contact.isOnline && (
-                      <div className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-400 rounded-full border-2 border-white"></div>
+                    {getContactAvatar(contact) ? (
+                      <img
+                        src={getContactAvatar(contact)}
+                        alt={getContactName(contact)}
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-300 flex items-center justify-center">
+                        <User className="w-6 h-6 text-gray-500" />
+                      </div>
                     )}
+                    {/* You can add online indicator here if available in your data */}
+                    {/* {contact.isOnline && (
+                      <div className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-400 rounded-full border-2 border-white"></div>
+                    )} */}
                   </div>
 
                   <div className="ml-3 flex-1 min-w-0">
                     <div className="flex items-center justify-between">
                       <h3
                         className={`font-medium text-gray-900 text-sm sm:text-base ${
-                          contact.name === selectedContact
+                          contact.id === selectedRecipientId
                             ? "text-orange-600"
                             : ""
                         }`}
                       >
-                        {contact.name}
+                        {getContactName(contact)}
                       </h3>
                       <MoreHorizontal className="w-4 h-4 text-gray-400 shrink-0" />
                     </div>
                     <p className="text-xs sm:text-sm text-gray-600 truncate mt-1">
-                      {typeof contact.lastMessage === "string"
-                        ? contact.lastMessage
-                        : contact.lastMessage?.message || "No messages"}
+                      {getLastMessage(contact)}
                     </p>
                   </div>
                 </div>
@@ -203,124 +235,138 @@ const TradeMessage = () => {
         {/* Right Chat Area */}
         <div className="flex-1 flex flex-col bg-[#EFF2F7] rounded-lg border border-gray-100 min-w-0">
           {/* Chat Header */}
-          <div className="bg-white px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 rounded-t-lg">
-            <div className="flex items-center">
-              <div className="relative">
-                <img
-                  src={activeContact?.profile_image}
-                  alt={activeContact?.name}
-                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
-                />
-              </div>
-              <div className="ml-3">
-                <h2 className="font-semibold text-gray-900 text-sm sm:text-base">
-                  {activeContact?.name}
-                </h2>
-              </div>
-            </div>
-          </div>
-
-          {/* Chat Messages */}
-          <div className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6 space-y-3 sm:space-y-4">
-            {loading ? (
-              <div className="flex items-center justify-center h-full">
-                <p className="text-gray-500">Loading messages...</p>
-              </div>
-            ) : chatLog.length === 0 ? (
-              <div className="flex items-center justify-center h-full">
-                <p className="text-gray-400">
-                  No messages yet. Start the conversation!
-                </p>
-              </div>
-            ) : (
-              chatLog.map((msg, idx) => (
-                <div
-                  key={msg.id || idx}
-                  className={`flex ${
-                    msg.senderId === USER_ID ? "justify-end" : "justify-start"
-                  }`}
-                >
-                  <div className="max-w-[250px] sm:max-w-xs lg:max-w-md xl:max-w-lg">
-                    <div
-                      className={`px-3 sm:px-4 py-2 sm:py-3 rounded-2xl ${
-                        msg.senderId === USER_ID
-                          ? "bg-orange-500 text-white rounded-br-md"
-                          : "bg-white text-gray-900 rounded-bl-md border border-gray-200"
-                      }`}
-                    >
-                      {msg.content && (
-                        <p className="text-sm leading-relaxed wrap-break-word">
-                          {msg.content}
-                        </p>
-                      )}
-                      {msg.file && (
-                        <img
-                          src={msg.file}
-                          alt="attachment"
-                          className="mt-2 max-h-60 rounded-lg object-cover"
-                        />
-                      )}
-                    </div>
-                    <div
-                      className={`mt-1 text-xs text-gray-500 ${
-                        msg.senderId === USER_ID ? "text-right" : "text-left"
-                      }`}
-                    >
-                      {msg.timestamp}
-                    </div>
+          {activeContact ? (
+            <>
+              <div className="bg-white px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 rounded-t-lg">
+                <div className="flex items-center">
+                  <div className="relative">
+                    {getContactAvatar(activeContact) ? (
+                      <img
+                        src={getContactAvatar(activeContact)}
+                        alt={getContactName(activeContact)}
+                        className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-300 flex items-center justify-center">
+                        <User className="w-5 h-5 text-gray-500" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="ml-3">
+                    <h2 className="font-semibold text-gray-900 text-sm sm:text-base">
+                      {getContactName(activeContact)}
+                    </h2>
                   </div>
                 </div>
-              ))
-            )}
-            <div ref={chatEndRef} />
-          </div>
-
-          {/* Message Input */}
-          <div className="bg-white px-4 sm:px-6 py-3 sm:py-4 border-t border-gray-200 rounded-b-lg">
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              <label className="p-2 cursor-pointer text-gray-400 hover:text-gray-600 transition-colors bg-gray-100 rounded-lg shrink-0">
-                <Paperclip className="w-4 h-4 sm:w-5 sm:h-5" />
-                <input
-                  type="file"
-                  className="hidden"
-                  accept="image/*"
-                  onChange={handleFileSelect}
-                />
-              </label>
-
-              <div className="flex-1 relative min-w-0">
-                <input
-                  ref={chatInputRef}
-                  type="text"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  onKeyDown={handleKeyPress}
-                  placeholder="Type your message..."
-                  className="w-full px-3 sm:px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                />
               </div>
 
-              <button
-                onClick={handleSendMessage}
-                disabled={!message.trim() && !selectedFile}
-                className="p-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
+              {/* Chat Messages */}
+              <div className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6 space-y-3 sm:space-y-4">
+                {loading ? (
+                  <div className="flex items-center justify-center h-full">
+                    <p className="text-gray-500">Loading messages...</p>
+                  </div>
+                ) : chatLog.length === 0 ? (
+                  <div className="flex items-center justify-center h-full">
+                    <p className="text-gray-400">
+                      No messages yet. Start the conversation!
+                    </p>
+                  </div>
+                ) : (
+                  chatLog.map((msg, idx) => (
+                    <div
+                      key={msg.id || idx}
+                      className={`flex ${
+                        msg.senderId === USER_ID ? "justify-end" : "justify-start"
+                      }`}
+                    >
+                      <div className="max-w-[250px] sm:max-w-xs lg:max-w-md xl:max-w-lg">
+                        <div
+                          className={`px-3 sm:px-4 py-2 sm:py-3 rounded-2xl ${
+                            msg.senderId === USER_ID
+                              ? "bg-orange-500 text-white rounded-br-md"
+                              : "bg-white text-gray-900 rounded-bl-md border border-gray-200"
+                          }`}
+                        >
+                          {msg.content && (
+                            <p className="text-sm leading-relaxed wrap-break-word">
+                              {msg.content}
+                            </p>
+                          )}
+                          {msg.file && (
+                            <img
+                              src={msg.file}
+                              alt="attachment"
+                              className="mt-2 max-h-60 rounded-lg object-cover"
+                            />
+                          )}
+                        </div>
+                        <div
+                          className={`mt-1 text-xs text-gray-500 ${
+                            msg.senderId === USER_ID ? "text-right" : "text-left"
+                          }`}
+                        >
+                          {msg.timestamp}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+                <div ref={chatEndRef} />
+              </div>
+
+              {/* Message Input */}
+              <div className="bg-white px-4 sm:px-6 py-3 sm:py-4 border-t border-gray-200 rounded-b-lg">
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <label className="p-2 cursor-pointer text-gray-400 hover:text-gray-600 transition-colors bg-gray-100 rounded-lg shrink-0">
+                    <Paperclip className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleFileSelect}
+                    />
+                  </label>
+
+                  <div className="flex-1 relative min-w-0">
+                    <input
+                      ref={chatInputRef}
+                      type="text"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      onKeyDown={handleKeyPress}
+                      placeholder="Type your message..."
+                      className="w-full px-3 sm:px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    />
+                  </div>
+
+                  <button
+                    onClick={handleSendMessage}
+                    disabled={!message.trim() && !selectedFile}
+                    className="p-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Send className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
+                </div>
+                {selectedFile && (
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                      Selected file: {selectedFile.name}
+                    </p>
+                    <img
+                      src={URL.createObjectURL(selectedFile)}
+                      alt="preview"
+                      className="mt-1 max-h-32 rounded-lg object-cover"
+                    />
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="flex-1 flex items-center justify-center">
+              <p className="text-gray-400">Select a contact to start chatting</p>
             </div>
-            {selectedFile && (
-              <div className="mt-2">
-                <p className="text-sm text-gray-500">
-                  Selected file: {selectedFile.name}
-                </p>
-                <img
-                  src={URL.createObjectURL(selectedFile)}
-                  alt="preview"
-                  className="mt-1 max-h-32 rounded-lg object-cover"
-                />
-              </div>
-            )}
-          </div>
+          )}
         </div>
       </div>
 
@@ -368,27 +414,31 @@ const TradeMessage = () => {
                     className="flex items-center p-4 hover:bg-gray-50 active:bg-gray-100 cursor-pointer border-b border-gray-100"
                   >
                     <div className="relative">
-                      <img
-                        src={contact.avatar}
-                        alt={contact.name}
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
-                      {contact.isOnline && (
-                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
+                      {getContactAvatar(contact) ? (
+                        <img
+                          src={getContactAvatar(contact)}
+                          alt={getContactName(contact)}
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+                          <User className="w-6 h-6 text-gray-500" />
+                        </div>
                       )}
+                      {/* {contact.isOnline && (
+                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
+                      )} */}
                     </div>
 
                     <div className="ml-3 flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <h3 className="font-medium text-gray-900">
-                          {contact.name}
+                          {getContactName(contact)}
                         </h3>
                         <MoreHorizontal className="w-4 h-4 text-gray-400 shrink-0" />
                       </div>
                       <p className="text-sm text-gray-600 truncate mt-1">
-                        {typeof contact.lastMessage === "string"
-                          ? contact.lastMessage
-                          : contact.lastMessage?.message || "No messages"}
+                        {getLastMessage(contact)}
                       </p>
                     </div>
                   </div>
@@ -399,7 +449,7 @@ const TradeMessage = () => {
         )}
 
         {/* Mobile Chat View */}
-        {showChat && (
+        {showChat && activeContact && (
           <div className="flex flex-col h-screen bg-white">
             {/* Mobile Chat Header */}
             <div className="bg-white px-4 py-3 border-b border-gray-200 flex items-center">
@@ -411,20 +461,26 @@ const TradeMessage = () => {
               </button>
               <div className="flex items-center">
                 <div className="relative">
-                  <img
-                    src={activeContact?.avatar}
-                    alt={activeContact?.name}
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
-                  {activeContact?.isOnline && (
-                    <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border border-white"></div>
+                  {getContactAvatar(activeContact) ? (
+                    <img
+                      src={getContactAvatar(activeContact)}
+                      alt={getContactName(activeContact)}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                      <User className="w-4 h-4 text-gray-500" />
+                    </div>
                   )}
+                  {/* {activeContact?.isOnline && (
+                    <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border border-white"></div>
+                  )} */}
                 </div>
                 <div className="ml-3">
                   <h2 className="font-medium text-gray-900">
-                    {activeContact?.name}
+                    {getContactName(activeContact)}
                   </h2>
-                  <p className="text-xs text-green-500">Active Now</p>
+                  {/* <p className="text-xs text-green-500">Active Now</p> */}
                 </div>
               </div>
             </div>

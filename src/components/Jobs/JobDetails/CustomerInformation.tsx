@@ -147,7 +147,7 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
                   ? jobCusInfo.jobActivity.shortlisted < 10
                     ? `0${jobCusInfo.jobActivity.shortlisted}`
                     : jobCusInfo.jobActivity.shortlisted
-                  : "00"}
+                  : "0"}
               </span>
               <span>Shortlisted</span>
             </div>
@@ -195,17 +195,10 @@ const CustomerInformation = ({ customer }: { customer: any }) => {
                   ? jobCusInfo.jobActivity.shortlisted < 10
                     ? `0${jobCusInfo.jobActivity.shortlisted}`
                     : jobCusInfo.jobActivity.shortlisted
-                  : "00"}
+                  : "0"}
               </span>
               <span>Shortlisted</span>
             </div>
-            {/* <span className="text-gray-400">|</span>
-            <div className="flex items-center gap-2">
-              <span className="font-semibold text-foreground">
-                {jobCusInfo.another_count || "01"}
-              </span>
-              <span>Shortlisted</span>
-            </div> */}
           </div>
 
           {/* Message Section */}
