@@ -114,13 +114,26 @@ export default function BusinessDetailsForm() {
               Expiry Date
             </label>
             <input
-              {...register("expiry")}
-              type="text"
-              placeholder="MM/YY"
-              pattern="(0[1-9]|1[0-2])\/\d{2}"
-              className="placeholder:text-gray-400 w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
-            />
+    {...register("expiry", {
+      required: "Expiry date is required",
+      pattern: {
+        value: /^(0[1-9]|1[0-2])\/\d{2}$/,
+        message: "Enter a valid date (MM/YY)",
+      },
+    })}
+    type="text"
+    placeholder="MM/YY"
+    maxLength={5}
+    onChange={(e) => {
+      let val = e.target.value.replace(/\D/g, ""); // remove non-digits
+      if (val.length > 2) val = val.slice(0, 2) + "/" + val.slice(2);
+      e.target.value = val; // format as MM/YY
+    }}
+    className="placeholder:text-gray-400 w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
+  />
           </div>
+          
+
           <div>
             <label className="block text-md font-medium text-gray-700 mb-1">
               CVV
