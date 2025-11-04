@@ -173,7 +173,7 @@ const ProfessionalInfoForm = () => {
             Hourly rate
           </label>
           <input
-            type="text"
+            type="number"
             defaultValue="$20.00"
             {...register("hourlyRate")}
             className="w-full border placeholder:text-gray-400 border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none bg-[#F8F9FA]"

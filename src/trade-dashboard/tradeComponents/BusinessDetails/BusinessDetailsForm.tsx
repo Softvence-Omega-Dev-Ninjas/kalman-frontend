@@ -117,6 +117,7 @@ export default function BusinessDetailsForm() {
               {...register("expiry")}
               type="text"
               placeholder="MM/YY"
+              pattern="(0[1-9]|1[0-2])\/\d{2}"
               className="placeholder:text-gray-400 w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
             />
           </div>
@@ -126,7 +127,7 @@ export default function BusinessDetailsForm() {
             </label>
             <input
               {...register("cvv")}
-              type="text"
+              type="number"
               placeholder="123"
               className="placeholder:text-gray-400 w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
             />
@@ -176,8 +177,8 @@ export default function BusinessDetailsForm() {
             </label>
             <input
               {...register("billingPostcode")}
-              type="text"
-              placeholder="123"
+              type="number"
+              placeholder="12345"
               className="placeholder:text-gray-400 w-full rounded-lg border border-gray-200 px-4 py-2.5 focus:border-red-400 focus:ring-1 focus:ring-red-400 outline-none bg-[#F8F9FA]"
             />
           </div>
