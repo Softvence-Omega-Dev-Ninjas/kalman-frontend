@@ -222,7 +222,6 @@ const SettingPage = () => {
 
       setProfileImage({ index: 0, url });
       setProfilePreview(url);
-      toast.success("Profile image uploaded");
     } catch (err) {
       console.error(err);
       toast.error("Profile image upload failed — saved locally");
@@ -244,7 +243,6 @@ const SettingPage = () => {
       const submitData: any = {
         firstName: formData.firstName,
         lastName: formData.lastName,
-        email: formData.email,
         phone: formData.phone,
         profession: formData.profession,
         bio: formData.bio,
@@ -383,7 +381,7 @@ const SettingPage = () => {
                           e.stopPropagation();
                           handleProfileDelete();
                         }}
-                        className="absolute top-1 right-1 bg-gray-800/70 text-white rounded-sm p-1 opacity-0 hover:opacity-100 transition"
+                        className="absolute top-1 right-1 bg-primary text-white rounded-sm p-1 opacity-0 hover:opacity-100 transition"
                       >
                         <PencilIcon size={15} />
                       </button>
