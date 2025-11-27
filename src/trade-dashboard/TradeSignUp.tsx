@@ -45,7 +45,7 @@ const TradeSignUp: React.FC<TradeSignUpProps> = ({step, setStep, setEmail}) => {
                 return
             }
             if(res.success){
-                toast.success('Registration successful! Please log in.');
+                toast.success('Registration successful! Please Verify.');
                 // Guard optional callbacks in case parent didn't pass them
                 setEmail?.(payload.email);
                 setStep?.((prev) => (typeof prev === 'number' ? prev + 1 : (typeof step === 'number' ? step + 1 : 1)));
