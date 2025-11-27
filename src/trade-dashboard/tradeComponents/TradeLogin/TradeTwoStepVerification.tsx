@@ -1,6 +1,7 @@
 import React from 'react'
 import { Mail, ChevronRight } from 'lucide-react'
 import { useSendOtpByEmailMutation } from '@/redux/features/auth/register';
+import toast from 'react-hot-toast';
 
 
 
@@ -23,6 +24,7 @@ const TradeTwoStepVerification: React.FC<LogInComponentProps> = ({step, setStep,
 
         try{
             await sendOtpByEmail({email}).unwrap();
+            toast.success("Otp sent to you email!")
             setStep(step + 1);
         }catch (error) {
             console.error("Failed to send OTP:", error);
